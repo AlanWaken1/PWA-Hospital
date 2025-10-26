@@ -13,7 +13,7 @@ export default function Alertas() {
     const titleRef = useRef<HTMLDivElement>(null);
     const alertsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-    const { alertas, loading, marcarComoLeida, marcarTodasComoLeidas, eliminarAlerta, getStats, fetchAlertas } = useAlerts();
+    const { alertas, loading, marcarComoLeida, marcarTodasComoLeidas, eliminarAlerta, getStats } = useAlerts();
     const [filtroSeveridad, setFiltroSeveridad] = useState<string>('all');
     const [filtroLeida, setFiltroLeida] = useState<string>('all');
 

@@ -6,7 +6,6 @@ interface MinimalHeroProps {
 
 export function MinimalHero({ isDark = false }: MinimalHeroProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    // @ts-ignore
     const animationRef = useRef<number>();
 
     useEffect(() => {

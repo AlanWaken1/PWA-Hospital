@@ -1,8 +1,17 @@
 import { updateSession } from "@/lib/supabase/middleware";
-import { type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  return await updateSession(request);
+    const url = request.nextUrl.pathname;
+
+    if (
+        url.startsWith("/api/manifest") ||
+        url.startsWith("/sw.js") ||
+        url.startsWith("/icons/")
+    ) {
+        return NextResponse.next();
+    }
+    return await updateSession(request);
 }
 
 export const config = {

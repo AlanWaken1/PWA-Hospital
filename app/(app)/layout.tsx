@@ -1,109 +1,153 @@
-// app/(app)/layout.tsx (o app/protected/layout.tsx)
-"use client"; // Esencial porque usa estado y hooks del navegador
+// app/(app)/layout.tsx
+"use client";
 
-import { useState, ReactNode } from 'react';
-import { usePathname, useRouter, redirect } from 'next/navigation'; // Importa redirect
-import Link from 'next/link'; // Importa Link
-import { HospitalSidebar } from '@/components/shared/HospitalSidebar'; // Ajusta la ruta a tu componente
-import Header from '@/components/shared/Header';           // Ajusta la ruta a tu componente
-
-
-// TEMPORAL HASTA INTEGRAR SUPABASE AUTH REAL
-// Simula el hook useAuth si aún no tienes Supabase conectado
-// ELIMINA ESTO cuando uses Supabase Auth real y descomenta la línea de arriba
-const useAuth = () => {
-    // Simula un usuario logueado para que el layout se muestre
-    const user = { nombre_completo: 'Usuario Demo', email: 'demo@hospital.com' };
-    const loading = false;
-    const signOut = () => console.log("Simulando signOut");
-    return { user, loading, signOut };
-};
-// --- FIN TEMPORAL ---
-
+import { useState, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { HospitalSidebar } from '@/components/shared/HospitalSidebar';
+import Header from '@/components/shared/Header';
+import { PWAMetaTags } from '@/components/PWAMetaTags';
+import { useAuth } from '@/contexts/AuthContext';
+import { createClient } from '@/lib/supabase/client';
+import { Loader2 } from 'lucide-react';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const { user, loading } = useAuth(); // Usamos el hook (temporal o real)
+    const { user: contextUser, loading: contextLoading } = useAuth();
+    const [supabaseUser, setSupabaseUser] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
 
-    // --- Protección de Ruta (Básico - Supabase Middleware hará esto mejor) ---
-    // Si aún no ha cargado el estado de auth, muestra un loader o nada
-    if (loading) {
+    // ✅ TODOS LOS HOOKS AL INICIO (antes de cualquier return)
+
+    // Verificar Supabase auth
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const supabase = createClient();
+                const { data: { user } } = await supabase.auth.getUser();
+                setSupabaseUser(user);
+            } catch (error) {
+                console.error('Error checking Supabase auth:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkAuth();
+    }, []);
+
+    // Usuario combinado de todas las fuentes
+    const user = contextUser || supabaseUser || (() => {
+        try {
+            const stored = localStorage.getItem('user');
+            return stored ? JSON.parse(stored) : null;
+        } catch {
+            return null;
+        }
+    })();
+
+    // Protección de rutas
+    useEffect(() => {
+        if (!loading && !contextLoading && !user) {
+            console.log('❌ No user found, redirecting to login');
+            router.push('/auth/login');
+        }
+    }, [loading, contextLoading, user, router]);
+
+    // Cierra sidebar en móvil al cambiar de página
+    useEffect(() => {
+        setSidebarOpen(false);
+    }, [pathname]);
+
+    // Debug
+    useEffect(() => {
+        if (user) {
+            console.log('✅ User authenticated:', {
+                email: user.email || user.user_metadata?.email,
+                source: contextUser ? 'AuthContext' : supabaseUser ? 'Supabase' : 'localStorage'
+            });
+        }
+    }, [user, contextUser, supabaseUser]);
+
+    // ✅ AHORA SÍ, los early returns DESPUÉS de todos los hooks
+
+    const segments = pathname.split('/').filter(Boolean);
+    const currentPage = segments[segments.length - 1] || 'dashboard';
+
+    // Loading state
+    if (loading || contextLoading) {
         return (
-            <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
-                Cargando... {/* O un componente Loader */}
+            <div className="flex h-screen items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
+                <div className="text-center">
+                    <div className="mb-4 flex justify-center">
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                            <Loader2 className="w-8 h-8 text-white animate-spin" />
+                        </div>
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-400 font-medium">
+                        Cargando MediStock...
+                    </p>
+                </div>
             </div>
         );
     }
-    // Si no hay usuario y no está cargando, redirige al login
-    // ¡OJO! El middleware de Supabase hará esto de forma más robusta
-    /*
-    useEffect(() => {
-      if (!loading && !user) {
-        redirect('/auth/login'); // O la ruta que uses
-      }
-    }, [loading, user]);
 
-    // Si redirige, no renderiza el resto
+    // Si no hay usuario, no renderiza
     if (!user) {
-      return null;
+        return null;
     }
-    */
-    // --- Fin Protección de Ruta ---
 
-
-    // Obtiene la página actual de la URL (ej: 'dashboard', 'inventario')
-    // Usamos .split('/').filter(Boolean).pop() para manejar rutas anidadas si las hubiera
-    const currentPage = pathname.split('/').filter(Boolean).pop() || 'dashboard';
-
-    const handlePageChange = (page: string) => {
-        // Usamos Link de Next.js para la navegación en el sidebar
-        // por lo que esta función ya no es estrictamente necesaria para el click,
-        // pero la mantenemos por si la usas en otro lado
-        router.push(`/${page}`); // Navega a la nueva página
-        setSidebarOpen(false); // Cierra el sidebar en móvil al cambiar de página
-    };
-
+    // Render normal
     return (
-        <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-950">
+        <>
+            <PWAMetaTags />
 
-            {/* Overlay para móvil */}
-            {sidebarOpen && (
-                <div
-                    className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-                    onClick={() => setSidebarOpen(false)}
-                />
-            )}
+            <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-950">
 
-            {/* Sidebar (Controla su visibilidad con clases y estado) */}
-            <div
-                // Usamos clases de Tailwind para mostrar/ocultar y transicionar
-                className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-white dark:bg-gray-900 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 border-r border-gray-200 dark:border-gray-800 ${
-                    sidebarOpen ? 'translate-x-0 shadow-lg' : '-translate-x-full'
-                }`}
-            >
-                {/* Pasamos 'Link' como prop para usar Next/Link dentro del Sidebar */}
-                <HospitalSidebar
-                    currentPage={currentPage}
-                    onPageChange={handlePageChange} // Mantenemos por si acaso, pero Link hará el trabajo
-                    // Pasamos el componente Link para que HospitalSidebar lo use internamente
-                    // Esto es una forma de hacerlo, otra es modificar HospitalSidebar para usar Link directamente
-                    LinkComponent={Link}
-                />
-            </div>
+                {/* Overlay para móvil */}
+                {sidebarOpen && (
+                    <div
+                        className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm transition-opacity"
+                        onClick={() => setSidebarOpen(false)}
+                        aria-label="Cerrar menú"
+                    />
+                )}
 
-            {/* Contenido Principal */}
-            <main className="flex-1 overflow-y-auto flex flex-col">
+                {/* Sidebar */}
+                <aside
+                    className={`
+                        fixed inset-y-0 left-0 z-50 w-64
+                        transform bg-white dark:bg-gray-900
+                        transition-transform duration-300 ease-in-out
+                        lg:static lg:translate-x-0
+                        border-r border-gray-200 dark:border-gray-800
+                        ${sidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}
+                    `}
+                >
+                    <HospitalSidebar
+                        currentPage={currentPage}
+                        onPageChange={(page) => router.push(`/${page}`)}
+                        LinkComponent={Link}
+                    />
+                </aside>
 
-                {/* Header (Pasa el estado y la función para el botón móvil) */}
-                <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+                {/* Contenedor principal */}
+                <div className="flex-1 flex flex-col overflow-hidden">
 
-                {/* El Contenido de la Página específica (dashboard, inventario, etc.) */}
-                <div className="flex-1 p-4 sm:p-6 lg:p-8">
-                    {children} {/* <-- Aquí se renderiza cada page.tsx */}
+                    <Header
+                        sidebarOpen={sidebarOpen}
+                        setSidebarOpen={setSidebarOpen}
+                    />
+
+                    <main className="flex-1 overflow-y-auto">
+                        <div className="h-full p-4 sm:p-6 lg:p-8">
+                            {children}
+                        </div>
+                    </main>
                 </div>
-            </main>
-        </div>
+            </div>
+        </>
     );
 }

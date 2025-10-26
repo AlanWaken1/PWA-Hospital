@@ -4,6 +4,8 @@ import { Geist } from "next/font/google"; // <-- CORREGIDO: Importa Geist así
 import { ThemeProvider } from "@/contexts/ThemeContext"; // <-- CORREGIDO: Usa tu ThemeProvider (Ajusta ruta!)
 import { AuthProvider } from "@/contexts/AuthContext";   // <-- Usa tu AuthProvider simulado (Ajusta ruta!)
 import PWASetup from '@/components/shared/PWASetup';    // <-- Ahora sí existe
+import { PWAMetaTags } from '@/components/PWAMetaTags';
+
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -19,23 +21,20 @@ export const viewport: Viewport = {
     width: 'device-width',
 };
 
-// Metadata (sin cambios)
 export const metadata: Metadata = {
     metadataBase: new URL(defaultUrl),
     title: "MediStock - Inventario Hospitalario",
     description: "Sistema PWA para gestión de inventario médico.",
-    manifest: '/manifest.json',
+    manifest: '/api/manifest',
     icons: {
         icon: '/favicon.ico',
-        apple: '/icons/apple-touch-icon.png',
+        apple: '/icons/icon-192x192.png',
     },
     appleWebApp: {
         capable: true,
         statusBarStyle: 'default',
         title: 'MediStock',
     },
-    openGraph: { /* ... */ },
-    twitter: { /* ... */ },
 };
 
 // CORREGIDO: Configura la fuente Geist como en el template
@@ -57,9 +56,9 @@ export default function RootLayout({
         {/* CORREGIDO: Usa TU ThemeProvider */}
         <ThemeProvider>
             <AuthProvider>
-                {/* Quitamos el <main> de aquí, debe ir en los layouts específicos */}
                 {children}
                 <PWASetup />
+                <PWAMetaTags />
             </AuthProvider>
         </ThemeProvider>
         </body>

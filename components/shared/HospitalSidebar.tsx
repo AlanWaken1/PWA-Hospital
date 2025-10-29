@@ -69,10 +69,10 @@ export function HospitalSidebar({}: HospitalSidebarProps) {
             {/* Logo */}
             <div className="p-6 pb-0">
                 <Link href="/dashboard" className="flex items-center gap-2 mb-8 group">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-600 to-emerald-700 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-theme-primary to-theme-primary-dark flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                         <Activity className="w-5 h-5 text-white" strokeWidth={2.5} />
                     </div>
-                    <span className="font-semibold text-lg text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 transition-colors">MediStock</span>
+                    <span className="font-semibold text-lg text-gray-900 dark:text-gray-100 group-hover:text-theme-primary transition-colors">MediStock</span>
                 </Link>
             </div>
 
@@ -96,12 +96,12 @@ export function HospitalSidebar({}: HospitalSidebarProps) {
                                     ref={(el) => { menuItemsRef.current[index] = el; }}
                                     className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group ${
                                         isActive
-                                            ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md hover:shadow-lg'
+                                            ? 'bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white shadow-md hover:shadow-lg'
                                             : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                                     aria-current={isActive ? 'page' : undefined}
                                 >
-                                    <Icon size={18} className={`transition-colors ${isActive ? 'text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400'}`} />
+                                    <Icon size={18} className={`transition-colors ${isActive ? 'text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-theme-primary dark:group-hover:text-theme-primary-light'}`} />
                                     <span className="font-medium">{item.label}</span>
                                     {item.badge && (
                                         <Badge variant="destructive" className="ml-auto text-white bg-red-600 border-transparent">
@@ -149,7 +149,7 @@ export function HospitalSidebar({}: HospitalSidebarProps) {
                                     }`}
                                     aria-current={isActive ? 'page' : undefined}
                                 >
-                                    <Icon size={18} className={`transition-colors ${isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-400 dark:text-gray-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400'}`} />
+                                    <Icon size={18} className={`transition-colors ${isActive ? 'text-theme-primary dark:text-theme-primary-light' : 'text-gray-400 dark:text-gray-500 group-hover:text-theme-primary dark:group-hover:text-theme-primary-light'}`} />
                                     <span className="font-medium">{item.label}</span>
                                 </Link>
                             );

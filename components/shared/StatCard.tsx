@@ -21,12 +21,12 @@ export function StatCard({ title, value, trend, trendType = 'up', variant = 'sec
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
       className={`rounded-2xl p-6 relative overflow-hidden ${
         isPrimary 
-          ? 'bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 text-white shadow-lg shadow-emerald-500/20' 
+          ? 'bg-gradient-to-br from-theme-primary via-theme-primary to-theme-primary-dark text-white shadow-lg shadow-theme-primary/20' 
           : 'bg-white border border-gray-200 shadow-sm'
       }`}
     >
       <div className="flex items-start justify-between mb-4">
-        <h3 className={`text-sm ${isPrimary ? 'text-emerald-50' : 'text-gray-600'}`}>{title}</h3>
+        <h3 className={`text-sm ${isPrimary ? 'text-theme-primary-light' : 'text-gray-600'}`}>{title}</h3>
         <motion.div
           whileHover={{ rotate: 45, scale: 1.1 }}
           className={`w-8 h-8 rounded-full flex items-center justify-center ${
@@ -47,7 +47,7 @@ export function StatCard({ title, value, trend, trendType = 'up', variant = 'sec
             isPrimary 
               ? 'bg-white/20 text-white' 
               : trendType === 'up' 
-                ? 'bg-emerald-50 text-emerald-600' 
+                ? 'bg-theme-primary/10 text-theme-primary' 
                 : trendType === 'neutral'
                   ? 'bg-gray-100 text-gray-600'
                   : 'bg-red-50 text-red-600'

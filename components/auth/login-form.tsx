@@ -123,14 +123,14 @@ export default function LoginForm({ message }: { message: string | null }) {
                     <label className="flex items-center gap-2 text-gray-600 dark:text-gray-400 cursor-pointer">
                         <input
                             type="checkbox"
-                            className="rounded border-gray-300 dark:border-gray-600 text-emerald-600 focus:ring-emerald-500"
+                            className="rounded border-gray-300 dark:border-gray-600 text-theme-primary focus:ring-theme-primary"
                         />
                         <span>Recordarme</span>
                     </label>
                     {/* Link a la página de forgot-password del template */}
                     <Link
                         href="/auth/forgot-password"
-                        className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+                        className="text-theme-primary dark:text-theme-primary-light hover:text-theme-primary-dark dark:hover:text-theme-primary-light transition-colors"
                     >
                         ¿Olvidaste tu contraseña?
                     </Link>
@@ -140,7 +140,7 @@ export default function LoginForm({ message }: { message: string | null }) {
                 <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white py-2.5 rounded-xl shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                    className="w-full bg-gradient-to-r from-theme-primary to-theme-primary-dark hover:from-theme-primary-dark hover:to-theme-primary-dark text-white py-2.5 rounded-xl shadow-lg shadow-theme-primary/30 flex items-center justify-center gap-2 transition-all disabled:opacity-50"
                     onMouseEnter={(e) => !loading && gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
                     onMouseLeave={(e) => !loading && gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
                 >
@@ -170,7 +170,7 @@ export default function LoginForm({ message }: { message: string | null }) {
             {/* Link a la página de sign-up del template */}
             <Link
                 href="/auth/sign-up"
-                className="block w-full text-center text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+                className="block w-full text-center text-theme-primary dark:text-theme-primary-light hover:text-theme-primary-dark dark:hover:text-theme-primary-light transition-colors"
             >
                 Crear una cuenta nueva →
             </Link>

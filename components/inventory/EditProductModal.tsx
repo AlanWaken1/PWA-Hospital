@@ -104,7 +104,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-700">
                 {/* Header */}
-                <div className="sticky top-0 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-6 rounded-t-2xl flex items-center justify-between">
+                <div className="sticky top-0 bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white p-6 rounded-t-2xl flex items-center justify-between">
                     <h2 className="text-xl font-semibold">Editar Producto</h2>
                     <button
                         onClick={onClose}
@@ -117,7 +117,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                 {/* Loading State */}
                 {loadingProduct ? (
                     <div className="p-12 flex flex-col items-center justify-center gap-4">
-                        <Loader2 className="w-12 h-12 text-emerald-600 animate-spin" />
+                        <Loader2 className="w-12 h-12 text-theme-primary animate-spin" />
                         <p className="text-gray-600 dark:text-gray-400">Cargando producto...</p>
                     </div>
                 ) : (
@@ -143,7 +143,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         required
                                         value={formData.codigo}
                                         onChange={(e) => setFormData({ ...formData, codigo: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary focus:border-transparent"
                                     />
                                 </div>
 
@@ -155,7 +155,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         required
                                         value={formData.categoria_id}
                                         onChange={(e) => setFormData({ ...formData, categoria_id: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary focus:border-transparent"
                                     >
                                         <option value="">Seleccionar...</option>
                                         {categorias.map((cat) => (
@@ -174,7 +174,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                     required
                                     value={formData.nombre}
                                     onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary focus:border-transparent"
                                 />
                             </div>
 
@@ -186,7 +186,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                     value={formData.descripcion}
                                     onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
                                     rows={3}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary focus:border-transparent"
                                 />
                             </div>
                         </div>
@@ -204,7 +204,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         required
                                         value={formData.unidad_medida}
                                         onChange={(e) => setFormData({ ...formData, unidad_medida: e.target.value as UnidadMedida })}
-                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary focus:border-transparent"
                                     >
                                         <option value="pieza">Pieza</option>
                                         <option value="caja">Caja</option>
@@ -230,7 +230,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         min="0"
                                         value={formData.stock_minimo}
                                         onChange={(e) => setFormData({ ...formData, stock_minimo: parseInt(e.target.value) })}
-                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary focus:border-transparent"
                                     />
                                 </div>
 
@@ -244,7 +244,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         min="0"
                                         value={formData.stock_maximo}
                                         onChange={(e) => setFormData({ ...formData, stock_maximo: parseInt(e.target.value) })}
-                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary focus:border-transparent"
                                     />
                                 </div>
 
@@ -258,7 +258,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         min="0"
                                         value={formData.punto_reorden}
                                         onChange={(e) => setFormData({ ...formData, punto_reorden: parseInt(e.target.value) })}
-                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary focus:border-transparent"
                                     />
                                 </div>
                             </div>
@@ -274,7 +274,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         type="checkbox"
                                         checked={formData.requiere_receta}
                                         onChange={(e) => setFormData({ ...formData, requiere_receta: e.target.checked })}
-                                        className="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                                        className="w-4 h-4 text-theme-primary border-gray-300 rounded focus:ring-theme-primary"
                                     />
                                     <span className="text-sm text-gray-700 dark:text-gray-300">Requiere Receta</span>
                                 </label>
@@ -284,7 +284,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         type="checkbox"
                                         checked={formData.es_controlado}
                                         onChange={(e) => setFormData({ ...formData, es_controlado: e.target.checked })}
-                                        className="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                                        className="w-4 h-4 text-theme-primary border-gray-300 rounded focus:ring-theme-primary"
                                     />
                                     <span className="text-sm text-gray-700 dark:text-gray-300">Medicamento Controlado</span>
                                 </label>
@@ -294,7 +294,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         type="checkbox"
                                         checked={formData.requiere_refrigeracion}
                                         onChange={(e) => setFormData({ ...formData, requiere_refrigeracion: e.target.checked })}
-                                        className="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                                        className="w-4 h-4 text-theme-primary border-gray-300 rounded focus:ring-theme-primary"
                                     />
                                     <span className="text-sm text-gray-700 dark:text-gray-300">Requiere Refrigeración</span>
                                 </label>
@@ -304,7 +304,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         type="checkbox"
                                         checked={formData.controla_lote}
                                         onChange={(e) => setFormData({ ...formData, controla_lote: e.target.checked })}
-                                        className="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                                        className="w-4 h-4 text-theme-primary border-gray-300 rounded focus:ring-theme-primary"
                                     />
                                     <span className="text-sm text-gray-700 dark:text-gray-300">Controlar Lote</span>
                                 </label>
@@ -314,7 +314,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         type="checkbox"
                                         checked={formData.controla_caducidad}
                                         onChange={(e) => setFormData({ ...formData, controla_caducidad: e.target.checked })}
-                                        className="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                                        className="w-4 h-4 text-theme-primary border-gray-300 rounded focus:ring-theme-primary"
                                     />
                                     <span className="text-sm text-gray-700 dark:text-gray-300">Controlar Caducidad</span>
                                 </label>
@@ -333,7 +333,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="px-6 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-lg hover:shadow-lg hover:shadow-emerald-500/30 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="px-6 py-2 bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white rounded-lg hover:shadow-lg hover:shadow-theme-primary/30 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {loading ? (
                                     <>

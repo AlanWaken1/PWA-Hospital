@@ -49,7 +49,7 @@ export default function Dashboard() {
       {/* Action Buttons */}
       <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-3 mb-6">
         <button
-          className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-2.5 rounded-xl shadow-lg shadow-emerald-500/30 flex items-center gap-2 transition-all hover:shadow-xl hover:shadow-emerald-500/40"
+          className="bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white px-6 py-2.5 rounded-xl shadow-lg shadow-theme-primary/30 flex items-center gap-2 transition-all hover:shadow-xl hover:shadow-theme-primary/40"
           onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
           onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
         >
@@ -73,8 +73,8 @@ export default function Dashboard() {
           value="1,248" 
           trend="+8.2% vs mes anterior" 
           icon={Package2}
-          gradientFrom="from-emerald-600"
-          gradientTo="to-emerald-800"
+          gradientFrom="from-theme-primary"
+          gradientTo="to-theme-primary-dark"
           delay={0.1} 
         />
         <GradientStatCard 

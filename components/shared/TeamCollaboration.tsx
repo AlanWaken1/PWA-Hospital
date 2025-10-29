@@ -18,7 +18,7 @@ export function TeamCollaboration() {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="text-emerald-600 hover:text-emerald-700 border border-gray-200 rounded-lg px-3 py-1.5 flex items-center gap-1.5 transition-colors"
+          className="text-theme-primary hover:text-theme-primary-dark border border-gray-200 rounded-lg px-3 py-1.5 flex items-center gap-1.5 transition-colors"
         >
           <Plus size={16} />
           <span className="text-sm">Add Member</span>

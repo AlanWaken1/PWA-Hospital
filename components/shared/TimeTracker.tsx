@@ -35,7 +35,7 @@ export function TimeTracker() {
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ delay: 0.4 }}
-      className="bg-gradient-to-br from-emerald-700 via-emerald-800 to-emerald-900 rounded-2xl p-6 text-white relative overflow-hidden shadow-xl shadow-emerald-500/30"
+      className="bg-gradient-to-br from-theme-primary-dark via-theme-primary-dark to-theme-primary-dark rounded-2xl p-6 text-white relative overflow-hidden shadow-xl shadow-theme-primary/30"
     >
       {/* Decorative wave pattern */}
       <div className="absolute top-0 right-0 w-full h-full opacity-10">
@@ -49,7 +49,7 @@ export function TimeTracker() {
         </svg>
       </div>
 
-      <h3 className="mb-6 text-emerald-50 relative z-10">Time Tracker</h3>
+      <h3 className="mb-6 text-theme-primary-light relative z-10">Time Tracker</h3>
       
       <motion.div
         key={`${time.hours}:${time.minutes}:${time.seconds}`}

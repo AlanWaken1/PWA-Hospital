@@ -58,7 +58,7 @@ export function ReportConfigurator({ onGenerate, onPreview, loading }: ReportCon
             {/* Tipo de Reporte */}
             <div className="space-y-2">
                 <Label className="flex items-center gap-2">
-                    <FileType className="w-4 h-4 text-emerald-600" />
+                    <FileType className="w-4 h-4 text-theme-primary" />
                     Tipo de Reporte
                 </Label>
                 <Select
@@ -88,7 +88,7 @@ export function ReportConfigurator({ onGenerate, onPreview, loading }: ReportCon
                             variant={config.formato === formato ? 'default' : 'outline'}
                             size="sm"
                             onClick={() => handleUpdate('formato', formato)}
-                            className={config.formato === formato ? 'bg-emerald-600 hover:bg-emerald-700' : ''}
+                            className={config.formato === formato ? 'bg-theme-primary hover:bg-theme-primary-dark' : ''}
                         >
                             {formato.toUpperCase()}
                         </Button>
@@ -100,7 +100,7 @@ export function ReportConfigurator({ onGenerate, onPreview, loading }: ReportCon
             {['movimientos', 'consumo'].includes(config.tipo) && (
                 <div className="space-y-3">
                     <Label className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-emerald-600" />
+                        <Calendar className="w-4 h-4 text-theme-primary" />
                         Rango de Fechas
                     </Label>
 
@@ -290,7 +290,7 @@ export function ReportConfigurator({ onGenerate, onPreview, loading }: ReportCon
                 </Button>
                 <Button
                     onClick={() => onGenerate(config)}
-                    className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+                    className="flex-1 bg-theme-primary hover:bg-theme-primary-dark"
                     disabled={loading}
                 >
                     {loading ? 'Generando...' : 'Generar y Descargar'}

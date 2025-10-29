@@ -76,13 +76,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     const segments = pathname.split('/').filter(Boolean);
     const currentPage = segments[segments.length - 1] || 'dashboard';
 
-    // Loading state
+    // Loading state - USANDO COLORES DEL TEMA
     if (loading || contextLoading) {
         return (
             <div className="flex h-screen items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
                 <div className="text-center">
                     <div className="mb-4 flex justify-center">
-                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-theme-primary to-theme-primary-dark flex items-center justify-center shadow-lg shadow-theme-primary/30">
                             <Loader2 className="w-8 h-8 text-white animate-spin" />
                         </div>
                     </div>

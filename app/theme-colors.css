@@ -1,0 +1,310 @@
+/* app/theme-colors.css */
+
+/* Variables CSS del tema de color */
+:root {
+    --theme-primary: #0ea5e9;
+    --theme-primary-dark: #0284c7;
+    --theme-primary-light: #38bdf8;
+    --theme-primary-rgb: 14, 165, 233;
+}
+
+/* Clases utility dinámicas que usan las variables del tema */
+.bg-theme-primary {
+    background-color: var(--theme-primary);
+}
+
+.bg-theme-primary-dark {
+    background-color: var(--theme-primary-dark);
+}
+
+.bg-theme-primary-light {
+    background-color: var(--theme-primary-light);
+}
+
+.text-theme-primary {
+    color: var(--theme-primary);
+}
+
+.text-theme-primary-dark {
+    color: var(--theme-primary-dark);
+}
+
+.text-theme-primary-light {
+    color: var(--theme-primary-light);
+}
+
+.border-theme-primary {
+    border-color: var(--theme-primary);
+}
+
+.ring-theme-primary {
+    --tw-ring-color: var(--theme-primary);
+}
+
+/* Gradientes dinámicos - COMPLETOS */
+
+/* FROM variants */
+.from-theme-primary-light {
+    --tw-gradient-from: var(--theme-primary-light);
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-theme-primary {
+    --tw-gradient-from: var(--theme-primary);
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-theme-primary-dark {
+    --tw-gradient-from: var(--theme-primary-dark);
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+/* TO variants */
+.to-theme-primary-light {
+    --tw-gradient-to: var(--theme-primary-light);
+}
+
+.to-theme-primary {
+    --tw-gradient-to: var(--theme-primary);
+}
+
+.to-theme-primary-dark {
+    --tw-gradient-to: var(--theme-primary-dark);
+}
+
+/* VIA variants */
+.via-theme-primary-light {
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--theme-primary-light), var(--tw-gradient-to);
+}
+
+.via-theme-primary {
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--theme-primary), var(--tw-gradient-to);
+}
+
+.via-theme-primary-dark {
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--theme-primary-dark), var(--tw-gradient-to);
+}
+
+/* Dark mode gradients */
+.dark .dark\:from-theme-primary-light {
+    --tw-gradient-from: var(--theme-primary-light);
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.dark .dark\:from-theme-primary {
+    --tw-gradient-from: var(--theme-primary);
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.dark .dark\:from-theme-primary-dark {
+    --tw-gradient-from: var(--theme-primary-dark);
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.dark .dark\:to-theme-primary-light {
+    --tw-gradient-to: var(--theme-primary-light);
+}
+
+.dark .dark\:to-theme-primary {
+    --tw-gradient-to: var(--theme-primary);
+}
+
+.dark .dark\:to-theme-primary-dark {
+    --tw-gradient-to: var(--theme-primary-dark);
+}
+
+.dark .dark\:via-theme-primary {
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--theme-primary), var(--tw-gradient-to);
+}
+
+.dark .dark\:via-theme-primary-dark {
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--theme-primary-dark), var(--tw-gradient-to);
+}
+
+/* Sombras dinámicas */
+.shadow-theme-primary {
+    box-shadow: 0 10px 15px -3px rgba(var(--theme-primary-rgb), 0.3),
+    0 4px 6px -4px rgba(var(--theme-primary-rgb), 0.3);
+}
+
+.shadow-theme-primary\/20 {
+    box-shadow: 0 10px 15px -3px rgba(var(--theme-primary-rgb), 0.2),
+    0 4px 6px -4px rgba(var(--theme-primary-rgb), 0.2);
+}
+
+.shadow-theme-primary\/30 {
+    box-shadow: 0 10px 15px -3px rgba(var(--theme-primary-rgb), 0.3),
+    0 4px 6px -4px rgba(var(--theme-primary-rgb), 0.3);
+}
+
+.shadow-theme-primary\/40 {
+    box-shadow: 0 10px 15px -3px rgba(var(--theme-primary-rgb), 0.4),
+    0 4px 6px -4px rgba(var(--theme-primary-rgb), 0.4);
+}
+
+/* Shadow variants para diferentes tamaños */
+.shadow-lg.shadow-theme-primary\/30 {
+    box-shadow: 0 10px 30px -5px rgba(var(--theme-primary-rgb), 0.3);
+}
+
+.shadow-xl.shadow-theme-primary\/40 {
+    box-shadow: 0 20px 40px -10px rgba(var(--theme-primary-rgb), 0.4);
+}
+
+/* Hover states */
+.hover\:bg-theme-primary:hover {
+    background-color: var(--theme-primary);
+}
+
+.hover\:bg-theme-primary-dark:hover {
+    background-color: var(--theme-primary-dark);
+}
+
+.hover\:text-theme-primary:hover {
+    color: var(--theme-primary);
+}
+
+.hover\:border-theme-primary:hover {
+    border-color: var(--theme-primary);
+}
+
+.hover\:shadow-xl.hover\:shadow-theme-primary\/40:hover {
+    box-shadow: 0 20px 40px -10px rgba(var(--theme-primary-rgb), 0.4);
+}
+
+/* Dark mode variants */
+.dark .dark\:bg-theme-primary {
+    background-color: var(--theme-primary);
+}
+
+.dark .dark\:text-theme-primary {
+    color: var(--theme-primary);
+}
+
+.dark .dark\:text-theme-primary-light {
+    color: var(--theme-primary-light);
+}
+
+.dark .dark\:from-theme-primary-dark {
+    --tw-gradient-from: var(--theme-primary-dark);
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.dark .dark\:via-theme-primary-dark {
+    --tw-gradient-to: rgba(var(--theme-primary-rgb), 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--theme-primary-dark), var(--tw-gradient-to);
+}
+
+.dark .dark\:to-theme-primary-dark {
+    --tw-gradient-to: var(--theme-primary-dark);
+}
+
+.dark .dark\:shadow-theme-primary\/20 {
+    box-shadow: 0 10px 15px -3px rgba(var(--theme-primary-rgb), 0.2),
+    0 4px 6px -4px rgba(var(--theme-primary-rgb), 0.2);
+}
+
+.dark .dark\:hover\:text-theme-primary-light:hover {
+    color: var(--theme-primary-light);
+}
+
+.dark .dark\:hover\:border-theme-primary:hover {
+    border-color: var(--theme-primary);
+}
+
+/* Estados con opacidad para fondos - MEJORADOS PARA VISIBILIDAD */
+.bg-theme-primary\/5 {
+    background-color: rgba(var(--theme-primary-rgb), 0.05);
+}
+
+.bg-theme-primary\/10 {
+    background-color: rgba(var(--theme-primary-rgb), 0.15);
+    /* Aumentado de 0.1 a 0.15 para mejor visibilidad */
+}
+
+.bg-theme-primary\/20 {
+    background-color: rgba(var(--theme-primary-rgb), 0.25);
+    /* Aumentado de 0.2 a 0.25 para cards más visibles */
+}
+
+.bg-theme-primary\/30 {
+    background-color: rgba(var(--theme-primary-rgb), 0.3);
+}
+
+.bg-theme-primary\/40 {
+    background-color: rgba(var(--theme-primary-rgb), 0.4);
+}
+
+.bg-theme-primary\/50 {
+    background-color: rgba(var(--theme-primary-rgb), 0.5);
+}
+
+.bg-theme-primary\/60 {
+    background-color: rgba(var(--theme-primary-rgb), 0.6);
+}
+
+/* Variantes adicionales para hover y dark */
+.hover\:bg-theme-primary\/10:hover {
+    background-color: rgba(var(--theme-primary-rgb), 0.15);
+}
+
+.hover\:bg-theme-primary\/20:hover {
+    background-color: rgba(var(--theme-primary-rgb), 0.25);
+}
+
+.hover\:bg-theme-primary\/30:hover {
+    background-color: rgba(var(--theme-primary-rgb), 0.35);
+}
+
+/* Dark mode con opacidades ajustadas */
+.dark .dark\:bg-theme-primary\/10 {
+    background-color: rgba(var(--theme-primary-rgb), 0.2);
+    /* Más visible en dark mode */
+}
+
+.dark .dark\:bg-theme-primary\/20 {
+    background-color: rgba(var(--theme-primary-rgb), 0.3);
+    /* Más visible en dark mode */
+}
+
+.dark .dark\:bg-theme-primary\/30 {
+    background-color: rgba(var(--theme-primary-rgb), 0.35);
+}
+
+/* Ring effects */
+.ring-theme-primary\/50 {
+    --tw-ring-color: rgba(var(--theme-primary-rgb), 0.5);
+}
+
+.focus-visible\:ring-theme-primary:focus-visible {
+    --tw-ring-color: var(--theme-primary);
+}
+
+.focus-visible\:ring-theme-primary\/50:focus-visible {
+    --tw-ring-color: rgba(var(--theme-primary-rgb), 0.5);
+}
+
+/* Utility para aplicar el gradiente completo de una vez */
+.gradient-theme {
+    background: linear-gradient(to right, var(--theme-primary), var(--theme-primary-dark));
+}
+
+.gradient-theme-br {
+    background: linear-gradient(to bottom right, var(--theme-primary), var(--theme-primary-dark));
+}
+
+.dark .dark\:gradient-theme-br {
+    background: linear-gradient(to bottom right, var(--theme-primary-dark), var(--theme-primary));
+}

@@ -251,7 +251,7 @@ export default function InventoryPage() {
                                     placeholder="Buscar por nombre, código o categoría..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary focus:border-transparent"
                                 />
                             </div>
                         </div>
@@ -261,7 +261,7 @@ export default function InventoryPage() {
                             <select
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500"
+                                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary"
                             >
                                 <option value="all">Todas las categorías</option>
                                 {categorias.map((cat) => (
@@ -272,7 +272,7 @@ export default function InventoryPage() {
                             <select
                                 value={selectedStatus}
                                 onChange={(e) => setSelectedStatus(e.target.value)}
-                                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500"
+                                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary"
                             >
                                 <option value="all">Todos los estados</option>
                                 <option value="critico">Crítico</option>
@@ -285,7 +285,7 @@ export default function InventoryPage() {
                         <div className="flex gap-3">
                             <button
                                 onClick={() => setShowCreateModal(true)}
-                                className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-2 rounded-lg shadow-lg shadow-emerald-500/30 flex items-center gap-2 hover:shadow-xl hover:shadow-emerald-500/40 transition-all"
+                                className="bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white px-6 py-2 rounded-lg shadow-lg shadow-theme-primary/30 flex items-center gap-2 hover:shadow-xl hover:shadow-theme-primary/40 transition-all"
                             >
                                 <Plus size={18} />
                                 <span className="hidden sm:inline">Nuevo Producto</span>
@@ -298,7 +298,7 @@ export default function InventoryPage() {
                 <div className="overflow-x-auto">
                     {loading ? (
                         <div className="flex items-center justify-center py-12">
-                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-theme-primary"></div>
                         </div>
                     ) : filteredProducts.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
@@ -375,7 +375,7 @@ export default function InventoryPage() {
                                             </button>
                                             <button
                                                 onClick={() => handleEdit(product.producto_id)}
-                                                className="p-2 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition-colors"
+                                                className="p-2 text-theme-primary dark:text-theme-primary-light hover:bg-theme-primary/10 dark:hover:bg-theme-primary-dark/20 rounded-lg transition-colors"
                                                 title="Editar"
                                             >
                                                 <Edit size={18} />
@@ -401,7 +401,7 @@ export default function InventoryPage() {
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                         Mostrando {filteredProducts.length} de {stockTotal.length} productos
                     </p>
-                    <button className="text-sm text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1">
+                    <button className="text-sm text-theme-primary dark:text-theme-primary-light hover:underline flex items-center gap-1">
                         <Download size={16} />
                         Exportar a Excel
                     </button>

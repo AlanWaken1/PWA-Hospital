@@ -90,7 +90,7 @@ export function NotificationItem({ notification }: NotificationItemProps) {
             className={`
         block p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer
         border-l-4 ${getSeverityColor()}
-        ${!notification.leida ? 'bg-emerald-50/30 dark:bg-emerald-900/5' : ''}
+        ${!notification.leida ? 'bg-theme-primary/10/30 dark:bg-theme-primary-dark/5' : ''}
       `}
         >
             <div className="flex items-start gap-3">
@@ -113,7 +113,7 @@ export function NotificationItem({ notification }: NotificationItemProps) {
 
                         {/* Unread indicator */}
                         {!notification.leida && (
-                            <div className="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0 mt-1.5"></div>
+                            <div className="w-2 h-2 bg-theme-primary-light rounded-full flex-shrink-0 mt-1.5"></div>
                         )}
                     </div>
 

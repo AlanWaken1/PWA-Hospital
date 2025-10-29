@@ -93,7 +93,7 @@ export function Layout({ children, currentPage, onPageChange }: LayoutProps) {
                   <input
                     type="text"
                     placeholder="Buscar medicamento, equipo o insumo..."
-                    className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-sm"
+                    className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-theme-primary/20 transition-all text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-sm"
                   />
                 </div>
               </div>
@@ -123,8 +123,8 @@ export function Layout({ children, currentPage, onPageChange }: LayoutProps) {
 
                 {/* User Profile */}
                 <div className="flex items-center gap-2 sm:gap-3 pl-2 sm:pl-3 border-l border-gray-200 dark:border-gray-700">
-                  <Avatar className="w-9 h-9 sm:w-10 sm:h-10 cursor-pointer hover:ring-2 hover:ring-emerald-500/50 transition-all">
-                    <AvatarFallback className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white text-sm">
+                  <Avatar className="w-9 h-9 sm:w-10 sm:h-10 cursor-pointer hover:ring-2 hover:ring-theme-primary/50 transition-all">
+                    <AvatarFallback className="bg-gradient-to-br from-theme-primary-light to-theme-primary text-white text-sm">
                       {getInitials(user?.nombre_completo)}
                     </AvatarFallback>
                   </Avatar>

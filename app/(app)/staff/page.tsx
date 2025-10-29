@@ -18,7 +18,7 @@ export default function Personal() {
       email: 'maria.gonzalez@hospital.com',
       phone: '+52 55 1234-5678',
       status: 'online',
-      color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400',
+      color: 'bg-theme-primary/20 text-theme-primary dark:bg-theme-primary-dark/30 dark:text-theme-primary-light',
       activities: 156,
       lastActive: 'Hace 5 min',
     },
@@ -114,19 +114,19 @@ export default function Personal() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6">
-        <div className="bg-gradient-to-br from-emerald-600 to-emerald-700 dark:from-emerald-700 dark:to-emerald-800 rounded-2xl p-6 text-white shadow-lg transition-all">
+        <div className="bg-gradient-to-br from-theme-primary to-theme-primary-dark dark:from-theme-primary-dark dark:to-theme-primary-dark rounded-2xl p-6 text-white shadow-lg transition-all">
           <div className="flex items-start justify-between mb-4">
-            <h3 className="text-emerald-100">Personal Total</h3>
+            <h3 className="text-theme-primary-light">Personal Total</h3>
             <UserCheck className="text-white" size={24} />
           </div>
           <div className="text-4xl mb-2">{staff.length}</div>
-          <p className="text-emerald-200 text-sm">Miembros activos</p>
+          <p className="text-theme-primary-light text-sm">Miembros activos</p>
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors">
           <div className="flex items-start justify-between mb-4">
             <h3 className="text-gray-600 dark:text-gray-400">En Línea</h3>
-            <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
+            <div className="w-3 h-3 bg-theme-primary-light rounded-full animate-pulse"></div>
           </div>
           <div className="text-4xl text-gray-900 dark:text-gray-100 mb-2">{onlineStaff}</div>
           <p className="text-gray-500 dark:text-gray-400 text-sm">Disponibles ahora</p>
@@ -146,7 +146,7 @@ export default function Personal() {
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-gray-900 dark:text-gray-100">Equipo Médico</h3>
         <button
-          className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-2 rounded-xl shadow-lg shadow-emerald-500/30 flex items-center gap-2 hover:shadow-xl hover:shadow-emerald-500/40 transition-all"
+          className="bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white px-6 py-2 rounded-xl shadow-lg shadow-theme-primary/30 flex items-center gap-2 hover:shadow-xl hover:shadow-theme-primary/40 transition-all"
           onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
           onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
         >
@@ -172,7 +172,7 @@ export default function Personal() {
                   </AvatarFallback>
                 </Avatar>
                 {member.status === 'online' && (
-                  <div className="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white dark:border-gray-800 rounded-full"></div>
+                  <div className="absolute bottom-0 right-0 w-4 h-4 bg-theme-primary-light border-2 border-white dark:border-gray-800 rounded-full"></div>
                 )}
               </div>
 
@@ -182,7 +182,7 @@ export default function Personal() {
                     <h4 className="text-gray-900 dark:text-gray-100">{member.name}</h4>
                     <p className="text-sm text-gray-500 dark:text-gray-400">{member.role}</p>
                   </div>
-                  <Badge className={member.status === 'online' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'}>
+                  <Badge className={member.status === 'online' ? 'bg-theme-primary/20 text-theme-primary dark:bg-theme-primary-dark/30 dark:text-theme-primary-light' : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'}>
                     {member.status === 'online' ? 'En línea' : 'Ausente'}
                   </Badge>
                 </div>

@@ -71,7 +71,7 @@ export function ProjectProgress() {
 
       <div className="flex items-center justify-center gap-4 mt-4">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700"></div>
+          <div className="w-3 h-3 rounded-full bg-gradient-to-br from-theme-primary-light to-theme-primary-dark"></div>
           <span className="text-xs text-gray-600">Completed</span>
         </div>
         <div className="flex items-center gap-2">

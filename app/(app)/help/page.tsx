@@ -90,7 +90,7 @@ export default function Ayuda() {
 
   const getColorClasses = (color: string) => {
     const colors = {
-      emerald: { bg: 'bg-emerald-100 dark:bg-emerald-900/30', text: 'text-emerald-600 dark:text-emerald-400' },
+      emerald: { bg: 'bg-theme-primary/20 dark:bg-theme-primary-dark/30', text: 'text-theme-primary dark:text-theme-primary-light' },
       blue: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-600 dark:text-blue-400' },
       purple: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-600 dark:text-purple-400' },
       pink: { bg: 'bg-pink-100 dark:bg-pink-900/30', text: 'text-pink-600 dark:text-pink-400' },
@@ -109,14 +109,14 @@ export default function Ayuda() {
       </div>
 
       {/* Search */}
-      <div className="bg-gradient-to-br from-emerald-600 to-emerald-700 dark:from-emerald-700 dark:to-emerald-800 rounded-2xl p-8 mb-6 text-white shadow-xl transition-all">
+      <div className="bg-gradient-to-br from-theme-primary to-theme-primary-dark dark:from-theme-primary-dark dark:to-theme-primary-dark rounded-2xl p-8 mb-6 text-white shadow-xl transition-all">
         <h2 className="text-white mb-4">¿En qué podemos ayudarte?</h2>
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-300" size={20} />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-theme-primary-light" size={20} />
           <Input
             type="text"
             placeholder="Buscar en la documentación..."
-            className="pl-12 bg-white/20 border-white/30 text-white placeholder:text-emerald-200 backdrop-blur-sm"
+            className="pl-12 bg-white/20 border-white/30 text-white placeholder:text-theme-primary-light backdrop-blur-sm"
           />
         </div>
       </div>
@@ -177,7 +177,7 @@ export default function Ayuda() {
             <h4 className="text-gray-900 dark:text-gray-100 mb-2">Contacta Soporte</h4>
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Nuestro equipo está disponible 24/7</p>
             <button
-              className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white py-2.5 rounded-lg hover:shadow-lg transition-all px-[11px] py-[10px]"
+              className="w-full bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white py-2.5 rounded-lg hover:shadow-lg transition-all px-[11px] py-[10px]"
               onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
               onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
             >
@@ -188,13 +188,13 @@ export default function Ayuda() {
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 transition-colors">
             <h4 className="text-gray-900 dark:text-gray-100 mb-2">Recursos</h4>
             <div className="space-y-3">
-              <a href="#" className="block text-sm text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+              <a href="#" className="block text-sm text-gray-700 dark:text-gray-300 hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">
                 API Documentation →
               </a>
-              <a href="#" className="block text-sm text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+              <a href="#" className="block text-sm text-gray-700 dark:text-gray-300 hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">
                 Release Notes →
               </a>
-              <a href="#" className="block text-sm text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+              <a href="#" className="block text-sm text-gray-700 dark:text-gray-300 hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">
                 Community Forum →
               </a>
             </div>

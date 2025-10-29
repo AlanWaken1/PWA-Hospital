@@ -6,7 +6,7 @@ export function InventoryAnalytics() {
   const barsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const data = [
-    { category: 'Medicamentos', value: 85, color: 'from-emerald-600 to-emerald-700' },
+    { category: 'Medicamentos', value: 85, color: 'from-theme-primary to-theme-primary-dark' },
     { category: 'Equipos', value: 65, color: 'from-purple-600 to-purple-700' },
     { category: 'Insumos', value: 45, color: 'from-pink-600 to-pink-700' },
     { category: 'Quirúrgico', value: 90, color: 'from-cyan-600 to-cyan-700' },
@@ -44,7 +44,7 @@ export function InventoryAnalytics() {
   }, []);
 
   return (
-    <div ref={containerRef} className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-emerald-500/10 transition-all">
+    <div ref={containerRef} className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-theme-primary/10 transition-all">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-gray-900 dark:text-gray-100">Análisis de Inventario por Categoría</h3>
         <div className="text-xs text-gray-500 dark:text-gray-400">Nivel de Stock (%)</div>

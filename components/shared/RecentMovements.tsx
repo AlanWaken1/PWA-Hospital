@@ -36,15 +36,15 @@ export function RecentMovements() {
   }, []);
 
   return (
-    <div ref={containerRef} className="bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 dark:from-emerald-700 dark:via-emerald-800 dark:to-emerald-900 rounded-2xl p-6 text-white shadow-xl shadow-emerald-500/30 dark:shadow-emerald-500/20 relative overflow-hidden transition-all">
+    <div ref={containerRef} className="bg-gradient-to-br from-theme-primary via-theme-primary to-theme-primary-dark dark:from-theme-primary-dark dark:via-theme-primary-dark dark:to-theme-primary-dark rounded-2xl p-6 text-white shadow-xl shadow-theme-primary/30 dark:shadow-theme-primary/20 relative overflow-hidden transition-all">
       {/* Decorative background */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16"></div>
       <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 rounded-full -ml-12 -mb-12"></div>
 
       <div className="relative z-10">
         <div className="flex items-center gap-2 mb-4">
-          <Package className="text-emerald-200" size={20} />
-          <h3 className="text-emerald-50">Movimientos Recientes</h3>
+          <Package className="text-theme-primary-light" size={20} />
+          <h3 className="text-theme-primary-light">Movimientos Recientes</h3>
         </div>
         
         <div className="space-y-2">
@@ -70,7 +70,7 @@ export function RecentMovements() {
                 </div>
                 <div>
                   <div className="text-sm text-white">{movement.item}</div>
-                  <div className="text-xs text-emerald-200">{movement.time}</div>
+                  <div className="text-xs text-theme-primary-light">{movement.time}</div>
                 </div>
               </div>
               <div className={`text-sm ${movement.color} bg-white px-2 py-1 rounded`}>

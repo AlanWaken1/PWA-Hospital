@@ -80,7 +80,7 @@ export function MedicalStatCard({
       onMouseLeave={handleHoverEnd}
       className={`rounded-2xl p-6 relative overflow-hidden cursor-pointer transition-all ${
         isPrimary 
-          ? 'bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 text-white shadow-xl shadow-emerald-500/30' 
+          ? 'bg-gradient-to-br from-theme-primary via-theme-primary to-theme-primary-dark text-white shadow-xl shadow-theme-primary/30' 
           : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow'
       }`}
     >
@@ -88,13 +88,13 @@ export function MedicalStatCard({
         <h3 className={`text-sm ${isPrimary ? 'text-blue-50' : 'text-gray-600'}`}>{title}</h3>
         <div
           className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-            isPrimary ? 'bg-white/20' : 'bg-emerald-50'
+            isPrimary ? 'bg-white/20' : 'bg-theme-primary/10'
           }`}
         >
           {Icon ? (
-            <Icon size={20} className={isPrimary ? 'text-white' : 'text-emerald-600'} />
+            <Icon size={20} className={isPrimary ? 'text-white' : 'text-theme-primary'} />
           ) : (
-            <ArrowUpRight size={20} className={isPrimary ? 'text-white' : 'text-emerald-600'} />
+            <ArrowUpRight size={20} className={isPrimary ? 'text-white' : 'text-theme-primary'} />
           )}
         </div>
       </div>
@@ -109,7 +109,7 @@ export function MedicalStatCard({
             isPrimary 
               ? 'bg-white/20 text-white' 
               : trendType === 'up' 
-                ? 'bg-emerald-50 text-emerald-600' 
+                ? 'bg-theme-primary/10 text-theme-primary' 
                 : trendType === 'neutral'
                   ? 'bg-gray-100 text-gray-600'
                   : 'bg-red-50 text-red-600'

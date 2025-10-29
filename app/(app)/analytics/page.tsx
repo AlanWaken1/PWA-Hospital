@@ -166,16 +166,16 @@ export default function Analiticas() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div
           ref={(el) => {cardsRef.current[0] = el;}}
-          className="bg-gradient-to-br from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer"
+          className="bg-gradient-to-br from-theme-primary-light to-theme-primary dark:from-theme-primary dark:to-theme-primary-dark rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer"
           onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
           onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
         >
           <div className="flex items-center justify-between mb-4">
-            <h4 className="text-sm text-emerald-100">Movimientos Totales</h4>
+            <h4 className="text-sm text-theme-primary-light">Movimientos Totales</h4>
             <Activity className="text-white" size={20} />
           </div>
           <div className="text-3xl mb-2">{counter1.toLocaleString()}</div>
-          <div className="flex items-center gap-2 text-emerald-100 text-sm">
+          <div className="flex items-center gap-2 text-theme-primary-light text-sm">
             <TrendingUp size={14} />
             <span>+12.5% vs mes anterior</span>
           </div>
@@ -249,7 +249,7 @@ export default function Analiticas() {
             </div>
             <div className="flex gap-4 text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                <div className="w-3 h-3 rounded-full bg-theme-primary-light"></div>
                 <span className="text-gray-600 dark:text-gray-400">Entradas</span>
               </div>
               <div className="flex items-center gap-2">
@@ -458,10 +458,10 @@ export default function Analiticas() {
             <p className="text-sm text-gray-500 dark:text-gray-400">Indicadores principales</p>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-4">
+            <div className="bg-theme-primary/10 dark:bg-theme-primary-dark/20 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="text-emerald-600 dark:text-emerald-400" size={20} />
-                <span className="text-xs text-emerald-600 dark:text-emerald-400">Crecimiento</span>
+                <TrendingUp className="text-theme-primary dark:text-theme-primary-light" size={20} />
+                <span className="text-xs text-theme-primary dark:text-theme-primary-light">Crecimiento</span>
               </div>
               <div className="text-2xl text-gray-900 dark:text-gray-100">+15.3%</div>
               <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">vs periodo anterior</p>

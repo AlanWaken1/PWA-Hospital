@@ -41,7 +41,7 @@ export function StaffActivity() {
     <div ref={containerRef} className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-blue-500/10 transition-all h-full flex flex-col">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-gray-900 dark:text-gray-100">Actividad del Personal</h3>
-        <button className="text-emerald-600 dark:text-emerald-400 text-sm hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors flex items-center gap-1">
+        <button className="text-theme-primary dark:text-theme-primary-light text-sm hover:text-theme-primary-dark dark:hover:text-theme-primary-light transition-colors flex items-center gap-1">
           <Plus size={16} />
           Agregar
         </button>

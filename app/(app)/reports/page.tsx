@@ -166,7 +166,7 @@ export default function ReportesAvanzados() {
             {/* Page Title */}
             <div ref={titleRef} className="mb-6">
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-theme-primary-light to-theme-primary flex items-center justify-center">
                         <FileText className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -182,7 +182,7 @@ export default function ReportesAvanzados() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div
                     ref={(el) => {cardsRef.current[0] = el;}}
-                    className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-6 text-white"
+                    className="bg-gradient-to-br from-theme-primary-light to-theme-primary rounded-xl p-6 text-white"
                 >
                     <div className="flex items-center justify-between mb-4">
                         <Sparkles className="w-8 h-8" />
@@ -193,7 +193,7 @@ export default function ReportesAvanzados() {
                     <h3 className="text-3xl font-bold mb-1">
                         {historial.length}
                     </h3>
-                    <p className="text-emerald-100">Reportes Generados</p>
+                    <p className="text-theme-primary-light">Reportes Generados</p>
                 </div>
 
                 <div
@@ -275,7 +275,7 @@ export default function ReportesAvanzados() {
 
             {/* Feature Highlights */}
             <div ref={(el) => {cardsRef.current[5] = el;} } className="mt-8">
-                <div className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800">
+                <div className="bg-gradient-to-r from-theme-primary/10 to-blue-50 dark:from-theme-primary-dark/20 dark:to-blue-900/20 rounded-xl p-8 border border-theme-primary/30 dark:border-emerald-800">
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
                         ✨ Características Avanzadas
                     </h3>

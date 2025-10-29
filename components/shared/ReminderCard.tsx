@@ -21,7 +21,7 @@ export function ReminderCard() {
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-lg py-2.5 px-4 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/30"
+          className="w-full bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white rounded-lg py-2.5 px-4 flex items-center justify-center gap-2 shadow-lg shadow-theme-primary/30"
         >
           <Video size={16} />
           <span>Start Meeting</span>

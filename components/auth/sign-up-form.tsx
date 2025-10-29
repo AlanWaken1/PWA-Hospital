@@ -290,16 +290,16 @@ export function SignUpForm() {
                         id="terms"
                         type="checkbox"
                         required
-                        className="mt-1 rounded border-gray-300 dark:border-gray-600 text-emerald-600 focus:ring-emerald-500 shadow-sm"
+                        className="mt-1 rounded border-gray-300 dark:border-gray-600 text-theme-primary focus:ring-theme-primary shadow-sm"
                     />
                     <Label htmlFor="terms" className="text-gray-600 dark:text-gray-400 font-normal">
                         Acepto los{' '}
                         {/* Cambiamos button por Link si tienes páginas para esto */}
-                        <Link href="/terminos" className="text-emerald-600 dark:text-emerald-400 hover:underline">
+                        <Link href="/terminos" className="text-theme-primary dark:text-theme-primary-light hover:underline">
                             términos y condiciones
                         </Link>{' '}
                         y la{' '}
-                        <Link href="/privacidad" className="text-emerald-600 dark:text-emerald-400 hover:underline">
+                        <Link href="/privacidad" className="text-theme-primary dark:text-theme-primary-light hover:underline">
                             política de privacidad
                         </Link>
                     </Label>
@@ -309,7 +309,7 @@ export function SignUpForm() {
                 <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white py-2.5 rounded-xl shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                    className="w-full bg-gradient-to-r from-theme-primary to-theme-primary-dark hover:from-theme-primary-dark hover:to-theme-primary-dark text-white py-2.5 rounded-xl shadow-lg shadow-theme-primary/30 flex items-center justify-center gap-2 transition-all disabled:opacity-50"
                     onMouseEnter={(e) => !loading && gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
                     onMouseLeave={(e) => !loading && gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
                 >
@@ -339,7 +339,7 @@ export function SignUpForm() {
             {/* Login Link */}
             <Link
                 href="/auth/login" // Ruta del template
-                className="block w-full text-center text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors hover:underline"
+                className="block w-full text-center text-theme-primary dark:text-theme-primary-light hover:text-theme-primary-dark dark:hover:text-theme-primary-light transition-colors hover:underline"
             >
                 Iniciar sesión →
             </Link>

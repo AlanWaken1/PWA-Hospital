@@ -31,7 +31,7 @@ export default function LandingPage() {
         { icon: Package, title: "Gestión de Inventario", description: "Control total de medicamentos, equipos e insumos médicos en tiempo real.", color: "from-blue-500 to-blue-600" },
         { icon: TrendingUp, title: "Analíticas Avanzadas", description: "Gráficos interactivos y reportes detallados para tomar decisiones informadas.", color: "from-purple-500 to-purple-600" },
         { icon: Bell, title: "Alertas Inteligentes", description: "Notificaciones automáticas de stock bajo, caducidad y reabastecimiento.", color: "from-orange-500 to-red-500" },
-        { icon: Shield, title: "Seguridad Total", description: "Datos encriptados y roles de usuario para máxima seguridad hospitalaria.", color: "from-emerald-500 to-emerald-600" },
+        { icon: Shield, title: "Seguridad Total", description: "Datos encriptados y roles de usuario para máxima seguridad hospitalaria.", color: "from-theme-primary-light to-theme-primary" },
         { icon: Users, title: "Gestión de Personal", description: "Control de accesos y seguimiento de actividades del equipo médico.", color: "from-pink-500 to-pink-600" },
         { icon: BarChart3, title: "Reportes Detallados", description: "Genera reportes personalizados y exporta datos en múltiples formatos.", color: "from-indigo-500 to-indigo-600" },
     ];
@@ -68,28 +68,28 @@ export default function LandingPage() {
 
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-gray-950 dark:via-gray-900 dark:to-emerald-950/20 transition-colors overflow-x-hidden scroll-smooth">
+        <div className="min-h-screen bg-gradient-to-br from-theme-primary/10 via-white to-theme-primary/10 dark:from-gray-950 dark:via-gray-900 dark:to-emerald-950/20 transition-colors overflow-x-hidden scroll-smooth">
             {/* Navbar */}
             <nav className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800 transition-colors">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <Link href="/" className="flex items-center gap-2 group">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-theme-primary to-theme-primary-dark flex items-center justify-center shadow-lg shadow-theme-primary/30 transition-transform duration-300 group-hover:scale-110">
                                 <Activity className="w-6 h-6 text-white" strokeWidth={2.5} />
                             </div>
-                            <span className="text-xl font-semibold text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 transition-colors">MediStock</span>
+                            <span className="text-xl font-semibold text-gray-900 dark:text-gray-100 group-hover:text-theme-primary transition-colors">MediStock</span>
                         </Link>
 
                         <div className="hidden md:flex items-center gap-8">
-                            <a href="#features" className="text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Características</a>
-                            <a href="#pricing" className="text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Precios</a>
-                            <Link href="/auth/login" className="text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Iniciar Sesión</Link>
-                            <Link href="/auth/sign-up" className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-2 rounded-xl shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 transition-all">Empezar Gratis</Link>
+                            <a href="#features" className="text-gray-600 dark:text-gray-300 hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Características</a>
+                            <a href="#pricing" className="text-gray-600 dark:text-gray-300 hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Precios</a>
+                            <Link href="/auth/login" className="text-gray-600 dark:text-gray-300 hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Iniciar Sesión</Link>
+                            <Link href="/auth/sign-up" className="bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white px-6 py-2 rounded-xl shadow-lg shadow-theme-primary/30 hover:shadow-xl hover:shadow-theme-primary/40 transition-all">Empezar Gratis</Link>
                         </div>
 
                         <div className="md:hidden flex items-center gap-4">
-                            <Link href="/auth/login" className="text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Login</Link>
-                            <Link href="/auth/sign-up" className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2 rounded-xl shadow-lg">Empezar</Link>
+                            <Link href="/auth/login" className="text-gray-600 dark:text-gray-300 hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Login</Link>
+                            <Link href="/auth/sign-up" className="bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white px-4 py-2 rounded-xl shadow-lg">Empezar</Link>
                         </div>
                     </div>
                 </div>
@@ -100,31 +100,31 @@ export default function LandingPage() {
                 <div className="absolute inset-0"><MinimalHero isDark={isDark} /></div>
                 <div className="max-w-7xl mx-auto relative z-10 w-full">
                     <div className="text-center max-w-4xl mx-auto">
-                        <div className="hero-title inline-flex items-center gap-2 px-4 py-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl text-emerald-700 dark:text-emerald-400 rounded-full mb-8 border border-emerald-200/50 dark:border-emerald-700/50 shadow-sm">
-                            <Zap size={16} className="text-emerald-600 dark:text-emerald-400" />
+                        <div className="hero-title inline-flex items-center gap-2 px-4 py-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl text-theme-primary-dark dark:text-theme-primary-light rounded-full mb-8 border border-theme-primary/30/50 dark:border-theme-primary-dark/50 shadow-sm">
+                            <Zap size={16} className="text-theme-primary dark:text-theme-primary-light" />
                             <span className="text-sm">Sistema #1 en gestión hospitalaria</span>
                         </div>
                         <h1 className="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-gray-100 mb-6 leading-tight">
                             Control de Inventario<br />
-                            <span className="bg-gradient-to-r from-emerald-600 to-emerald-700 bg-clip-text text-transparent">Hospitalario Inteligente</span>
+                            <span className="bg-gradient-to-r from-theme-primary to-theme-primary-dark bg-clip-text text-transparent">Hospitalario Inteligente</span>
                         </h1>
                         <p className="hero-subtitle text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
                             Gestiona medicamentos, equipos e insumos médicos de forma eficiente y segura. Optimiza tu inventario con tecnología de última generación.
                         </p>
                         <div className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <Link href="/auth/sign-up" className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-8 py-4 rounded-2xl shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-2 group">
+                            <Link href="/auth/sign-up" className="w-full sm:w-auto bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white px-8 py-4 rounded-2xl shadow-lg shadow-theme-primary/30 hover:shadow-xl hover:shadow-theme-primary/30 transition-all flex items-center justify-center gap-2 group">
                                 <span className="text-lg font-semibold">Crear Cuenta Gratis</span>
                                 <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
                             </Link>
-                            <Link href="/auth/login" className="w-full sm:w-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl text-gray-900 dark:text-gray-100 px-8 py-4 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 hover:bg-white dark:hover:bg-gray-800 transition-all flex items-center justify-center gap-2 shadow-sm group">
+                            <Link href="/auth/login" className="w-full sm:w-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl text-gray-900 dark:text-gray-100 px-8 py-4 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-theme-primary dark:hover:border-theme-primary hover:bg-white dark:hover:bg-gray-800 transition-all flex items-center justify-center gap-2 shadow-sm group">
                                 <span className="text-lg font-semibold">Iniciar Sesión</span>
                                 <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
                             </Link>
                         </div>
                         <div className="hero-buttons flex flex-wrap items-center justify-center gap-4 mt-12 text-sm text-gray-600 dark:text-gray-400">
-                            <div className="flex items-center gap-2"><Check className="text-emerald-600" size={16} /><span>Sin tarjeta de crédito</span></div>
-                            <div className="flex items-center gap-2"><Check className="text-emerald-600" size={16} /><span>Setup en 5 minutos</span></div>
-                            <div className="flex items-center gap-2"><Check className="text-emerald-600" size={16} /><span>Soporte 24/7</span></div>
+                            <div className="flex items-center gap-2"><Check className="text-theme-primary" size={16} /><span>Sin tarjeta de crédito</span></div>
+                            <div className="flex items-center gap-2"><Check className="text-theme-primary" size={16} /><span>Setup en 5 minutos</span></div>
+                            <div className="flex items-center gap-2"><Check className="text-theme-primary" size={16} /><span>Soporte 24/7</span></div>
                         </div>
                     </div>
                 </div>
@@ -136,7 +136,7 @@ export default function LandingPage() {
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
                         {stats.map((stat, index) => (
                             <div key={index} className="stat-item text-center">
-                                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">{stat.value}</div>
+                                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-theme-primary dark:text-theme-primary-light mb-2">{stat.value}</div>
                                 <div className="text-sm sm:text-base text-gray-600 dark:text-gray-400">{stat.label}</div>
                             </div>
                         ))}
@@ -155,7 +155,7 @@ export default function LandingPage() {
                         {features.map((feature, index) => {
                             const Icon = feature.icon;
                             return (
-                                <div key={index} className="feature-card group bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition-all hover:shadow-2xl hover:shadow-emerald-500/20 cursor-pointer shadow-lg" onMouseEnter={(e) => { gsap.to(e.currentTarget, { y: -8, duration: 0.3 }); gsap.to(e.currentTarget.querySelector(".feature-icon"), { rotate: 5, scale: 1.1, duration: 0.3 }); }} onMouseLeave={(e) => { gsap.to(e.currentTarget, { y: 0, duration: 0.3 }); gsap.to(e.currentTarget.querySelector(".feature-icon"), { rotate: 0, scale: 1, duration: 0.3 }); }}>
+                                <div key={index} className="feature-card group bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-theme-primary dark:hover:border-theme-primary transition-all hover:shadow-2xl hover:shadow-theme-primary/20 cursor-pointer shadow-lg" onMouseEnter={(e) => { gsap.to(e.currentTarget, { y: -8, duration: 0.3 }); gsap.to(e.currentTarget.querySelector(".feature-icon"), { rotate: 5, scale: 1.1, duration: 0.3 }); }} onMouseLeave={(e) => { gsap.to(e.currentTarget, { y: 0, duration: 0.3 }); gsap.to(e.currentTarget.querySelector(".feature-icon"), { rotate: 0, scale: 1, duration: 0.3 }); }}>
                                     <div className={`feature-icon w-14 h-14 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-6 shadow-lg`}><Icon className="text-white" size={28} /></div>
                                     <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">{feature.title}</h3>
                                     <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{feature.description}</p>
@@ -178,13 +178,13 @@ export default function LandingPage() {
                             const Icon = step.icon;
                             return (
                                 <div key={index} className="relative group">
-                                    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 transition-all h-full">
-                                        <div className="text-6xl font-bold text-emerald-600/10 dark:text-emerald-400/10 mb-4">{step.number}</div>
-                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-700 flex items-center justify-center mb-4 shadow-lg shadow-emerald-500/25"><Icon className="text-white" size={24} /></div>
+                                    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-theme-primary transition-all h-full">
+                                        <div className="text-6xl font-bold text-theme-primary/10 dark:text-theme-primary-light/10 mb-4">{step.number}</div>
+                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-theme-primary to-theme-primary-dark flex items-center justify-center mb-4 shadow-lg shadow-theme-primary/30"><Icon className="text-white" size={24} /></div>
                                         <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{step.title}</h3>
                                         <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{step.description}</p>
                                     </div>
-                                    {index < steps.length - 1 && <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-emerald-600/50 to-transparent" />}
+                                    {index < steps.length - 1 && <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-theme-primary/50 to-transparent" />}
                                 </div>
                             );
                         })}
@@ -201,16 +201,16 @@ export default function LandingPage() {
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {testimonials.map((testimonial, index) => (
-                            <div key={index} className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 transition-all flex flex-col">
+                            <div key={index} className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:border-theme-primary transition-all flex flex-col">
                                 <div className="flex items-center gap-1 mb-4">
                                     {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
                                 </div>
-                                <Quote className="w-10 h-10 text-emerald-600/20 dark:text-emerald-400/20 mb-4" />
+                                <Quote className="w-10 h-10 text-theme-primary/20 dark:text-theme-primary-light/20 mb-4" />
                                 <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed flex-grow">"{testimonial.content}"</p>
                                 <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
                                     <p className="font-semibold text-gray-900 dark:text-gray-100">{testimonial.name}</p>
                                     <p className="text-sm text-gray-600 dark:text-gray-400">{testimonial.role}</p>
-                                    <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">{testimonial.hospital}</p>
+                                    <p className="text-sm text-theme-primary dark:text-theme-primary-light font-medium">{testimonial.hospital}</p>
                                 </div>
                             </div>
                         ))}
@@ -227,12 +227,12 @@ export default function LandingPage() {
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
                         {pricing.map((plan, index) => (
-                            <div key={index} className={`relative bg-white dark:bg-gray-800 rounded-2xl p-8 border transition-all flex flex-col ${plan.popular ? "border-emerald-500 dark:border-emerald-400 shadow-2xl shadow-emerald-500/10" : "border-gray-200 dark:border-gray-700 hover:border-emerald-500"}`}>
-                                {plan.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">Más Popular</div>}
+                            <div key={index} className={`relative bg-white dark:bg-gray-800 rounded-2xl p-8 border transition-all flex flex-col ${plan.popular ? "border-theme-primary dark:border-theme-primary/60 shadow-2xl shadow-theme-primary/10" : "border-gray-200 dark:border-gray-700 hover:border-theme-primary"}`}>
+                                {plan.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">Más Popular</div>}
                                 <div className="text-center mb-6">
                                     <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{plan.name}</h3>
                                     <div className="flex items-end justify-center gap-1 mb-2">
-                                        <span className="text-4xl font-bold text-emerald-600 dark:text-emerald-400">{plan.price}</span>
+                                        <span className="text-4xl font-bold text-theme-primary dark:text-theme-primary-light">{plan.price}</span>
                                         {plan.period && <span className="text-gray-600 dark:text-gray-400 mb-1">{plan.period}</span>}
                                     </div>
                                     <p className="text-sm text-gray-600 dark:text-gray-400">{plan.description}</p>
@@ -240,12 +240,12 @@ export default function LandingPage() {
                                 <ul className="space-y-3 mb-8 flex-grow">
                                     {plan.features.map((feature, i) => (
                                         <li key={i} className="flex items-start gap-3">
-                                            {feature.included ? <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" /> : <XCircle className="w-5 h-5 text-gray-300 dark:text-gray-600 flex-shrink-0 mt-0.5" />}
+                                            {feature.included ? <CheckCircle2 className="w-5 h-5 text-theme-primary dark:text-theme-primary-light flex-shrink-0 mt-0.5" /> : <XCircle className="w-5 h-5 text-gray-300 dark:text-gray-600 flex-shrink-0 mt-0.5" />}
                                             <span className={feature.included ? "text-gray-700 dark:text-gray-300" : "text-gray-400 dark:text-gray-600"}>{feature.text}</span>
                                         </li>
                                     ))}
                                 </ul>
-                                <Link href={plan.name === 'Empresarial' ? '/contacto' : '/auth/sign-up'} className={`w-full block py-3 text-center rounded-xl transition-all font-semibold ${plan.popular ? "bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-lg shadow-emerald-500/25 hover:shadow-xl" : "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700 hover:border-emerald-500"}`}>
+                                <Link href={plan.name === 'Empresarial' ? '/contacto' : '/auth/sign-up'} className={`w-full block py-3 text-center rounded-xl transition-all font-semibold ${plan.popular ? "bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white shadow-lg shadow-theme-primary/30 hover:shadow-xl" : "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700 hover:border-theme-primary"}`}>
                                     {plan.cta}
                                 </Link>
                             </div>
@@ -263,10 +263,10 @@ export default function LandingPage() {
                     </div>
                     <div className="space-y-4">
                         {faqs.map((faq, index) => (
-                            <details key={index} className="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-emerald-500 transition-all overflow-hidden">
+                            <details key={index} className="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-theme-primary transition-all overflow-hidden">
                                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
                                     <div className="flex items-start gap-4">
-                                        <HelpCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-1" />
+                                        <HelpCircle className="w-5 h-5 text-theme-primary dark:text-theme-primary-light flex-shrink-0 mt-1" />
                                         <span className="text-lg font-medium text-gray-900 dark:text-gray-100">{faq.question}</span>
                                     </div>
                                     <ChevronDown className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" />
@@ -279,19 +279,19 @@ export default function LandingPage() {
             </section>
 
             {/* Final CTA Section */}
-            <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-emerald-600 to-emerald-700 relative overflow-hidden">
+            <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-theme-primary to-theme-primary-dark relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/10" />
                 <div className="max-w-4xl mx-auto text-center relative z-10">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl mb-6">
                         <Smartphone className="text-white" size={32} />
                     </div>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">¿Listo para optimizar tu inventario?</h2>
-                    <p className="text-lg sm:text-xl text-emerald-100 mb-10 max-w-2xl mx-auto">Únete a cientos de hospitales que ya confían en MediStock para su gestión diaria.</p>
+                    <p className="text-lg sm:text-xl text-theme-primary-light mb-10 max-w-2xl mx-auto">Únete a cientos de hospitales que ya confían en MediStock para su gestión diaria.</p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <Link href="/auth/sign-up" className="w-full sm:w-auto bg-white text-emerald-700 font-semibold px-8 py-4 rounded-xl shadow-2xl hover:shadow-3xl transition-all text-lg flex items-center gap-2 group">
+                        <Link href="/auth/sign-up" className="w-full sm:w-auto bg-white text-theme-primary-dark font-semibold px-8 py-4 rounded-xl shadow-2xl hover:shadow-3xl transition-all text-lg flex items-center gap-2 group">
                             <span>Comenzar Ahora</span><ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
                         </Link>
-                        <Link href="/auth/login" className="w-full sm:w-auto bg-emerald-800/30 backdrop-blur-sm text-white px-8 py-4 rounded-xl border-2 border-white/30 hover:bg-emerald-800/50 transition-all text-lg font-semibold">
+                        <Link href="/auth/login" className="w-full sm:w-auto bg-theme-primary-dark/30 backdrop-blur-sm text-white px-8 py-4 rounded-xl border-2 border-white/30 hover:bg-theme-primary-dark/50 transition-all text-lg font-semibold">
                             Ver Demo
                         </Link>
                     </div>
@@ -304,7 +304,7 @@ export default function LandingPage() {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                         <div className="md:col-span-2">
                             <div className="flex items-center gap-2 mb-4">
-                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-700 flex items-center justify-center"><Activity className="w-6 h-6 text-white" strokeWidth={2.5} /></div>
+                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-theme-primary to-theme-primary-dark flex items-center justify-center"><Activity className="w-6 h-6 text-white" strokeWidth={2.5} /></div>
                                 <span className="text-xl font-semibold text-gray-900 dark:text-gray-100">MediStock</span>
                             </div>
                             <p className="text-gray-600 dark:text-gray-400 max-w-md">Sistema de control de inventario hospitalario diseñado para profesionales de la salud.</p>
@@ -312,26 +312,26 @@ export default function LandingPage() {
                         <div>
                             <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Producto</h4>
                             <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-                                <li><a href="#features" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Características</a></li>
-                                <li><a href="#pricing" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Precios</a></li>
-                                <li><Link href="/auth/login" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Demo</Link></li>
+                                <li><a href="#features" className="hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Características</a></li>
+                                <li><a href="#pricing" className="hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Precios</a></li>
+                                <li><Link href="/auth/login" className="hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Demo</Link></li>
                             </ul>
                         </div>
                         <div>
                             <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Empresa</h4>
                             <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-                                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Acerca de</a></li>
-                                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Blog</a></li>
-                                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Contacto</a></li>
+                                <li><a href="#" className="hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Acerca de</a></li>
+                                <li><a href="#" className="hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Blog</a></li>
+                                <li><a href="#" className="hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Contacto</a></li>
                             </ul>
                         </div>
                     </div>
                     <div className="border-t border-gray-200 dark:border-gray-800 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
                         <p className="text-sm text-gray-500 dark:text-gray-400">© 2024 MediStock. Todos los derechos reservados.</p>
                         <div className="flex items-center gap-6 text-sm text-gray-500 dark:text-gray-400">
-                            <a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Privacidad</a>
-                            <a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Términos</a>
-                            <a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Cookies</a>
+                            <a href="#" className="hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Privacidad</a>
+                            <a href="#" className="hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Términos</a>
+                            <a href="#" className="hover:text-theme-primary dark:hover:text-theme-primary-light transition-colors">Cookies</a>
                         </div>
                     </div>
                 </div>

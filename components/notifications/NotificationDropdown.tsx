@@ -77,7 +77,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
                             className={`
                 px-3 py-1 rounded-lg text-xs font-medium transition-colors
                 ${filter === filterOption
-                                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+                                ? 'bg-theme-primary/20 text-theme-primary-dark dark:bg-theme-primary-dark/30 dark:text-theme-primary-light'
                                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
                             }
               `}
@@ -94,7 +94,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
             <div className="flex-1 overflow-y-auto">
                 {loading ? (
                     <div className="p-8 text-center">
-                        <div className="animate-spin w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full mx-auto mb-3"></div>
+                        <div className="animate-spin w-8 h-8 border-4 border-theme-primary border-t-transparent rounded-full mx-auto mb-3"></div>
                         <p className="text-sm text-gray-500">Cargando...</p>
                     </div>
                 ) : notifications.length === 0 ? (

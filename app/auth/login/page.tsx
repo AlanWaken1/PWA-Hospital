@@ -40,7 +40,7 @@ export default function Page() {
     return (
         <div
             ref={containerRef}
-            className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50
+            className="min-h-screen bg-gradient-to-br from-theme-primary/10 via-white to-theme-primary/10
                  dark:from-gray-950 dark:via-gray-900 dark:to-emerald-950/20
                  flex items-center justify-center p-4 transition-colors"
         >
@@ -48,8 +48,8 @@ export default function Page() {
                 {/* Logo */}
                 <div ref={logoRef} className="text-center mb-8">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br
-                          from-emerald-600 to-emerald-700 rounded-2xl shadow-lg
-                          shadow-emerald-500/30 mb-4">
+                          from-theme-primary to-theme-primary-dark rounded-2xl shadow-lg
+                          shadow-theme-primary/30 mb-4">
                         <Activity className="w-8 h-8 text-white" strokeWidth={2.5} />
                     </div>
                     <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">

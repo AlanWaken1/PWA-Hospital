@@ -124,7 +124,7 @@ export default function Alertas() {
                     {stats.noLeidas > 0 && (
                         <button
                             onClick={() => marcarTodasComoLeidas()}
-                            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm"
+                            className="flex items-center gap-2 px-4 py-2 bg-theme-primary text-white rounded-lg hover:bg-theme-primary-dark transition-colors text-sm"
                         >
                             <CheckCircle2 size={16} />
                             Marcar todas como leídas
@@ -176,7 +176,7 @@ export default function Alertas() {
                             onClick={() => setFiltroSeveridad('all')}
                             className={`px-3 py-1 rounded-lg text-sm transition-colors ${
                                 filtroSeveridad === 'all'
-                                    ? 'bg-emerald-600 text-white'
+                                    ? 'bg-theme-primary text-white'
                                     : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
                             }`}
                         >
@@ -209,7 +209,7 @@ export default function Alertas() {
                             onClick={() => setFiltroLeida('all')}
                             className={`px-3 py-1 rounded-lg text-sm transition-colors ${
                                 filtroLeida === 'all'
-                                    ? 'bg-emerald-600 text-white'
+                                    ? 'bg-theme-primary text-white'
                                     : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
                             }`}
                         >
@@ -242,7 +242,7 @@ export default function Alertas() {
             {/* Alerts List */}
             {loading ? (
                 <div className="flex items-center justify-center py-12">
-                    <Loader2 className="w-12 h-12 text-emerald-600 animate-spin" />
+                    <Loader2 className="w-12 h-12 text-theme-primary animate-spin" />
                 </div>
             ) : alertasFiltradas.length === 0 ? (
                 <div className="bg-white dark:bg-gray-800 rounded-xl p-12 text-center border border-gray-200 dark:border-gray-700">

@@ -133,7 +133,7 @@ export function ReportPreview({ data, columns, onClose, onDownload, title }: Rep
                     </div>
                     <Button
                         onClick={onDownload}
-                        className="bg-emerald-600 hover:bg-emerald-700"
+                        className="bg-theme-primary hover:bg-theme-primary-dark"
                     >
                         <Download className="w-4 h-4 mr-2" />
                         Descargar

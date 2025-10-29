@@ -58,7 +58,7 @@ export function NotificationBell() {
           relative w-10 h-10 flex items-center justify-center rounded-xl
           transition-all duration-200
           ${isOpen
-                    ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400'
+                    ? 'bg-theme-primary/20 dark:bg-theme-primary-dark/30 text-theme-primary dark:text-theme-primary-light'
                     : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400'
                 }
           ${hasAnimated ? 'animate-wiggle' : ''}

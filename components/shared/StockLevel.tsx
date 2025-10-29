@@ -34,7 +34,7 @@ export function StockLevel() {
   const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <div ref={containerRef} className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-emerald-500/10 transition-all">
+    <div ref={containerRef} className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-theme-primary/10 transition-all">
       <h3 className="mb-4 text-gray-900 dark:text-gray-100">Nivel de Stock Global</h3>
       
       <div className="relative flex items-center justify-center">
@@ -79,7 +79,7 @@ export function StockLevel() {
 
       <div className="flex items-center justify-center gap-4 mt-4">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700"></div>
+          <div className="w-3 h-3 rounded-full bg-gradient-to-br from-theme-primary-light to-theme-primary-dark"></div>
           <span className="text-xs text-gray-600 dark:text-gray-400">Disponible</span>
         </div>
         <div className="flex items-center gap-2">

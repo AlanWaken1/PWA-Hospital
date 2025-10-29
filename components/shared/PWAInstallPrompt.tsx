@@ -71,7 +71,7 @@ export function PWAInstallPrompt() {
 
         <div className="flex items-start gap-4">
           {/* Icon */}
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-700 flex items-center justify-center flex-shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-theme-primary to-theme-primary-dark flex items-center justify-center flex-shrink-0">
             <Smartphone className="w-6 h-6 text-white" />
           </div>
 
@@ -88,7 +88,7 @@ export function PWAInstallPrompt() {
             <div className="flex gap-2">
               <button
                 onClick={handleInstall}
-                className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-emerald-500/30 transition-all"
+                className="flex-1 bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-theme-primary/30 transition-all"
                 onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
                 onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
               >

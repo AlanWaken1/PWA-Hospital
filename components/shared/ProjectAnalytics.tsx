@@ -41,7 +41,7 @@ export function ProjectAnalytics() {
                     initial={{ scaleY: 0 }}
                     animate={{ scaleY: 1 }}
                     transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
-                    className="w-full rounded-full bg-gradient-to-t from-emerald-700 via-emerald-600 to-emerald-500 origin-bottom shadow-lg shadow-emerald-500/30"
+                    className="w-full rounded-full bg-gradient-to-t from-theme-primary-dark via-theme-primary to-theme-primary-light origin-bottom shadow-lg shadow-theme-primary/30"
                     style={{ height: `${barHeight}%` }}
                   ></motion.div>
                 )}

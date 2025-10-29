@@ -89,7 +89,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col">
                 {/* Header */}
-                <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-6">
+                <div className="bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white p-6">
                     <div className="flex items-start justify-between">
                         <div className="flex-1">
                             <div className="flex items-center gap-3 mb-2">
@@ -101,7 +101,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                 )}
                             </div>
                             {!loading && producto && (
-                                <div className="flex items-center gap-3 text-emerald-100">
+                                <div className="flex items-center gap-3 text-theme-primary-light">
                                     <span className="text-sm">Código: {producto.codigo}</span>
                                     <span className="text-sm">•</span>
                                     <span className="text-sm">{producto.categoria?.nombre}</span>
@@ -124,7 +124,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                             onClick={() => setActiveTab('info')}
                             className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                                 activeTab === 'info'
-                                    ? 'bg-white dark:bg-gray-800 text-emerald-600 shadow-sm'
+                                    ? 'bg-white dark:bg-gray-800 text-theme-primary shadow-sm'
                                     : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-800/50'
                             }`}
                         >
@@ -134,7 +134,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                             onClick={() => setActiveTab('stock')}
                             className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                                 activeTab === 'stock'
-                                    ? 'bg-white dark:bg-gray-800 text-emerald-600 shadow-sm'
+                                    ? 'bg-white dark:bg-gray-800 text-theme-primary shadow-sm'
                                     : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-800/50'
                             }`}
                         >
@@ -144,7 +144,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                             onClick={() => setActiveTab('movimientos')}
                             className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                                 activeTab === 'movimientos'
-                                    ? 'bg-white dark:bg-gray-800 text-emerald-600 shadow-sm'
+                                    ? 'bg-white dark:bg-gray-800 text-theme-primary shadow-sm'
                                     : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-800/50'
                             }`}
                         >
@@ -157,7 +157,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                 <div className="flex-1 overflow-y-auto p-6">
                     {loading ? (
                         <div className="flex flex-col items-center justify-center py-12 gap-4">
-                            <Loader2 className="w-12 h-12 text-emerald-600 animate-spin" />
+                            <Loader2 className="w-12 h-12 text-theme-primary animate-spin" />
                             <p className="text-gray-600 dark:text-gray-400">Cargando información...</p>
                         </div>
                     ) : !producto ? (
@@ -170,14 +170,14 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                             {activeTab === 'info' && (
                                 <div className="space-y-6">
                                     {/* Stock Total Card */}
-                                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
+                                    <div className="bg-gradient-to-br from-theme-primary/10 to-theme-primary/20 dark:from-theme-primary-dark/20 dark:to-theme-primary-dark/20 rounded-xl p-6 border border-theme-primary/30 dark:border-emerald-800">
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <p className="text-sm text-emerald-700 dark:text-emerald-300 mb-1">Stock Total</p>
-                                                <p className="text-4xl font-bold text-emerald-900 dark:text-emerald-100">{totalStock}</p>
-                                                <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-1">{producto.unidad_medida}</p>
+                                                <p className="text-sm text-theme-primary-dark dark:text-theme-primary-light mb-1">Stock Total</p>
+                                                <p className="text-4xl font-bold text-theme-primary-dark dark:text-theme-primary-light">{totalStock}</p>
+                                                <p className="text-sm text-theme-primary dark:text-theme-primary-light mt-1">{producto.unidad_medida}</p>
                                             </div>
-                                            <Package size={48} className="text-emerald-600 dark:text-emerald-400 opacity-20" />
+                                            <Package size={48} className="text-theme-primary dark:text-theme-primary-light opacity-20" />
                                         </div>
                                     </div>
 
@@ -269,12 +269,12 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                         inventario.map((inv) => (
                                             <div
                                                 key={inv.id}
-                                                className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-4 border border-gray-200 dark:border-gray-700 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
+                                                className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-4 border border-gray-200 dark:border-gray-700 hover:border-theme-primary/40 dark:hover:border-theme-primary-dark transition-colors"
                                             >
                                                 <div className="flex items-start justify-between">
                                                     <div className="flex items-start gap-3 flex-1">
-                                                        <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
-                                                            <MapPin size={20} className="text-emerald-600 dark:text-emerald-400" />
+                                                        <div className="p-2 bg-theme-primary/20 dark:bg-theme-primary-dark/30 rounded-lg">
+                                                            <MapPin size={20} className="text-theme-primary dark:text-theme-primary-light" />
                                                         </div>
                                                         <div className="flex-1">
                                                             <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-1">

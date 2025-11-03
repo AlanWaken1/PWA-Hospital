@@ -33,12 +33,25 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
     };
 
     return (
-        <div className="w-96 max-h-[600px] bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 flex flex-col">
+        <div className="
+            w-full sm:w-96
+            max-h-[85vh] sm:max-h-[600px]
+            bg-white dark:bg-gray-900
+            sm:rounded-xl rounded-t-xl
+            shadow-2xl
+            border-t sm:border border-gray-200 dark:border-gray-800
+            flex flex-col
+            fixed sm:absolute
+            bottom-0 sm:bottom-auto
+            left-0 sm:left-auto
+            right-0 sm:right-0
+            z-50
+        ">
 
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+            <div className="flex items-center justify-between p-4 sm:p-4 border-b border-gray-200 dark:border-gray-800">
                 <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                    <h3 className="font-semibold text-base sm:text-lg text-gray-900 dark:text-gray-100">
                         Notificaciones
                     </h3>
                     <Badge variant="secondary" className="text-xs">
@@ -51,7 +64,8 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
                         variant="ghost"
                         size="icon"
                         onClick={refresh}
-                        className="w-8 h-8"
+                        className="w-9 h-9 sm:w-8 sm:h-8"
+                        aria-label="Actualizar notificaciones"
                     >
                         <RefreshCw className="w-4 h-4" />
                     </Button>
@@ -59,7 +73,8 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
                         variant="ghost"
                         size="icon"
                         onClick={onClose}
-                        className="w-8 h-8"
+                        className="w-9 h-9 sm:w-8 sm:h-8"
+                        aria-label="Cerrar"
                     >
                         <X className="w-4 h-4" />
                     </Button>
@@ -67,20 +82,25 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
             </div>
 
             {/* Filters */}
-            <div className="flex items-center gap-2 p-3 border-b border-gray-200 dark:border-gray-800">
-                <Filter className="w-4 h-4 text-gray-400" />
+            <div className="flex items-center gap-2 p-3 sm:p-3 border-b border-gray-200 dark:border-gray-800 overflow-x-auto">
+                <Filter className="w-4 h-4 text-gray-400 flex-shrink-0" />
                 <div className="flex gap-2 flex-1">
                     {(['all', 'unread', 'critical'] as const).map((filterOption) => (
                         <button
                             key={filterOption}
                             onClick={() => setFilter(filterOption)}
                             className={`
-                px-3 py-1 rounded-lg text-xs font-medium transition-colors
-                ${filter === filterOption
+                                px-3 py-2 sm:py-1.5 
+                                rounded-lg 
+                                text-xs font-medium 
+                                transition-colors
+                                whitespace-nowrap
+                                min-h-[44px] sm:min-h-0
+                                ${filter === filterOption
                                 ? 'bg-theme-primary/20 text-theme-primary-dark dark:bg-theme-primary-dark/30 dark:text-theme-primary-light'
                                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
                             }
-              `}
+                            `}
                         >
                             {filterOption === 'all' && 'Todas'}
                             {filterOption === 'unread' && 'No leídas'}
@@ -91,14 +111,14 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
             </div>
 
             {/* Notifications List */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto overscroll-contain">
                 {loading ? (
-                    <div className="p-8 text-center">
+                    <div className="p-8 sm:p-8 text-center">
                         <div className="animate-spin w-8 h-8 border-4 border-theme-primary border-t-transparent rounded-full mx-auto mb-3"></div>
                         <p className="text-sm text-gray-500">Cargando...</p>
                     </div>
                 ) : notifications.length === 0 ? (
-                    <div className="p-8 text-center">
+                    <div className="p-8 sm:p-8 text-center">
                         <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-3">
                             <CheckCheck className="w-8 h-8 text-gray-400" />
                         </div>
@@ -123,12 +143,12 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
 
             {/* Footer Actions */}
             {notifications.length > 0 && (
-                <div className="flex items-center gap-2 p-3 border-t border-gray-200 dark:border-gray-800">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-3 sm:p-3 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
                     <Button
                         variant="ghost"
                         size="sm"
                         onClick={handleMarkAllAsRead}
-                        className="flex-1 text-xs"
+                        className="flex-1 text-xs min-h-[44px] sm:min-h-0"
                     >
                         <CheckCheck className="w-4 h-4 mr-2" />
                         Marcar todas como leídas
@@ -137,7 +157,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
                         variant="ghost"
                         size="sm"
                         onClick={handleClearAll}
-                        className="text-xs text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                        className="flex-1 sm:flex-initial text-xs text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 min-h-[44px] sm:min-h-0"
                     >
                         <Trash2 className="w-4 h-4 mr-2" />
                         Limpiar

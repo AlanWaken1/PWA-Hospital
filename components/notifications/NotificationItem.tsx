@@ -35,7 +35,7 @@ export function NotificationItem({ notification }: NotificationItemProps) {
     };
 
     const getIcon = () => {
-        const iconClass = "w-5 h-5";
+        const iconClass = "w-5 h-5 flex-shrink-0";
 
         switch (notification.severidad) {
             case 'critical':
@@ -81,17 +81,19 @@ export function NotificationItem({ notification }: NotificationItemProps) {
     const Wrapper = link ? Link : 'div';
     const wrapperProps = link ? { href: link } : {};
 
-
     return (
         // @ts-ignore
         <Wrapper
             {...wrapperProps}
             onClick={handleClick}
             className={`
-        block p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer
-        border-l-4 ${getSeverityColor()}
-        ${!notification.leida ? 'bg-theme-primary/10/30 dark:bg-theme-primary-dark/5' : ''}
-      `}
+                block p-4 sm:p-4 
+                hover:bg-gray-50 dark:hover:bg-gray-800/50 
+                active:bg-gray-100 dark:active:bg-gray-800
+                transition-colors cursor-pointer
+                border-l-4 ${getSeverityColor()}
+                ${!notification.leida ? 'bg-theme-primary/5 dark:bg-theme-primary-dark/5' : ''}
+            `}
         >
             <div className="flex items-start gap-3">
 
@@ -102,8 +104,8 @@ export function NotificationItem({ notification }: NotificationItemProps) {
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2 mb-1">
-                        <h4 className={`text-sm font-medium ${
+                    <div className="flex items-start justify-between gap-3 mb-1">
+                        <h4 className={`text-sm sm:text-sm font-medium leading-snug ${
                             !notification.leida
                                 ? 'text-gray-900 dark:text-gray-100'
                                 : 'text-gray-600 dark:text-gray-400'
@@ -113,34 +115,34 @@ export function NotificationItem({ notification }: NotificationItemProps) {
 
                         {/* Unread indicator */}
                         {!notification.leida && (
-                            <div className="w-2 h-2 bg-theme-primary-light rounded-full flex-shrink-0 mt-1.5"></div>
+                            <div className="w-2 h-2 bg-theme-primary rounded-full flex-shrink-0 mt-1.5"></div>
                         )}
                     </div>
 
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">
                         {notification.mensaje}
                     </p>
 
                     {/* Product info */}
                     {notification.producto && (
-                        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-500 mb-2">
-                            <Package className="w-3 h-3" />
-                            <span>
-                {notification.producto.codigo} - {notification.producto.nombre}
-              </span>
+                        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-500 mb-3 p-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                            <Package className="w-3.5 h-3.5 flex-shrink-0" />
+                            <span className="truncate">
+                                {notification.producto.codigo} - {notification.producto.nombre}
+                            </span>
                         </div>
                     )}
 
                     {/* Footer */}
-                    <div className="flex items-center justify-between">
-            <span className="text-xs text-gray-500">
-              {formatDistanceToNow(new Date(notification.created_at), {
-                  addSuffix: true,
-                  locale: es,
-              })}
-            </span>
+                    <div className="flex items-center justify-between gap-3 pt-2 border-t border-gray-100 dark:border-gray-800">
+                        <span className="text-xs text-gray-500 truncate">
+                            {formatDistanceToNow(new Date(notification.created_at), {
+                                addSuffix: true,
+                                locale: es,
+                            })}
+                        </span>
 
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1 flex-shrink-0">
                             {!notification.leida && (
                                 <button
                                     onClick={async (e) => {
@@ -148,18 +150,34 @@ export function NotificationItem({ notification }: NotificationItemProps) {
                                         e.stopPropagation();
                                         await markAsRead(notification.id);
                                     }}
-                                    className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors"
+                                    className="
+                                        p-2 sm:p-1.5
+                                        hover:bg-gray-200 dark:hover:bg-gray-700
+                                        rounded-lg
+                                        transition-colors
+                                        min-w-[36px] min-h-[36px] sm:min-w-0 sm:min-h-0
+                                        flex items-center justify-center
+                                    "
                                     title="Marcar como leída"
+                                    aria-label="Marcar como leída"
                                 >
-                                    <Check className="w-3 h-3 text-gray-500" />
+                                    <Check className="w-4 h-4 sm:w-3.5 sm:h-3.5 text-gray-500" />
                                 </button>
                             )}
                             <button
                                 onClick={handleDelete}
-                                className="p-1 hover:bg-red-100 dark:hover:bg-red-900/20 rounded transition-colors"
+                                className="
+                                    p-2 sm:p-1.5
+                                    hover:bg-red-100 dark:hover:bg-red-900/20
+                                    rounded-lg
+                                    transition-colors
+                                    min-w-[36px] min-h-[36px] sm:min-w-0 sm:min-h-0
+                                    flex items-center justify-center
+                                "
                                 title="Eliminar"
+                                aria-label="Eliminar notificación"
                             >
-                                <Trash2 className="w-3 h-3 text-gray-500 hover:text-red-600" />
+                                <Trash2 className="w-4 h-4 sm:w-3.5 sm:h-3.5 text-gray-500 hover:text-red-600" />
                             </button>
                         </div>
                     </div>

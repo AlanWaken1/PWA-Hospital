@@ -1,9 +1,11 @@
-// components/inventory/RegisterEntryModal.tsx
+// components/inventory/RegisterEntryModal.tsx - CON VALIDACIÓN OFFLINE
 "use client";
 
-import { useState, useEffect } from 'react'; // ← Agregar useEffect
+import { useState, useEffect } from 'react';
 import { X, PackagePlus } from 'lucide-react';
 import { useInventory } from '@/hooks/useInventory';
+import { isOnline } from '@/lib/offline/sync'; // ← AGREGAR ESTO
+import { AlertCircle } from 'lucide-react'; // ← AGREGAR ESTO
 
 interface RegisterEntryModalProps {
     isOpen: boolean;
@@ -13,21 +15,25 @@ interface RegisterEntryModalProps {
 }
 
 export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: RegisterEntryModalProps) {
-    const { productos, ubicaciones, registrarEntrada, fetchProductos, fetchUbicaciones } = useInventory(); // ← Agregar fetchProductos, fetchUbicaciones
+    const { productos, ubicaciones, registrarEntrada, fetchProductos, fetchUbicaciones } = useInventory();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const offline = !isOnline(); // ← AGREGAR ESTO
 
-
-
-    // ⚠️ AGREGAR ESTE useEffect:
+    // Cargar productos y ubicaciones cuando se abre el modal
     useEffect(() => {
-        if (isOpen) {
+        if (isOpen && !offline) { // ← MODIFICAR: Solo cargar si hay internet
             console.log('🚀 Llamando fetchProductos...');
             fetchProductos();
             console.log('🚀 Llamando fetchUbicaciones...');
             fetchUbicaciones();
         }
-    }, [isOpen]);
+
+        // ← AGREGAR: Si está offline, mostrar error
+        if (isOpen && offline) {
+            setError('Esta función requiere conexión a internet');
+        }
+    }, [isOpen, offline]); // ← AGREGAR offline como dependencia
 
     const [formData, setFormData] = useState({
         producto_id: productoId || '',
@@ -43,18 +49,28 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
+
+        // ✅ VALIDACIÓN OFFLINE - Bloquear submit si no hay internet
+        if (offline) {
+            setError('Requiere conexión a internet para registrar entradas');
+            return;
+        }
+
         setLoading(true);
 
         if (!formData.producto_id) {
             setError('Debe seleccionar un producto');
+            setLoading(false);
             return;
         }
         if (!formData.ubicacion_id) {
             setError('Debe seleccionar una ubicación');
+            setLoading(false);
             return;
         }
         if (!formData.cantidad || formData.cantidad <= 0) {
             setError('La cantidad debe ser mayor a 0');
+            setLoading(false);
             return;
         }
 
@@ -110,142 +126,163 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                    {error && (
+                    {/* ⚠️ MENSAJE OFFLINE */}
+                    {offline && (
+                        <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
+                            <div className="flex gap-3">
+                                <AlertCircle className="text-orange-600 dark:text-orange-400 flex-shrink-0" size={20} />
+                                <div className="flex-1">
+                                    <p className="text-sm font-medium text-orange-900 dark:text-orange-100 mb-1">
+                                        Conexión Requerida
+                                    </p>
+                                    <p className="text-sm text-orange-800 dark:text-orange-200">
+                                        Esta función requiere conexión a internet para validar productos y ubicaciones.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {error && !offline && (
                         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg text-sm">
                             {error}
                         </div>
                     )}
 
-                    {/* Producto y Ubicación */}
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Producto *
-                            </label>
-                            <select
-                                required
-                                value={formData.producto_id}
-                                onChange={(e) => setFormData({ ...formData, producto_id: e.target.value })}
-                                disabled={!!productoId || productos.length === 0}  // ← Agregar || productos.length === 0
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
-                            >
-                                <option value="">
-                                    {productos.length === 0 ? 'Cargando productos...' : 'Seleccionar producto...'}
-                                </option>
-                                {productos.map((prod) => (
-                                    <option key={prod.id} value={prod.id}>
-                                        {prod.codigo} - {prod.nombre}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Ubicación de Destino *
-                            </label>
-                            <select
-                                required
-                                value={formData.ubicacion_id}
-                                onChange={(e) => setFormData({ ...formData, ubicacion_id: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            >
-                                <option value="">Seleccionar ubicación...</option>
-                                {ubicaciones.map((ub) => (
-                                    <option key={ub.id} value={ub.id}>
-                                        {ub.nombre} ({ub.tipo})
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-
-                    {/* Cantidad y Detalles */}
-                    <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
+                    {/* Producto y Ubicación - Solo si hay internet */}
+                    {!offline && (
+                        <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Cantidad *
+                                    Producto *
                                 </label>
-                                <input
-                                    type="number"
+                                <select
                                     required
-                                    min="1"
-                                    value={formData.cantidad}
-                                    onChange={(e) => setFormData({ ...formData, cantidad: parseInt(e.target.value) || 1 })}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                />
+                                    value={formData.producto_id}
+                                    onChange={(e) => setFormData({ ...formData, producto_id: e.target.value })}
+                                    disabled={!!productoId || productos.length === 0}
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
+                                >
+                                    <option value="">
+                                        {productos.length === 0 ? 'Cargando productos...' : 'Seleccionar producto...'}
+                                    </option>
+                                    {productos.map((prod) => (
+                                        <option key={prod.id} value={prod.id}>
+                                            {prod.codigo} - {prod.nombre}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Costo Unitario
+                                    Ubicación de Destino *
                                 </label>
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    min="0"
-                                    value={formData.costo_unitario}
-                                    onChange={(e) => setFormData({ ...formData, costo_unitario: e.target.value })}
+                                <select
+                                    required
+                                    value={formData.ubicacion_id}
+                                    onChange={(e) => setFormData({ ...formData, ubicacion_id: e.target.value })}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="$0.00"
-                                />
+                                >
+                                    <option value="">Seleccionar ubicación...</option>
+                                    {ubicaciones.map((ub) => (
+                                        <option key={ub.id} value={ub.id}>
+                                            {ub.nombre} ({ub.tipo})
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
+                    )}
 
-                        <div className="grid grid-cols-2 gap-4">
+                    {/* Cantidad y Detalles - Solo si hay internet */}
+                    {!offline && (
+                        <div className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Cantidad *
+                                    </label>
+                                    <input
+                                        type="number"
+                                        required
+                                        min="1"
+                                        value={formData.cantidad}
+                                        onChange={(e) => setFormData({ ...formData, cantidad: parseInt(e.target.value) || 1 })}
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Costo Unitario
+                                    </label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        value={formData.costo_unitario}
+                                        onChange={(e) => setFormData({ ...formData, costo_unitario: e.target.value })}
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="$0.00"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Lote
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={formData.lote}
+                                        onChange={(e) => setFormData({ ...formData, lote: e.target.value })}
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Ej: LOT-2024-001"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Fecha de Caducidad
+                                    </label>
+                                    <input
+                                        type="date"
+                                        value={formData.fecha_caducidad}
+                                        onChange={(e) => setFormData({ ...formData, fecha_caducidad: e.target.value })}
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    />
+                                </div>
+                            </div>
+
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Lote
+                                    Documento de Referencia
                                 </label>
                                 <input
                                     type="text"
-                                    value={formData.lote}
-                                    onChange={(e) => setFormData({ ...formData, lote: e.target.value })}
+                                    value={formData.documento_referencia}
+                                    onChange={(e) => setFormData({ ...formData, documento_referencia: e.target.value })}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="Ej: LOT-2024-001"
+                                    placeholder="Ej: Factura, Orden de Compra, etc."
                                 />
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Fecha de Caducidad
+                                    Notas
                                 </label>
-                                <input
-                                    type="date"
-                                    value={formData.fecha_caducidad}
-                                    onChange={(e) => setFormData({ ...formData, fecha_caducidad: e.target.value })}
+                                <textarea
+                                    value={formData.notas}
+                                    onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
+                                    rows={3}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Observaciones adicionales..."
                                 />
                             </div>
                         </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Documento de Referencia
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.documento_referencia}
-                                onChange={(e) => setFormData({ ...formData, documento_referencia: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="Ej: Factura, Orden de Compra, etc."
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Notas
-                            </label>
-                            <textarea
-                                value={formData.notas}
-                                onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
-                                rows={3}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="Observaciones adicionales..."
-                            />
-                        </div>
-                    </div>
+                    )}
 
                     {/* Footer */}
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
@@ -258,11 +295,11 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
                         </button>
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={offline || loading}
                             className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <PackagePlus size={18} />
-                            {loading ? 'Registrando...' : 'Registrar Entrada'}
+                            {loading ? 'Registrando...' : offline ? 'Requiere Internet' : 'Registrar Entrada'}
                         </button>
                     </div>
                 </form>

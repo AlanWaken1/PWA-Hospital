@@ -1,10 +1,11 @@
-// components/inventory/RegisterExitModal.tsx
+// components/inventory/RegisterExitModal.tsx - CON VALIDACIÓN OFFLINE
 "use client";
 
 import { useState, useEffect } from 'react';
 import { X, PackageMinus, Loader2, AlertCircle } from 'lucide-react';
 import { useInventory } from '@/hooks/useInventory';
 import { Inventario } from '@/types/database.types';
+import { isOnline } from '@/lib/offline/sync'; // ← AGREGAR ESTO
 
 interface RegisterExitModalProps {
     isOpen: boolean;
@@ -19,16 +20,14 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
     const [error, setError] = useState<string | null>(null);
     const [inventarios, setInventarios] = useState<Inventario[]>([]);
 
-    const { productos, registrarSalida, fetchProductos } = useInventory(); // ← Agregar fetchProductos
-
+    const { productos, registrarSalida, fetchProductos } = useInventory();
+    const offline = !isOnline(); // ← AGREGAR ESTO
 
     useEffect(() => {
         if (isOpen) {
             fetchProductos();
         }
     }, [isOpen]);
-
-
 
     const [formData, setFormData] = useState({
         producto_id: productoId || '',
@@ -49,6 +48,14 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
     }, [formData.producto_id]);
 
     const fetchInventarios = async (prodId: string) => {
+        // ✅ VALIDACIÓN OFFLINE - Bloquear si no hay internet
+        if (offline) {
+            console.log('📴 Offline: No se pueden cargar inventarios');
+            setError('Esta función requiere conexión a internet para validar el stock disponible');
+            setLoadingInventario(false);
+            return;
+        }
+
         try {
             setLoadingInventario(true);
             const { createClient } = await import('@/lib/supabase/client');
@@ -80,6 +87,11 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
         e.preventDefault();
         setError(null);
 
+        // ✅ VALIDACIÓN OFFLINE - Bloquear submit si no hay internet
+        if (offline) {
+            setError('Requiere conexión a internet para registrar salidas');
+            return;
+        }
 
         if (!formData.producto_id) {
             setError('Debe seleccionar un producto');
@@ -147,7 +159,24 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                    {error && (
+                    {/* ⚠️ MENSAJE OFFLINE */}
+                    {offline && (
+                        <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
+                            <div className="flex gap-3">
+                                <AlertCircle className="text-orange-600 dark:text-orange-400 flex-shrink-0" size={20} />
+                                <div className="flex-1">
+                                    <p className="text-sm font-medium text-orange-900 dark:text-orange-100 mb-1">
+                                        Conexión Requerida
+                                    </p>
+                                    <p className="text-sm text-orange-800 dark:text-orange-200">
+                                        Esta función requiere conexión a internet para validar el stock disponible en tiempo real.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {error && !offline && (
                         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg text-sm flex items-start gap-2">
                             <AlertCircle size={18} className="flex-shrink-0 mt-0.5" />
                             <span>{error}</span>
@@ -163,8 +192,8 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                             <select
                                 required
                                 value={formData.producto_id}
-                                onChange={(e) => setFormData({ ...formData, producto_id: e.target.value, inventario_id: '' })}
-                                disabled={!!productoId || productos.length === 0}  // ← Agregar || productos.length === 0
+                                onChange={(e) => setFormData({ ...formData, producto_id: e.target.value })}
+                                disabled={!!productoId || productos.length === 0 || offline}
                                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent disabled:opacity-50"
                             >
                                 <option value="">
@@ -179,7 +208,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                         </div>
 
                         {/* Ubicación/Lote */}
-                        {formData.producto_id && (
+                        {formData.producto_id && !offline && (
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Ubicación / Lote *
@@ -214,7 +243,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                     </div>
 
                     {/* Stock Disponible Card */}
-                    {selectedInventario && (
+                    {selectedInventario && !offline && (
                         <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -233,64 +262,66 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                         </div>
                     )}
 
-                    {/* Cantidad y Detalles */}
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Cantidad a Retirar *
-                            </label>
-                            <input
-                                type="number"
-                                required
-                                min="1"
-                                max={selectedInventario?.cantidad_disponible || 999999}
-                                value={formData.cantidad}
-                                onChange={(e) => setFormData({ ...formData, cantidad: parseInt(e.target.value) || 1 })}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                disabled={!selectedInventario}
-                            />
-                            {selectedInventario && formData.cantidad > selectedInventario.cantidad_disponible && (
-                                <p className="text-red-600 dark:text-red-400 text-sm mt-1">
-                                    Cantidad excede el stock disponible
-                                </p>
-                            )}
-                        </div>
+                    {/* Cantidad y Detalles - Solo si hay internet */}
+                    {!offline && (
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Cantidad a Retirar *
+                                </label>
+                                <input
+                                    type="number"
+                                    required
+                                    min="1"
+                                    max={selectedInventario?.cantidad_disponible || 999999}
+                                    value={formData.cantidad}
+                                    onChange={(e) => setFormData({ ...formData, cantidad: parseInt(e.target.value) || 1 })}
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                    disabled={!selectedInventario}
+                                />
+                                {selectedInventario && formData.cantidad > selectedInventario.cantidad_disponible && (
+                                    <p className="text-red-600 dark:text-red-400 text-sm mt-1">
+                                        Cantidad excede el stock disponible
+                                    </p>
+                                )}
+                            </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Motivo *
-                            </label>
-                            <select
-                                required
-                                value={formData.motivo}
-                                onChange={(e) => setFormData({ ...formData, motivo: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                            >
-                                <option value="">Seleccionar motivo...</option>
-                                <option value="Dispensación">Dispensación a Paciente</option>
-                                <option value="Solicitud Interna">Solicitud Interna</option>
-                                <option value="Urgencias">Uso en Urgencias</option>
-                                <option value="Cirugía">Uso en Cirugía</option>
-                                <option value="Consulta">Uso en Consulta</option>
-                                <option value="Merma">Merma o Pérdida</option>
-                                <option value="Caducidad">Producto Caducado</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                        </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Motivo *
+                                </label>
+                                <select
+                                    required
+                                    value={formData.motivo}
+                                    onChange={(e) => setFormData({ ...formData, motivo: e.target.value })}
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                >
+                                    <option value="">Seleccionar motivo...</option>
+                                    <option value="Dispensación">Dispensación a Paciente</option>
+                                    <option value="Solicitud Interna">Solicitud Interna</option>
+                                    <option value="Urgencias">Uso en Urgencias</option>
+                                    <option value="Cirugía">Uso en Cirugía</option>
+                                    <option value="Consulta">Uso en Consulta</option>
+                                    <option value="Merma">Merma o Pérdida</option>
+                                    <option value="Caducidad">Producto Caducado</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Notas
-                            </label>
-                            <textarea
-                                value={formData.notas}
-                                onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
-                                rows={3}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                placeholder="Observaciones adicionales..."
-                            />
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Notas
+                                </label>
+                                <textarea
+                                    value={formData.notas}
+                                    onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
+                                    rows={3}
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                    placeholder="Observaciones adicionales..."
+                                />
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Footer */}
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
@@ -303,7 +334,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                         </button>
                         <button
                             type="submit"
-                            disabled={loading || !selectedInventario || formData.cantidad > (selectedInventario?.cantidad_disponible || 0)}
+                            disabled={offline || loading || !selectedInventario || formData.cantidad > (selectedInventario?.cantidad_disponible || 0)}
                             className="px-6 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:shadow-lg hover:shadow-red-500/30 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? (
@@ -314,7 +345,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                             ) : (
                                 <>
                                     <PackageMinus size={18} />
-                                    Registrar Salida
+                                    {offline ? 'Requiere Internet' : 'Registrar Salida'}
                                 </>
                             )}
                         </button>

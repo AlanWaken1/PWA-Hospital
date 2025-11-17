@@ -1,152 +1,154 @@
+// contexts/AuthContext.tsx - VERSIÓN OFFLINE-AWARE
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-interface User {
-  id: string;
-  email: string;
-  nombre_completo: string;
-  rol: string;
-  departamento?: string;
-  telefono?: string;
-  avatar_url?: string;
-  esta_activo: boolean;
-}
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/client';
+import { isOnline } from '@/lib/offline/sync'; // ← IMPORTAR
 
 interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (data: SignUpData) => Promise<void>;
-  signOut: () => Promise<void>;
-}
-
-interface SignUpData {
-  email: string;
-  password: string;
-  nombre_completo: string;
-  rol: string;
-  departamento?: string;
-  telefono?: string;
+    user: User | null;
+    session: Session | null;
+    loading: boolean;
+    signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<User | null>(null);
+    const [session, setSession] = useState<Session | null>(null);
+    const [loading, setLoading] = useState(true);
+    const supabase = createClient();
 
-  useEffect(() => {
-    // Simular check de sesión inicial
-    const checkUser = async () => {
-      try {
-        // Aquí iría la lógica real de Supabase:
-        // const { data: { session } } = await supabase.auth.getSession();
-        // if (session?.user) { ... }
-        
-        // Por ahora simulamos con localStorage
-        const storedUser = localStorage.getItem('medistock_user');
-        if (storedUser) {
-          setUser(JSON.parse(storedUser));
+    useEffect(() => {
+        // ✅ PASO 1: Cargar sesión desde localStorage PRIMERO (funciona offline)
+        const loadStoredSession = () => {
+            try {
+                const storedSession = localStorage.getItem('supabase.auth.session');
+                if (storedSession) {
+                    const parsedSession = JSON.parse(storedSession);
+                    console.log('📦 Sesión cargada desde localStorage (offline-safe)');
+                    setSession(parsedSession);
+                    setUser(parsedSession.user);
+                    return true;
+                }
+            } catch (error) {
+                console.error('Error cargando sesión desde localStorage:', error);
+            }
+            return false;
+        };
+
+        // Cargar sesión desde localStorage
+        const hasStoredSession = loadStoredSession();
+
+        // ✅ PASO 2: Si hay internet, verificar con Supabase
+        const initializeAuth = async () => {
+            try {
+                // Solo verificar con Supabase si hay internet
+                if (!isOnline()) {
+                    console.log('📴 Offline: Usando sesión de localStorage');
+                    setLoading(false);
+                    return;
+                }
+
+                console.log('🌐 Online: Verificando sesión con Supabase');
+
+                // Obtener sesión de Supabase
+                const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+
+                if (error) {
+                    // Si hay error pero tenemos sesión local, mantenerla
+                    if (hasStoredSession) {
+                        console.log('⚠️ Error en Supabase, pero manteniendo sesión local');
+                    } else {
+                        throw error;
+                    }
+                } else if (currentSession) {
+                    console.log('✅ Sesión verificada con Supabase');
+                    setSession(currentSession);
+                    setUser(currentSession.user);
+
+                    // Guardar en localStorage para offline
+                    localStorage.setItem('supabase.auth.session', JSON.stringify(currentSession));
+                } else {
+                    // No hay sesión en Supabase ni en localStorage
+                    console.log('❌ No hay sesión');
+                    setSession(null);
+                    setUser(null);
+                    localStorage.removeItem('supabase.auth.session');
+                }
+            } catch (error) {
+                console.error('Error inicializando auth:', error);
+
+                // Si hay error pero tenemos sesión local, mantenerla
+                if (!hasStoredSession) {
+                    setSession(null);
+                    setUser(null);
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        initializeAuth();
+
+        // ✅ PASO 3: Escuchar cambios de auth (solo funciona online)
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            async (event: AuthChangeEvent, currentSession: Session | null) => {
+                console.log('🔄 Auth state changed:', { event, email: currentSession?.user?.email });
+
+                if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+                    setSession(currentSession);
+                    setUser(currentSession?.user ?? null);
+
+                    // Guardar en localStorage
+                    if (currentSession) {
+                        localStorage.setItem('supabase.auth.session', JSON.stringify(currentSession));
+                    }
+                } else if (event === 'SIGNED_OUT') {
+                    setSession(null);
+                    setUser(null);
+                    localStorage.removeItem('supabase.auth.session');
+                }
+            }
+        );
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, []);
+
+    const signOut = async () => {
+        try {
+            // Limpiar localStorage primero
+            localStorage.removeItem('supabase.auth.session');
+            setSession(null);
+            setUser(null);
+
+            // Solo intentar cerrar sesión en Supabase si hay internet
+            if (isOnline()) {
+                await supabase.auth.signOut();
+                console.log('✅ Sesión cerrada (online)');
+            } else {
+                console.log('📴 Sesión cerrada localmente (offline)');
+            }
+        } catch (error) {
+            console.error('Error cerrando sesión:', error);
         }
-      } catch (error) {
-        console.error('Error checking user:', error);
-      } finally {
-        setLoading(false);
-      }
     };
 
-    checkUser();
-  }, []);
-
-  const signIn = async (email: string, password: string) => {
-    try {
-      // Simulación - Reemplazar con Supabase real:
-      // const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      // if (error) throw error;
-      
-      // Simulación de usuario
-      const mockUser: User = {
-        id: '123',
-        email,
-        nombre_completo: 'Farm. María López',
-        rol: 'farmaceutico',
-        departamento: 'Farmacia Central',
-        telefono: '+52 55 1234-5678',
-        esta_activo: true,
-      };
-
-      localStorage.setItem('medistock_user', JSON.stringify(mockUser));
-      setUser(mockUser);
-    } catch (error) {
-      console.error('Error signing in:', error);
-      throw error;
-    }
-  };
-
-  const signUp = async (data: SignUpData) => {
-    try {
-      // Simulación - Reemplazar con Supabase real:
-      // 1. Crear usuario en auth.users
-      // const { data: authData, error: authError } = await supabase.auth.signUp({
-      //   email: data.email,
-      //   password: data.password,
-      // });
-      // if (authError) throw authError;
-
-      // 2. Crear perfil en public.profiles
-      // const { error: profileError } = await supabase
-      //   .from('profiles')
-      //   .insert({
-      //     id: authData.user.id,
-      //     nombre_completo: data.nombre_completo,
-      //     email: data.email,
-      //     rol: data.rol,
-      //     departamento: data.departamento,
-      //     telefono: data.telefono,
-      //   });
-      // if (profileError) throw profileError;
-
-      const mockUser: User = {
-        id: Math.random().toString(),
-        email: data.email,
-        nombre_completo: data.nombre_completo,
-        rol: data.rol,
-        departamento: data.departamento,
-        telefono: data.telefono,
-        esta_activo: true,
-      };
-
-      localStorage.setItem('medistock_user', JSON.stringify(mockUser));
-      setUser(mockUser);
-    } catch (error) {
-      console.error('Error signing up:', error);
-      throw error;
-    }
-  };
-
-  const signOut = async () => {
-    try {
-      // await supabase.auth.signOut();
-      localStorage.removeItem('medistock_user');
-      setUser(null);
-    } catch (error) {
-      console.error('Error signing out:', error);
-      throw error;
-    }
-  };
-
-  return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    return (
+        <AuthContext.Provider value={{ user, session, loading, signOut }}>
+            {children}
+        </AuthContext.Provider>
+    );
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+    const context = useContext(AuthContext);
+    if (context === undefined) {
+        throw new Error('useAuth debe usarse dentro de AuthProvider');
+    }
+    return context;
 }

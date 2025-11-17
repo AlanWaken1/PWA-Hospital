@@ -1,93 +1,88 @@
 // app/offline/page.tsx
 "use client";
 
-import { useEffect, useState } from 'react';
-import { WifiOff, RefreshCw, Home } from 'lucide-react';
-import Link from 'next/link';
+import { useEffect, useRef } from 'react';
+import { WifiOff, RefreshCw } from 'lucide-react';
+import gsap from 'gsap';
 
 export default function OfflinePage() {
-    const [isOnline, setIsOnline] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const handleOnline = () => setIsOnline(true);
-        const handleOffline = () => setIsOnline(false);
+        const ctx = gsap.context(() => {
+            gsap.fromTo(
+                containerRef.current,
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }
+            );
+        }, containerRef);
 
-        window.addEventListener('online', handleOnline);
-        window.addEventListener('offline', handleOffline);
-
-        setIsOnline(navigator.onLine);
-
-        return () => {
-            window.removeEventListener('online', handleOnline);
-            window.removeEventListener('offline', handleOffline);
-        };
+        return () => ctx.revert();
     }, []);
 
     const handleRetry = () => {
         if (navigator.onLine) {
-            window.location.href = '/';
+            window.history.back();
         } else {
-            alert('Aún sin conexión. Inténtalo más tarde.');
+            window.location.reload();
         }
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 flex items-center justify-center p-4">
-            <div className="max-w-md w-full text-center">
-
-                {/* Icon */}
-                <div className="mb-8 flex justify-center">
-                    <div className="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
-                        <WifiOff className="w-12 h-12 text-gray-400" />
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 flex items-center justify-center p-4">
+            <div ref={containerRef} className="max-w-md w-full">
+                <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl text-center border border-gray-200 dark:border-gray-700">
+                    {/* Icono */}
+                    <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900/30 dark:to-orange-800/30 rounded-full flex items-center justify-center">
+                        <WifiOff className="w-12 h-12 text-orange-600 dark:text-orange-400" />
                     </div>
-                </div>
 
-                {/* Title */}
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                    Sin Conexión
-                </h1>
+                    {/* Título */}
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+                        Sin Conexión a Internet
+                    </h1>
 
-                {/* Description */}
-                <p className="text-gray-600 dark:text-gray-400 mb-8">
-                    No hay conexión a internet. Algunas funciones pueden estar limitadas en modo offline.
-                </p>
+                    {/* Descripción */}
+                    <p className="text-gray-600 dark:text-gray-400 mb-6">
+                        No tienes conexión a internet en este momento. Algunas funciones pueden estar limitadas.
+                    </p>
 
-                {/* Status */}
-                {isOnline && (
-                    <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl">
-                        <p className="text-green-700 dark:text-green-400 text-sm font-medium">
-                            ✓ Conexión restaurada
+                    {/* Info adicional */}
+                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 mb-6 text-left">
+                        <p className="text-sm text-blue-900 dark:text-blue-100 mb-2 font-medium">
+                            💡 Modo Offline Activo
                         </p>
+                        <ul className="text-xs text-blue-800 dark:text-blue-200 space-y-1">
+                            <li>• Puedes ver los datos cacheados</li>
+                            <li>• Los cambios se guardarán localmente</li>
+                            <li>• Se sincronizarán cuando vuelva la conexión</li>
+                        </ul>
                     </div>
-                )}
 
-                {/* Actions */}
-                <div className="space-y-3">
-                    <button
-                        onClick={handleRetry}
-                        className="w-full bg-theme-primary hover:bg-theme-primary-dark text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 transition-colors"
-                    >
-                        <RefreshCw className="w-5 h-5" />
-                        Reintentar
-                    </button>
+                    {/* Botones */}
+                    <div className="flex flex-col gap-3">
+                        <button
+                            onClick={handleRetry}
+                            className="bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 hover:shadow-lg transition-all"
+                        >
+                            <RefreshCw size={18} />
+                            Intentar de Nuevo
+                        </button>
 
-                    <Link
-                        href="/"
-                        className="w-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 px-6 py-3 rounded-xl flex items-center justify-center gap-2 transition-colors"
-                    >
-                        <Home className="w-5 h-5" />
-                        Ir al Inicio
-                    </Link>
+                        <button
+                            onClick={() => window.history.back()}
+                            className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                        >
+                            Volver Atrás
+                        </button>
+                    </div>
                 </div>
 
-                {/* Info */}
-                <div className="mt-8 text-sm text-gray-500 dark:text-gray-400">
-                    <p>Mientras estés offline, puedes:</p>
-                    <ul className="mt-2 space-y-1">
-                        <li>• Ver el inventario cacheado</li>
-                        <li>• Revisar reportes guardados</li>
-                        <li>• Consultar datos previos</li>
-                    </ul>
+                {/* Estado de conexión */}
+                <div className="mt-4 text-center">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Estado: <span className="font-medium text-orange-600 dark:text-orange-400">Offline</span>
+                    </p>
                 </div>
             </div>
         </div>

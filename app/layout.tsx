@@ -3,10 +3,11 @@ import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { ColorThemeProvider } from '@/contexts/ColorThemeContext'; // ← NUEVO
+import { ColorThemeProvider } from '@/contexts/ColorThemeContext';
+import { OfflineIndicator } from '@/components/shared/OfflineIndicator';
 import PWASetup from '@/components/shared/PWASetup';
 import "./globals.css";
-import "./theme-colors.css"; // ← NUEVO
+import "./theme-colors.css";
 
 const defaultUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
@@ -70,6 +71,7 @@ export default function RootLayout({
                 <AuthProvider>
                     {children}
                     <PWASetup />
+                    <OfflineIndicator />
                 </AuthProvider>
             </ThemeProvider>
         </ColorThemeProvider>

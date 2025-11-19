@@ -1,501 +1,533 @@
+// app/(app)/analytics/page.tsx - PÁGINA DE ANALYTICS COMPLETA
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import {
-  TrendingUp,
-  TrendingDown,
-  Activity,
-  DollarSign,
-  Package,
-  AlertTriangle,
-  Calendar,
-  BarChart3,
+    TrendingUp,
+    Package,
+    DollarSign,
+    Activity,
+    Calendar,
+    AlertTriangle,
+    ArrowUpRight,
+    ArrowDownRight,
+    Clock,
+    BarChart3,
+    PieChart,
+    Zap
 } from 'lucide-react';
+import { useAnalytics } from '@/hooks/useAnalytics';
 import {
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  Cell,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
+    LineChart,
+    Line,
+    BarChart,
+    Bar,
+    PieChart as RechartsPie,
+    Pie,
+    Cell,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer
 } from 'recharts';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-export default function Analiticas() {
-  const titleRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const [timeRange, setTimeRange] = useState('30d');
-  const [counter1, setCounter1] = useState(0);
-  const [counter2, setCounter2] = useState(0);
-  const [counter3, setCounter3] = useState(0);
-  const [counter4, setCounter4] = useState(0);
+// Colores para gráficos
+const COLORS = ['#10b981', '#8b5cf6', '#f59e0b', '#ef4444', '#3b82f6', '#ec4899'];
 
-  // Data para gráficos
-  const movementData = [
-    { mes: 'Ene', entradas: 4200, salidas: 2800, stock: 8500 },
-    { mes: 'Feb', entradas: 3800, salidas: 3200, stock: 9100 },
-    { mes: 'Mar', entradas: 5100, salidas: 2900, stock: 11300 },
-    { mes: 'Abr', entradas: 4600, salidas: 3400, stock: 12500 },
-    { mes: 'May', entradas: 5400, salidas: 3100, stock: 14800 },
-    { mes: 'Jun', entradas: 6200, salidas: 3600, stock: 17400 },
-  ];
+// Variantes de animación
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.1 }
+    }
+};
 
-  const categoryData = [
-    { name: 'Medicamentos', value: 45, color: '#10b981' },
-    { name: 'Insumos', value: 25, color: '#3b82f6' },
-    { name: 'Equipos', value: 18, color: '#8b5cf6' },
-    { name: 'Quirúrgico', value: 12, color: '#f59e0b' },
-  ];
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.5 }
+    }
+};
 
-  const topProductsData = [
-    { producto: 'Paracetamol', cantidad: 1245, valor: 24500 },
-    { producto: 'Jeringas 5ml', cantidad: 890, valor: 18900 },
-    { producto: 'Guantes', cantidad: 2340, valor: 15600 },
-    { producto: 'Mascarillas', cantidad: 1560, valor: 12300 },
-    { producto: 'Alcohol Gel', cantidad: 780, valor: 9800 },
-  ];
+export default function AnalyticsPage() {
+    const [diasAtras, setDiasAtras] = useState(30);
+    const { data, loading, error, refetch } = useAnalytics(diasAtras);
 
-  const performanceData = [
-    { category: 'Rotación', value: 85 },
-    { category: 'Disponibilidad', value: 92 },
-    { category: 'Eficiencia', value: 78 },
-    { category: 'Cumplimiento', value: 88 },
-    { category: 'Calidad', value: 95 },
-  ];
+    // Filtros de periodo
+    const periodos = [
+        { label: '7 días', value: 7 },
+        { label: '30 días', value: 30 },
+        { label: '90 días', value: 90 },
+        { label: '6 meses', value: 180 },
+    ];
 
-  const dailyActivityData = [
-    { dia: 'Lun', movimientos: 45 },
-    { dia: 'Mar', movimientos: 52 },
-    { dia: 'Mié', movimientos: 38 },
-    { dia: 'Jue', movimientos: 67 },
-    { dia: 'Vie', movimientos: 58 },
-    { dia: 'Sáb', movimientos: 23 },
-    { dia: 'Dom', movimientos: 12 },
-  ];
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        titleRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
-      );
-
-      cardsRef.current.forEach((card, index) => {
-        if (card) {
-          gsap.fromTo(
-            card,
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 0.6, delay: 0.1 + index * 0.05, ease: 'power2.out' }
-          );
-        }
-      });
-    });
-
-    // Animated counters
-    const duration = 2000;
-    const steps = 60;
-    const increment1 = 24567 / steps;
-    const increment2 = 18943 / steps;
-    const increment3 = 342 / steps;
-    const increment4 = 1245 / steps;
-
-    let current = 0;
-    const timer = setInterval(() => {
-      current++;
-      setCounter1(Math.floor(increment1 * current));
-      setCounter2(Math.floor(increment2 * current));
-      setCounter3(Math.floor(increment3 * current));
-      setCounter4(Math.floor(increment4 * current));
-
-      if (current >= steps) {
-        clearInterval(timer);
-        setCounter1(24567);
-        setCounter2(18943);
-        setCounter3(342);
-        setCounter4(1245);
-      }
-    }, duration / steps);
-
-    return () => {
-      ctx.revert();
-      clearInterval(timer);
-    };
-  }, []);
-
-  return (
-    <>
-      {/* Page Title */}
-      <div ref={titleRef} className="mb-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-gray-900 dark:text-gray-100 mb-2">Analíticas Avanzadas</h1>
-            <p className="text-gray-500 dark:text-gray-400">
-              Monitoreo en tiempo real y análisis profundo del inventario
-            </p>
-          </div>
-          <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="7d">Últimos 7 días</SelectItem>
-              <SelectItem value="30d">Últimos 30 días</SelectItem>
-              <SelectItem value="90d">Últimos 90 días</SelectItem>
-              <SelectItem value="1y">Último año</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {/* KPI Cards with Animated Counters */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div
-          ref={(el) => {cardsRef.current[0] = el;}}
-          className="bg-gradient-to-br from-theme-primary-light to-theme-primary dark:from-theme-primary dark:to-theme-primary-dark rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer"
-          onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
-          onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h4 className="text-sm text-theme-primary-light">Movimientos Totales</h4>
-            <Activity className="text-white" size={20} />
-          </div>
-          <div className="text-3xl mb-2">{counter1.toLocaleString()}</div>
-          <div className="flex items-center gap-2 text-theme-primary-light text-sm">
-            <TrendingUp size={14} />
-            <span>+12.5% vs mes anterior</span>
-          </div>
-        </div>
-
-        <div
-          ref={(el) => {cardsRef.current[1] = el}}
-          className="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer"
-          onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
-          onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h4 className="text-sm text-blue-100">Productos Activos</h4>
-            <Package className="text-white" size={20} />
-          </div>
-          <div className="text-3xl mb-2">{counter2.toLocaleString()}</div>
-          <div className="flex items-center gap-2 text-blue-100 text-sm">
-            <TrendingUp size={14} />
-            <span>+8.3% este mes</span>
-          </div>
-        </div>
-
-        <div
-          ref={(el) => {{cardsRef.current[2] = el}}}
-          className="bg-gradient-to-br from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer"
-          onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
-          onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h4 className="text-sm text-purple-100">Valor Inventario</h4>
-            <DollarSign className="text-white" size={20} />
-          </div>
-          <div className="text-3xl mb-2">${counter3.toLocaleString()}K</div>
-          <div className="flex items-center gap-2 text-purple-100 text-sm">
-            <TrendingUp size={14} />
-            <span>+5.7% valorización</span>
-          </div>
-        </div>
-
-        <div
-          ref={(el) => {cardsRef.current[3] = el;}}
-          className="bg-gradient-to-br from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer"
-          onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
-          onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h4 className="text-sm text-orange-100">Movimientos Hoy</h4>
-            <BarChart3 className="text-white" size={20} />
-          </div>
-          <div className="text-3xl mb-2">{counter4.toLocaleString()}</div>
-          <div className="flex items-center gap-2 text-orange-100 text-sm">
-            <TrendingDown size={14} />
-            <span>-3.2% vs ayer</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Charts Row 1 */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6">
-        {/* Area Chart - Stock Evolution */}
-        <div
-          ref={(el) => {cardsRef.current[4] = el}}
-          className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-gray-900 dark:text-gray-100 mb-1">Evolución del Stock</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Entradas vs Salidas (Últimos 6 meses)
-              </p>
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <motion.div
+                    className="w-16 h-16 border-4 border-theme-primary border-t-transparent rounded-full"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                />
             </div>
-            <div className="flex gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-theme-primary-light"></div>
-                <span className="text-gray-600 dark:text-gray-400">Entradas</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <span className="text-gray-600 dark:text-gray-400">Salidas</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                <span className="text-gray-600 dark:text-gray-400">Stock Total</span>
-              </div>
-            </div>
-          </div>
-          <ResponsiveContainer width="100%" height={280}>
-            <AreaChart data={movementData}>
-              <defs>
-                <linearGradient id="colorEntradas" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorSalidas" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorStock" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-700" />
-              <XAxis dataKey="mes" stroke="#9ca3af" className="dark:stroke-gray-400" />
-              <YAxis stroke="#9ca3af" className="dark:stroke-gray-400" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'white',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                }}
-                itemStyle={{ color: '#374151' }}
-              />
-              <Area
-                type="monotone"
-                dataKey="entradas"
-                stroke="#10b981"
-                fillOpacity={1}
-                fill="url(#colorEntradas)"
-                strokeWidth={2}
-              />
-              <Area
-                type="monotone"
-                dataKey="salidas"
-                stroke="#ef4444"
-                fillOpacity={1}
-                fill="url(#colorSalidas)"
-                strokeWidth={2}
-              />
-              <Area
-                type="monotone"
-                dataKey="stock"
-                stroke="#3b82f6"
-                fillOpacity={1}
-                fill="url(#colorStock)"
-                strokeWidth={2}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+        );
+    }
 
-        {/* Pie Chart - Categorías */}
-        <div
-          ref={(el) => {cardsRef.current[5] = el;}}
-          className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors"
+    if (error) {
+        return (
+            <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-xl">
+                <p className="text-red-600 dark:text-red-400">{error}</p>
+            </div>
+        );
+    }
+
+    if (!data) return null;
+
+    return (
+        <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="space-y-6"
         >
-          <div className="mb-6">
-            <h3 className="text-gray-900 dark:text-gray-100 mb-1">Distribución por Categoría</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Porcentaje del inventario</p>
-          </div>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie
-                data={categoryData}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={90}
-                paddingAngle={5}
-                dataKey="value"
-              >
-                {categoryData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="mt-4 space-y-2">
-            {categoryData.map((cat, index) => (
-              <div key={index} className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: cat.color }}></div>
-                  <span className="text-gray-700 dark:text-gray-300">{cat.name}</span>
+            {/* Header */}
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                        Análisis de Inventario
+                    </h1>
+                    <p className="text-gray-500 dark:text-gray-400 mt-1">
+                        Insights y métricas de tu inventario hospitalario
+                    </p>
                 </div>
-                <span className="text-gray-900 dark:text-gray-100">{cat.value}%</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
-      {/* Charts Row 2 */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6">
-        {/* Bar Chart - Top Products */}
-        <div
-          ref={(el) => {cardsRef.current[6] = el;}}
-          className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors"
-        >
-          <div className="mb-6">
-            <h3 className="text-gray-900 dark:text-gray-100 mb-1">Top 5 Productos Más Movidos</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Por cantidad de movimientos</p>
-          </div>
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={topProductsData} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-700" />
-              <XAxis type="number" stroke="#9ca3af" className="dark:stroke-gray-400" />
-              <YAxis type="category" dataKey="producto" stroke="#9ca3af" className="dark:stroke-gray-400" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'white',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                }}
-              />
-              <Bar dataKey="cantidad" fill="#10b981" radius={[0, 8, 8, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+                {/* Filtros de periodo */}
+                <div className="flex gap-2">
+                    {periodos.map(periodo => (
+                        <motion.button
+                            key={periodo.value}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setDiasAtras(periodo.value)}
+                            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                                diasAtras === periodo.value
+                                    ? 'bg-theme-primary text-white'
+                                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700'
+                            }`}
+                        >
+                            {periodo.label}
+                        </motion.button>
+                    ))}
+                </div>
+            </motion.div>
 
-        {/* Radar Chart - Performance */}
-        <div
-          ref={(el) => {cardsRef.current[7] = el}}
-          className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors"
-        >
-          <div className="mb-6">
-            <h3 className="text-gray-900 dark:text-gray-100 mb-1">Rendimiento General</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Métricas clave del sistema</p>
-          </div>
-          <ResponsiveContainer width="100%" height={280}>
-            <RadarChart data={performanceData}>
-              <PolarGrid stroke="#e5e7eb" className="dark:stroke-gray-700" />
-              <PolarAngleAxis dataKey="category" stroke="#9ca3af" className="dark:stroke-gray-400" />
-              <PolarRadiusAxis angle={90} domain={[0, 100]} stroke="#9ca3af" />
-              <Radar
-                name="Performance"
-                dataKey="value"
-                stroke="#8b5cf6"
-                fill="#8b5cf6"
-                fillOpacity={0.6}
-              />
-              <Tooltip />
-            </RadarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+            {/* Métricas principales */}
+            <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <MetricCard
+                    icon={Activity}
+                    title="Total Movimientos"
+                    value={data.totalMovimientos.toLocaleString()}
+                    subtitle={`${data.totalEntradas} entradas • ${data.totalSalidas} salidas`}
+                    color="bg-gradient-to-br from-blue-500 to-blue-600"
+                />
+                <MetricCard
+                    icon={Package}
+                    title="Entradas"
+                    value={data.totalEntradas.toLocaleString()}
+                    subtitle="Productos ingresados"
+                    trend={`+${Math.round((data.totalEntradas / data.totalMovimientos) * 100)}%`}
+                    color="bg-gradient-to-br from-green-500 to-green-600"
+                />
+                <MetricCard
+                    icon={TrendingUp}
+                    title="Salidas"
+                    value={data.totalSalidas.toLocaleString()}
+                    subtitle="Productos usados"
+                    trend={`${Math.round((data.totalSalidas / data.totalMovimientos) * 100)}%`}
+                    color="bg-gradient-to-br from-orange-500 to-orange-600"
+                />
+                <MetricCard
+                    icon={DollarSign}
+                    title="Valor Total"
+                    value={`$${(data.valorActual / 1000000).toFixed(1)}M`}
+                    subtitle={`Costo: $${(data.costoTotal / 1000000).toFixed(1)}M`}
+                    color="bg-gradient-to-br from-purple-500 to-purple-600"
+                />
+            </motion.div>
 
-      {/* Charts Row 3 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-        {/* Line Chart - Daily Activity */}
-        <div
-          ref={(el) => {cardsRef.current[8] = el;}}
-          className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors"
-        >
-          <div className="mb-6">
-            <h3 className="text-gray-900 dark:text-gray-100 mb-1">Actividad Semanal</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Movimientos por día</p>
-          </div>
-          <ResponsiveContainer width="100%" height={240}>
-            <LineChart data={dailyActivityData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-700" />
-              <XAxis dataKey="dia" stroke="#9ca3af" className="dark:stroke-gray-400" />
-              <YAxis stroke="#9ca3af" className="dark:stroke-gray-400" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'white',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                }}
-              />
-              <Line
-                type="monotone"
-                dataKey="movimientos"
-                stroke="#3b82f6"
-                strokeWidth={3}
-                dot={{ fill: '#3b82f6', r: 6 }}
-                activeDot={{ r: 8 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+            {/* Predicciones críticas */}
+            {data.predicciones.length > 0 && (
+                <motion.div variants={itemVariants}>
+                    <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-2xl p-6 border border-red-200 dark:border-red-800">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="w-10 h-10 rounded-xl bg-red-500 flex items-center justify-center">
+                                <Zap className="text-white" size={20} />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-red-900 dark:text-red-100">
+                                    ⚡ Predicciones Críticas
+                                </h3>
+                                <p className="text-sm text-red-700 dark:text-red-300">
+                                    Productos que necesitan atención inmediata
+                                </p>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            {data.predicciones.map((pred, idx) => (
+                                <motion.div
+                                    key={idx}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: idx * 0.1 }}
+                                    className={`p-4 rounded-xl border-2 ${
+                                        pred.tipo === 'critico'
+                                            ? 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700'
+                                            : pred.tipo === 'advertencia'
+                                                ? 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700'
+                                                : 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700'
+                                    }`}
+                                >
+                                    <div className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                                        {pred.nombre}
+                                    </div>
+                                    <div className={`text-sm font-medium mb-2 ${
+                                        pred.tipo === 'critico' ? 'text-red-700 dark:text-red-300' :
+                                            pred.tipo === 'advertencia' ? 'text-orange-700 dark:text-orange-300' :
+                                                'text-green-700 dark:text-green-300'
+                                    }`}>
+                                        {pred.mensaje}
+                                    </div>
+                                    <div className="text-xs text-gray-600 dark:text-gray-400">
+                                        Uso promedio: {pred.promedioUso} unidades/día
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </motion.div>
+            )}
 
-        {/* Quick Stats Grid */}
-        <div
-          ref={(el) => {cardsRef.current[9] = el;}}
-          className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors"
-        >
-          <div className="mb-6">
-            <h3 className="text-gray-900 dark:text-gray-100 mb-1">Resumen Rápido</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Indicadores principales</p>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-theme-primary/10 dark:bg-theme-primary-dark/20 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="text-theme-primary dark:text-theme-primary-light" size={20} />
-                <span className="text-xs text-theme-primary dark:text-theme-primary-light">Crecimiento</span>
-              </div>
-              <div className="text-2xl text-gray-900 dark:text-gray-100">+15.3%</div>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">vs periodo anterior</p>
+            {/* Gráficos principales */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Tendencia mensual */}
+                <motion.div variants={itemVariants}>
+                    <ChartCard
+                        title="Tendencia de Movimientos"
+                        subtitle="Últimos 6 meses"
+                        icon={BarChart3}
+                    >
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={data.tendenciaMensual}>
+                                <CartesianGrid strokeDasharray="3 3" className="stroke-gray-200 dark:stroke-gray-700" />
+                                <XAxis dataKey="mes" className="text-xs" />
+                                <YAxis className="text-xs" />
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: 'rgba(0,0,0,0.8)',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        color: 'white'
+                                    }}
+                                />
+                                <Legend />
+                                <Bar dataKey="entradas" fill="#10b981" name="Entradas" radius={[8, 8, 0, 0]} />
+                                <Bar dataKey="salidas" fill="#f59e0b" name="Salidas" radius={[8, 8, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </ChartCard>
+                </motion.div>
+
+                {/* Distribución por categoría */}
+                <motion.div variants={itemVariants}>
+                    <ChartCard
+                        title="Distribución por Categoría"
+                        subtitle="Valor en inventario"
+                        icon={PieChart}
+                    >
+                        <ResponsiveContainer width="100%" height={300}>
+                            <RechartsPie>
+                                <Pie
+                                    data={data.distribucionCategorias}
+                                    dataKey="valor"
+                                    nameKey="categoria"
+                                    cx="50%"
+                                    cy="50%"
+                                    outerRadius={100}
+                                    label={({ categoria, porcentaje }) => `${categoria} ${porcentaje}%`}
+                                >
+                                    {data.distribucionCategorias.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    ))}
+                                </Pie>
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: 'rgba(0,0,0,0.8)',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        color: 'white'
+                                    }}
+                                />
+                            </RechartsPie>
+                        </ResponsiveContainer>
+                    </ChartCard>
+                </motion.div>
+
+                {/* Actividad por día */}
+                <motion.div variants={itemVariants}>
+                    <ChartCard
+                        title="Actividad Semanal"
+                        subtitle="Movimientos por día"
+                        icon={Clock}
+                    >
+                        <ResponsiveContainer width="100%" height={300}>
+                            <LineChart data={data.actividadPorDia}>
+                                <CartesianGrid strokeDasharray="3 3" className="stroke-gray-200 dark:stroke-gray-700" />
+                                <XAxis dataKey="dia" className="text-xs" />
+                                <YAxis className="text-xs" />
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: 'rgba(0,0,0,0.8)',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        color: 'white'
+                                    }}
+                                />
+                                <Line
+                                    type="monotone"
+                                    dataKey="movimientos"
+                                    stroke="#8b5cf6"
+                                    strokeWidth={3}
+                                    dot={{ fill: '#8b5cf6', r: 6 }}
+                                    activeDot={{ r: 8 }}
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </ChartCard>
+                </motion.div>
+
+                {/* Costo mensual */}
+                <motion.div variants={itemVariants}>
+                    <ChartCard
+                        title="Evolución de Costos"
+                        subtitle="Inversión mensual"
+                        icon={DollarSign}
+                    >
+                        <ResponsiveContainer width="100%" height={300}>
+                            <LineChart data={data.tendenciaMensual}>
+                                <CartesianGrid strokeDasharray="3 3" className="stroke-gray-200 dark:stroke-gray-700" />
+                                <XAxis dataKey="mes" className="text-xs" />
+                                <YAxis className="text-xs" />
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: 'rgba(0,0,0,0.8)',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        color: 'white'
+                                    }}
+                                    formatter={(value) => `$${Number(value).toLocaleString()}`}
+                                />
+                                <Line
+                                    type="monotone"
+                                    dataKey="costo"
+                                    stroke="#ef4444"
+                                    strokeWidth={3}
+                                    dot={{ fill: '#ef4444', r: 6 }}
+                                    activeDot={{ r: 8 }}
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </ChartCard>
+                </motion.div>
             </div>
 
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Activity className="text-blue-600 dark:text-blue-400" size={20} />
-                <span className="text-xs text-blue-600 dark:text-blue-400">Eficiencia</span>
-              </div>
-              <div className="text-2xl text-gray-900 dark:text-gray-100">92.5%</div>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">operacional</p>
-            </div>
+            {/* Top 10 listas */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Top más usados */}
+                <motion.div variants={itemVariants}>
+                    <TopListCard
+                        title="Top 10 Más Usados"
+                        subtitle="Por cantidad de salidas"
+                        icon={TrendingUp}
+                        items={data.topMasUsados.map(item => ({
+                            name: item.nombre,
+                            value: item.cantidad,
+                            badge: `${item.porcentaje}%`,
+                            color: 'text-orange-600'
+                        }))}
+                    />
+                </motion.div>
 
-            <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Calendar className="text-purple-600 dark:text-purple-400" size={20} />
-                <span className="text-xs text-purple-600 dark:text-purple-400">Tiempo Prom.</span>
-              </div>
-              <div className="text-2xl text-gray-900 dark:text-gray-100">2.3 días</div>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">de procesamiento</p>
-            </div>
+                {/* Top más caros */}
+                <motion.div variants={itemVariants}>
+                    <TopListCard
+                        title="Top 10 Mayor Valor"
+                        subtitle="Por valor en inventario"
+                        icon={DollarSign}
+                        items={data.topMasCaros.map(item => ({
+                            name: item.nombre,
+                            value: item.valor,
+                            badge: `${item.cantidad} uds`,
+                            color: 'text-purple-600',
+                            isCurrency: true
+                        }))}
+                    />
+                </motion.div>
 
-            <div className="bg-orange-50 dark:bg-orange-900/20 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <AlertTriangle className="text-orange-600 dark:text-orange-400" size={20} />
-                <span className="text-xs text-orange-600 dark:text-orange-400">Alertas</span>
-              </div>
-              <div className="text-2xl text-gray-900 dark:text-gray-100">8</div>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">pendientes</p>
+                {/* Top bajo stock */}
+                <motion.div variants={itemVariants}>
+                    <TopListCard
+                        title="Top 10 Stock Crítico"
+                        subtitle="Requieren reabastecimiento"
+                        icon={AlertTriangle}
+                        items={data.topBajoStock.map(item => ({
+                            name: item.nombre,
+                            value: item.cantidad,
+                            badge: `${item.porcentaje}%`,
+                            color: 'text-red-600'
+                        }))}
+                        isAlert
+                    />
+                </motion.div>
             </div>
-          </div>
+        </motion.div>
+    );
+}
+
+// Componente MetricCard
+function MetricCard({
+                        icon: Icon,
+                        title,
+                        value,
+                        subtitle,
+                        trend,
+                        color
+                    }: {
+    icon: any;
+    title: string;
+    value: string;
+    subtitle: string;
+    trend?: string;
+    color: string;
+}) {
+    return (
+        <motion.div
+            whileHover={{ scale: 1.02, y: -4 }}
+            className={`${color} rounded-2xl p-6 text-white shadow-lg relative overflow-hidden`}
+        >
+            <div className="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
+            <div className="absolute -left-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full blur-2xl"></div>
+
+            <div className="relative z-10">
+                <div className="flex items-start justify-between mb-4">
+                    <div className="text-sm font-medium opacity-90">{title}</div>
+                    <Icon size={20} className="opacity-90" />
+                </div>
+                <div className="text-3xl font-bold mb-2">{value}</div>
+                <div className="text-sm opacity-75">{subtitle}</div>
+                {trend && (
+                    <div className="mt-3 flex items-center gap-1 text-sm font-medium">
+                        {trend.includes('+') ? (
+                            <ArrowUpRight size={16} />
+                        ) : (
+                            <ArrowDownRight size={16} />
+                        )}
+                        {trend}
+                    </div>
+                )}
+            </div>
+        </motion.div>
+    );
+}
+
+// Componente ChartCard
+function ChartCard({
+                       title,
+                       subtitle,
+                       icon: Icon,
+                       children
+                   }: {
+    title: string;
+    subtitle: string;
+    icon: any;
+    children: React.ReactNode;
+}) {
+    return (
+        <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg">
+            <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-theme-primary to-theme-primary-dark flex items-center justify-center">
+                    <Icon className="text-white" size={20} />
+                </div>
+                <div>
+                    <h3 className="font-bold text-gray-900 dark:text-gray-100">{title}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>
+                </div>
+            </div>
+            {children}
         </div>
-      </div>
-    </>
-  );
+    );
+}
+
+// Componente TopListCard
+function TopListCard({
+                         title,
+                         subtitle,
+                         icon: Icon,
+                         items,
+                         isAlert = false
+                     }: {
+    title: string;
+    subtitle: string;
+    icon: any;
+    items: Array<{
+        name: string;
+        value: number;
+        badge: string;
+        color: string;
+        isCurrency?: boolean;
+    }>;
+    isAlert?: boolean;
+}) {
+    return (
+        <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg">
+            <div className="flex items-center gap-3 mb-6">
+                <div className={`w-10 h-10 rounded-xl ${isAlert ? 'bg-red-500' : 'bg-gradient-to-br from-theme-primary to-theme-primary-dark'} flex items-center justify-center`}>
+                    <Icon className="text-white" size={20} />
+                </div>
+                <div>
+                    <h3 className="font-bold text-gray-900 dark:text-gray-100">{title}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>
+                </div>
+            </div>
+
+            <div className="space-y-3">
+                {items.map((item, idx) => (
+                    <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                        className="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
+                    >
+                        <div className="flex-1 min-w-0">
+                            <div className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                                {item.name}
+                            </div>
+                            <div className={`text-xs font-semibold ${item.color}`}>
+                                {item.isCurrency ? `$${item.value.toLocaleString()}` : `${item.value} unidades`}
+                            </div>
+                        </div>
+                        <div className="ml-2 px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-700 text-xs font-medium text-gray-700 dark:text-gray-300">
+                            {item.badge}
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
+        </div>
+    );
 }

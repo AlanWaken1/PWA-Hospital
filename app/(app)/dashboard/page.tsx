@@ -1,9 +1,9 @@
-// app/(app)/dashboard/page.tsx
+// app/(app)/dashboard/page.tsx - CON FRAMER MOTION
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import gsap from 'gsap';
+import { motion } from 'framer-motion';
 import { Plus, Download, Package2, Activity, TrendingUp, AlertTriangle, FileText } from 'lucide-react';
 import { GradientStatCard } from '@/components/shared/GradientStatCard';
 import { InventoryAnalytics } from '@/components/shared/InventoryAnalytics';
@@ -16,35 +16,46 @@ import { RegisterEntryModal } from '@/components/inventory/RegisterEntryModal';
 import { useDashboardStats } from '@/hooks/useDashboardStats';
 import { toast } from '@/hooks/use-toast';
 
-export default function Dashboard() {
-    const titleRef = useRef<HTMLDivElement>(null);
-    const buttonsRef = useRef<HTMLDivElement>(null);
-    const router = useRouter();
+// 🎨 Variantes de animación
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.1,
+        }
+    }
+};
 
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.5,
+            ease: [0.25, 0.1, 0.25, 1]
+        }
+    }
+};
+
+const buttonVariants = {
+    hover: {
+        scale: 1.02,
+        transition: {
+            duration: 0.2,
+            ease: "easeOut"
+        }
+    },
+    tap: { scale: 0.98 }
+};
+
+export default function Dashboard() {
+    const router = useRouter();
     const { stats, loading, error } = useDashboardStats();
     const [isExporting, setIsExporting] = useState(false);
     const [showEntryModal, setShowEntryModal] = useState(false);
-
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.from(titleRef.current, {
-                opacity: 0,
-                y: 20,
-                duration: 0.6,
-                ease: 'power2.out',
-            });
-
-            gsap.from(buttonsRef.current, {
-                opacity: 0,
-                y: 10,
-                duration: 0.6,
-                delay: 0.2,
-                ease: 'power2.out',
-            });
-        });
-
-        return () => ctx.revert();
-    }, []);
 
     // ✨ FUNCIÓN: Abrir modal de registro
     const handleRegistrarIngreso = () => {
@@ -106,33 +117,47 @@ export default function Dashboard() {
         }
     };
 
+    // @ts-ignore
     return (
-        <>
+        <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+        >
             {/* Dashboard Title */}
-            <div ref={titleRef} className="mb-6">
-                <h1 className="text-gray-900 dark:text-gray-100 mb-2">Panel de Control - Inventario Hospitalario</h1>
-                <p className="text-gray-500 dark:text-gray-400">Gestiona y monitorea el inventario médico de forma eficiente y segura.</p>
-            </div>
+            <motion.div variants={itemVariants} className="mb-6">
+                <h1 className="text-gray-900 dark:text-gray-100 mb-2">
+                    Panel de Control - Inventario Hospitalario
+                </h1>
+                <p className="text-gray-500 dark:text-gray-400">
+                    Gestiona y monitorea el inventario médico de forma eficiente y segura.
+                </p>
+            </motion.div>
 
             {/* Action Buttons */}
-            <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-3 mb-6">
-                <button
+            <motion.div
+                variants={itemVariants}
+                className="flex flex-col sm:flex-row gap-3 mb-6"
+            >
+                <motion.button
+                    variants={buttonVariants}
+                    whileHover="hover"
+                    whileTap="tap"
                     onClick={handleRegistrarIngreso}
                     disabled={loading}
-                    className="bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white px-6 py-2.5 rounded-xl shadow-lg shadow-theme-primary/30 flex items-center justify-center gap-2 transition-all hover:shadow-xl hover:shadow-theme-primary/40 disabled:opacity-50 disabled:cursor-not-allowed"
-                    onMouseEnter={(e) => !loading && gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
-                    onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
+                    className="bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white px-6 py-2.5 rounded-xl shadow-lg shadow-theme-primary/30 flex items-center justify-center gap-2 transition-shadow hover:shadow-xl hover:shadow-theme-primary/40 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <Plus size={20} />
                     <span>Registrar Ingreso</span>
-                </button>
+                </motion.button>
 
-                <button
+                <motion.button
+                    variants={buttonVariants}
+                    whileHover="hover"
+                    whileTap="tap"
                     onClick={handleExportarReporte}
                     disabled={isExporting || loading}
                     className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-6 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    onMouseEnter={(e) => !isExporting && gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
-                    onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
                 >
                     {isExporting ? (
                         <>
@@ -145,23 +170,32 @@ export default function Dashboard() {
                             <span>Exportar Reporte</span>
                         </>
                     )}
-                </button>
+                </motion.button>
 
                 {/* Botón Reportes */}
-                <button
+                <motion.button
+                    variants={buttonVariants}
+                    whileHover="hover"
+                    whileTap="tap"
                     onClick={() => router.push('/reports')}
                     className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-6 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
-                    onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 })}
-                    onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
                 >
                     <FileText size={18} />
                     <span className="hidden sm:inline">Reportes</span>
-                </button>
-            </div>
+                </motion.button>
+            </motion.div>
 
-            {/* Stats Grid - CON CLICKS */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <div onClick={() => handleStatClick('total')} className="cursor-pointer">
+            {/* Stats Grid - CON CLICKS Y ANIMACIONES */}
+            <motion.div
+                variants={itemVariants}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
+            >
+                <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleStatClick('total')}
+                    className="cursor-pointer"
+                >
                     <GradientStatCard
                         title="Total de Productos"
                         value={loading ? "..." : stats.totalProductos.toLocaleString()}
@@ -171,9 +205,14 @@ export default function Dashboard() {
                         gradientTo="to-theme-primary-dark"
                         delay={0.1}
                     />
-                </div>
+                </motion.div>
 
-                <div onClick={() => handleStatClick('bajo')} className="cursor-pointer">
+                <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleStatClick('bajo')}
+                    className="cursor-pointer"
+                >
                     <GradientStatCard
                         title="Stock Bajo"
                         value={loading ? "..." : stats.stockBajo.toString()}
@@ -184,9 +223,14 @@ export default function Dashboard() {
                         gradientTo="to-red-700"
                         delay={0.2}
                     />
-                </div>
+                </motion.div>
 
-                <div onClick={() => handleStatClick('critico')} className="cursor-pointer">
+                <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleStatClick('critico')}
+                    className="cursor-pointer"
+                >
                     <GradientStatCard
                         title="Stock Crítico"
                         value={loading ? "..." : stats.stockCritico.toString()}
@@ -197,9 +241,14 @@ export default function Dashboard() {
                         gradientTo="to-red-800"
                         delay={0.3}
                     />
-                </div>
+                </motion.div>
 
-                <div onClick={() => handleStatClick('valor')} className="cursor-pointer">
+                <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleStatClick('valor')}
+                    className="cursor-pointer"
+                >
                     <GradientStatCard
                         title="Valor Total"
                         value={loading ? "..." : `$${(stats.valorTotal / 1000000).toFixed(1)}M`}
@@ -209,11 +258,14 @@ export default function Dashboard() {
                         gradientTo="to-purple-800"
                         delay={0.4}
                     />
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
 
             {/* Main Grid Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 items-start">
+            <motion.div
+                variants={itemVariants}
+                className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 items-start"
+            >
                 {/* Left Column */}
                 <div className="lg:col-span-2 space-y-4 sm:space-y-6">
                     <InventoryAnalytics />
@@ -225,15 +277,18 @@ export default function Dashboard() {
                     <ExpirationAlerts />
                     <CriticalSupplies />
                 </div>
-            </div>
+            </motion.div>
 
             {/* Bottom Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mt-6">
+            <motion.div
+                variants={itemVariants}
+                className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mt-6"
+            >
                 <StockLevel />
                 <div className="lg:col-span-2">
                     <RecentMovements />
                 </div>
-            </div>
+            </motion.div>
 
             {/* Modal de Registro */}
             <RegisterEntryModal
@@ -245,9 +300,8 @@ export default function Dashboard() {
                         title: "✅ Entrada registrada",
                         description: "El producto se agregó correctamente al inventario",
                     });
-                    // Aquí podrías refrescar los datos si es necesario
                 }}
             />
-        </>
+        </motion.div>
     );
 }

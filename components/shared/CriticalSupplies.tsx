@@ -3,11 +3,14 @@
 
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import gsap from 'gsap';
 import { Plus, AlertTriangle, TrendingDown, Package2 } from 'lucide-react';
 import { useCriticalSupplies } from '@/hooks/useCriticalSupplies';
 
 export function CriticalSupplies() {
+    const t = useTranslations('dashboard.critical_supplies');
+    const locale = useLocale();
     const containerRef = useRef<HTMLDivElement>(null);
     const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
     const router = useRouter();
@@ -64,19 +67,19 @@ export function CriticalSupplies() {
 
     // ✨ FUNCIÓN: Ver todos los suministros críticos en Alertas
     const handleVerTodos = () => {
-        router.push('/alerts');
+        router.push(`/${locale}/alerts`);
     };
 
     // ✨ FUNCIÓN: Click en suministro - va a Inventario
     const handleSupplyClick = () => {
-        router.push('/inventory');
+        router.push(`/${locale}/inventory`);
     };
 
     // Loading state
     if (loading) {
         return (
             <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg flex flex-col h-[500px]">
-                <h3 className="text-gray-900 dark:text-gray-100 mb-6">Suministros Críticos</h3>
+                <h3 className="text-gray-900 dark:text-gray-100 mb-6">{t('title')}</h3>
                 <div className="flex items-center justify-center flex-1">
                     <div className="animate-spin w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full"></div>
                 </div>
@@ -88,7 +91,7 @@ export function CriticalSupplies() {
     if (error) {
         return (
             <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-red-200 dark:border-red-700 shadow-lg flex flex-col h-[500px]">
-                <h3 className="text-gray-900 dark:text-gray-100 mb-4">Suministros Críticos</h3>
+                <h3 className="text-gray-900 dark:text-gray-100 mb-4">{t('title')}</h3>
                 <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-xl">
                     <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
                 </div>
@@ -100,14 +103,14 @@ export function CriticalSupplies() {
     if (supplies.length === 0) {
         return (
             <div ref={containerRef} className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg flex flex-col h-[500px]">
-                <h3 className="text-gray-900 dark:text-gray-100 mb-6">Suministros Críticos</h3>
+                <h3 className="text-gray-900 dark:text-gray-100 mb-6">{t('title')}</h3>
                 <div className="flex-1 flex items-center justify-center">
                     <div className="text-center">
                         <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
                             <Package2 className="text-green-600 dark:text-green-400" size={28} />
                         </div>
-                        <p className="text-gray-900 dark:text-gray-100 font-medium mb-1">Stock saludable</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">No hay suministros críticos</p>
+                        <p className="text-gray-900 dark:text-gray-100 font-medium mb-1">{t('healthy_stock')}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{t('no_critical')}</p>
                     </div>
                 </div>
             </div>
@@ -118,9 +121,9 @@ export function CriticalSupplies() {
         <div ref={containerRef} className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-orange-900/20 shadow-lg dark:shadow-orange-500/10 transition-all flex flex-col h-[500px]">
             <div className="flex items-center justify-between mb-6 flex-shrink-0">
                 <div>
-                    <h3 className="text-gray-900 dark:text-gray-100">Suministros Críticos</h3>
+                    <h3 className="text-gray-900 dark:text-gray-100">{t('title')}</h3>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        {supplies.length} productos requieren atención
+                        {supplies.length} {t('products_need_attention')}
                     </p>
                 </div>
                 <button
@@ -128,7 +131,7 @@ export function CriticalSupplies() {
                     className="text-theme-primary dark:text-theme-primary-light text-sm hover:text-theme-primary-dark dark:hover:text-theme-primary transition-colors flex items-center gap-1 bg-theme-primary/10 dark:bg-theme-primary/20 px-3 py-1.5 rounded-lg hover:bg-theme-primary/20 dark:hover:bg-theme-primary/30"
                 >
                     <Plus size={16} />
-                    <span className="hidden sm:inline">Ver todo</span>
+                    <span className="hidden sm:inline">{t('view_all')}</span>
                 </button>
             </div>
 
@@ -165,7 +168,7 @@ export function CriticalSupplies() {
                                 </div>
 
                                 <span className={`text-xs font-bold ${colors.text} uppercase tracking-wide flex-shrink-0`}>
-                  {supply.estado}
+                  {t(`status.${supply.estado}`, supply.estado)}
                 </span>
                             </div>
 
@@ -173,7 +176,7 @@ export function CriticalSupplies() {
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between text-xs">
                   <span className="text-gray-600 dark:text-gray-400">
-                    Stock: <span className="font-semibold text-gray-900 dark:text-gray-100">{supply.stock}</span> / {supply.stockMinimo}
+                    {t('stock')}: <span className="font-semibold text-gray-900 dark:text-gray-100">{supply.stock}</span> / {supply.stockMinimo}
                   </span>
                                     <span className={`font-bold ${colors.text}`}>
                     {percentage}%

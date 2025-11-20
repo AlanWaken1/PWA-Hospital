@@ -2,28 +2,30 @@
 "use client";
 
 import { useColorTheme, themes, ColorTheme } from '@/contexts/ColorThemeContext';
+import { useTranslations } from 'next-intl';
 import { Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export function ColorThemeSelector() {
+    const t = useTranslations('settings.appearance.color_theme');
     const { theme: currentTheme, setTheme } = useColorTheme();
 
     const themeOptions: { key: ColorTheme; name: string; color: string; gradient: string }[] = [
         {
             key: 'blue',
-            name: 'Azul Médico',
+            name: t('blue'),
             color: '#0ea5e9',
             gradient: 'from-sky-500 to-blue-600'
         },
         {
             key: 'green',
-            name: 'Verde Hospital',
+            name: t('green'),
             color: '#059669',
             gradient: 'from-theme-primary-light to-green-600'
         },
         {
             key: 'purple',
-            name: 'Morado Premium',
+            name: t('purple'),
             color: '#8b5cf6',
             gradient: 'from-violet-500 to-purple-600'
         }
@@ -33,10 +35,10 @@ export function ColorThemeSelector() {
         <div className="space-y-4">
             <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                    Color del Sistema
+                    {t('title')}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Personaliza el color principal de la interfaz
+                    {t('subtitle')}
                 </p>
             </div>
 
@@ -93,7 +95,7 @@ export function ColorThemeSelector() {
             {/* Preview section */}
             <div className="mt-6 p-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                    Vista previa del tema seleccionado:
+                    {t('preview_title')}
                 </p>
                 <div className="space-y-3">
                     {/* Button preview */}
@@ -104,7 +106,7 @@ export function ColorThemeSelector() {
                             boxShadow: `0 10px 20px -5px ${themes[currentTheme].primary}40`
                         }}
                     >
-                        Botón de Ejemplo
+                        {t('preview_button')}
                     </button>
 
                     {/* Badge preview */}
@@ -116,7 +118,7 @@ export function ColorThemeSelector() {
                     color: themes[currentTheme].primaryDark
                 }}
             >
-              Estado Activo
+              {t('preview_badge')}
             </span>
                     </div>
                 </div>

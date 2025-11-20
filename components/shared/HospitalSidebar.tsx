@@ -3,18 +3,21 @@
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation'; // Importa useRouter
+import { usePathname, useRouter } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import gsap from 'gsap';
 import {
     LayoutDashboard, Package, AlertTriangle, BarChart3, Users, Settings, HelpCircle, LogOut, Activity
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { createClient } from '@/lib/supabase/client'; // <--- Importa el cliente de Supabase
+import { createClient } from '@/lib/supabase/client';
 
 interface HospitalSidebarProps {}
 
 export function HospitalSidebar({}: HospitalSidebarProps) {
-    const router = useRouter(); // <--- Hook para la redirección
+    const t = useTranslations('navigation');
+    const locale = useLocale();
+    const router = useRouter();
     const sidebarRef = useRef<HTMLDivElement>(null);
     const menuItemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
     const pathname = usePathname();
@@ -26,7 +29,7 @@ export function HospitalSidebar({}: HospitalSidebarProps) {
         const { error } = await supabase.auth.signOut();
         if (!error) {
             // Redirige al login y refresca para asegurar que el estado se limpie
-            router.push('/auth/login');
+            router.push(`/${locale}/auth/login`);
             router.refresh();
         } else {
             console.error('Error al cerrar sesión:', error.message);
@@ -45,20 +48,20 @@ export function HospitalSidebar({}: HospitalSidebarProps) {
         return () => ctx.revert();
     }, []);
 
-    // Tus rutas correctas (sin /protected)
+    // Menu items con rutas localizadas
     const menuItems = [
-        { id: 'dashboard', href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-        { id: 'inventario', href: '/inventory', icon: Package, label: 'Inventario' },
-        { id: 'analiticas', href: '/analytics', icon: Activity, label: 'Analíticas' },
-        { id: 'alertas', href: '/alerts', icon: AlertTriangle, label: 'Alertas', badge: '12' },
-        { id: 'reportes', href: '/reports', icon: BarChart3, label: 'Reportes' },
-        { id: 'personal', href: '/staff', icon: Users, label: 'Personal' },
+        { id: 'dashboard', href: `/${locale}/dashboard`, icon: LayoutDashboard, label: t('dashboard') },
+        { id: 'inventario', href: `/${locale}/inventory`, icon: Package, label: t('inventory') },
+        { id: 'analiticas', href: `/${locale}/analytics`, icon: Activity, label: t('analytics') },
+        { id: 'alertas', href: `/${locale}/alerts`, icon: AlertTriangle, label: t('alerts'), badge: '12' },
+        { id: 'reportes', href: `/${locale}/reports`, icon: BarChart3, label: t('reports') },
+        { id: 'personal', href: `/${locale}/staff`, icon: Users, label: t('staff') },
     ];
 
     const generalItems = [
-        { id: 'configuracion', href: '/settings', icon: Settings, label: 'Configuración' },
-        { id: 'ayuda', href: '/help', icon: HelpCircle, label: 'Ayuda' },
-        { id: 'logout', icon: LogOut, label: 'Cerrar Sesión' },
+        { id: 'configuracion', href: `/${locale}/settings`, icon: Settings, label: t('settings') },
+        { id: 'ayuda', href: `/${locale}/help`, icon: HelpCircle, label: t('help') },
+        { id: 'logout', icon: LogOut, label: t('logout') },
     ];
 
     return (
@@ -68,7 +71,7 @@ export function HospitalSidebar({}: HospitalSidebarProps) {
         >
             {/* Logo */}
             <div className="p-6 pb-0">
-                <Link href="/dashboard" className="flex items-center gap-2 mb-8 group">
+                <Link href={`/${locale}/dashboard`} className="flex items-center gap-2 mb-8 group">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-theme-primary to-theme-primary-dark flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                         <Activity className="w-5 h-5 text-white" strokeWidth={2.5} />
                     </div>
@@ -80,7 +83,7 @@ export function HospitalSidebar({}: HospitalSidebarProps) {
             <div className="flex-1 overflow-y-auto px-4 pb-6 space-y-6">
                 {/* Menú Principal */}
                 <div>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mb-2 uppercase tracking-wider px-2">Menú Principal</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mb-2 uppercase tracking-wider px-2">{t('main_menu')}</p>
                     <nav className="space-y-1">
                         {menuItems.map((item, index) => {
                             const Icon = item.icon;
@@ -116,7 +119,7 @@ export function HospitalSidebar({}: HospitalSidebarProps) {
 
                 {/* Menú General */}
                 <div>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mb-2 uppercase tracking-wider px-2">General</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mb-2 uppercase tracking-wider px-2">{t('general')}</p>
                     <nav className="space-y-1">
                         {generalItems.map((item, index) => {
                             const Icon = item.icon;

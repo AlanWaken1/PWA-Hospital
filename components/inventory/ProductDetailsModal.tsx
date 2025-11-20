@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Producto, Inventario, Movimiento } from '@/types/database.types';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface ProductDetailsModalProps {
     isOpen: boolean;
@@ -15,6 +16,10 @@ interface ProductDetailsModalProps {
 }
 
 export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDetailsModalProps) {
+    const t = useTranslations('inventory.modals.product_details');
+    const tCommon = useTranslations('common');
+    const locale = useLocale();
+
     const [loading, setLoading] = useState(true);
     const [producto, setProducto] = useState<Producto | null>(null);
     const [inventario, setInventario] = useState<Inventario[]>([]);
@@ -128,7 +133,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                     : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-800/50'
                             }`}
                         >
-                            Información
+                            {t('tabs.info')}
                         </button>
                         <button
                             onClick={() => setActiveTab('stock')}
@@ -138,7 +143,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                     : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-800/50'
                             }`}
                         >
-                            Stock por Ubicación
+                            {t('tabs.stock')}
                         </button>
                         <button
                             onClick={() => setActiveTab('movimientos')}
@@ -148,7 +153,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                     : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-800/50'
                             }`}
                         >
-                            Movimientos
+                            {t('tabs.movements')}
                         </button>
                     </div>
                 </div>
@@ -158,11 +163,11 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                     {loading ? (
                         <div className="flex flex-col items-center justify-center py-12 gap-4">
                             <Loader2 className="w-12 h-12 text-theme-primary animate-spin" />
-                            <p className="text-gray-600 dark:text-gray-400">Cargando información...</p>
+                            <p className="text-gray-600 dark:text-gray-400">{t('loading')}</p>
                         </div>
                     ) : !producto ? (
                         <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-                            No se pudo cargar la información del producto
+                            {t('error_loading')}
                         </div>
                     ) : (
                         <>
@@ -173,7 +178,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                     <div className="bg-gradient-to-br from-theme-primary/10 to-theme-primary/20 dark:from-theme-primary-dark/20 dark:to-theme-primary-dark/20 rounded-xl p-6 border border-theme-primary/30 dark:border-emerald-800">
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <p className="text-sm text-theme-primary-dark dark:text-theme-primary-light mb-1">Stock Total</p>
+                                                <p className="text-sm text-theme-primary-dark dark:text-theme-primary-light mb-1">{t('stock_total')}</p>
                                                 <p className="text-4xl font-bold text-theme-primary-dark dark:text-theme-primary-light">{totalStock}</p>
                                                 <p className="text-sm text-theme-primary dark:text-theme-primary-light mt-1">{producto.unidad_medida}</p>
                                             </div>
@@ -185,29 +190,29 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="space-y-3">
                                             <div>
-                                                <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Código</label>
+                                                <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('code')}</label>
                                                 <p className="text-gray-900 dark:text-gray-100 font-medium">{producto.codigo}</p>
                                             </div>
                                             <div>
-                                                <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Categoría</label>
+                                                <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('category')}</label>
                                                 <p className="text-gray-900 dark:text-gray-100">{producto.categoria?.nombre}</p>
                                             </div>
                                             <div>
-                                                <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Unidad de Medida</label>
+                                                <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('unit_measure')}</label>
                                                 <p className="text-gray-900 dark:text-gray-100 capitalize">{producto.unidad_medida}</p>
                                             </div>
                                         </div>
                                         <div className="space-y-3">
                                             <div>
-                                                <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Stock Mínimo</label>
+                                                <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('min_stock')}</label>
                                                 <p className="text-gray-900 dark:text-gray-100">{producto.stock_minimo}</p>
                                             </div>
                                             <div>
-                                                <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Stock Máximo</label>
+                                                <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('max_stock')}</label>
                                                 <p className="text-gray-900 dark:text-gray-100">{producto.stock_maximo}</p>
                                             </div>
                                             <div>
-                                                <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Punto de Reorden</label>
+                                                <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('reorder_point')}</label>
                                                 <p className="text-gray-900 dark:text-gray-100">{producto.punto_reorden}</p>
                                             </div>
                                         </div>
@@ -216,7 +221,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                     {/* Descripción */}
                                     {producto.descripcion && (
                                         <div>
-                                            <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 block">Descripción</label>
+                                            <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 block">{t('description')}</label>
                                             <p className="text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                                                 {producto.descripcion}
                                             </p>
@@ -225,31 +230,31 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
 
                                     {/* Características Especiales */}
                                     <div>
-                                        <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 block">Características</label>
+                                        <label className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 block">{t('features')}</label>
                                         <div className="flex flex-wrap gap-2">
                                             {producto.requiere_receta && (
                                                 <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100">
-                                                    Requiere Receta
+                                                    {t('requires_prescription')}
                                                 </Badge>
                                             )}
                                             {producto.es_controlado && (
                                                 <Badge className="bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 hover:bg-red-100">
-                                                    Controlado
+                                                    {t('controlled')}
                                                 </Badge>
                                             )}
                                             {producto.requiere_refrigeracion && (
                                                 <Badge className="bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400 hover:bg-cyan-100">
-                                                    Refrigeración
+                                                    {t('refrigeration')}
                                                 </Badge>
                                             )}
                                             {producto.controla_lote && (
                                                 <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 hover:bg-purple-100">
-                                                    Control de Lote
+                                                    {t('batch_control')}
                                                 </Badge>
                                             )}
                                             {producto.controla_caducidad && (
                                                 <Badge className="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 hover:bg-yellow-100">
-                                                    Control de Caducidad
+                                                    {t('expiration_control')}
                                                 </Badge>
                                             )}
                                         </div>
@@ -263,7 +268,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                     {inventario.length === 0 ? (
                                         <div className="text-center py-12 text-gray-500 dark:text-gray-400">
                                             <Package size={48} className="mx-auto mb-4 opacity-50" />
-                                            <p>No hay stock registrado en ninguna ubicación</p>
+                                            <p>{t('no_stock')}</p>
                                         </div>
                                     ) : (
                                         inventario.map((inv) => (
@@ -283,12 +288,12 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                                             <div className="flex items-center gap-4 text-sm">
                                                                 {inv.lote && (
                                                                     <span className="text-gray-600 dark:text-gray-400">
-                                    Lote: <span className="font-medium">{inv.lote}</span>
+                                    {t('lot')}: <span className="font-medium">{inv.lote}</span>
                                   </span>
                                                                 )}
                                                                 {inv.fecha_caducidad && (
                                                                     <span className="text-gray-600 dark:text-gray-400">
-                                    Caduca: <span className="font-medium">
+                                    {t('expires')}: <span className="font-medium">
                                       {format(new Date(inv.fecha_caducidad), 'dd/MM/yyyy', { locale: es })}
                                     </span>
                                   </span>
@@ -300,7 +305,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                                         <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                                                             {inv.cantidad_disponible}
                                                         </p>
-                                                        <p className="text-xs text-gray-500 dark:text-gray-400">disponible</p>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">{t('available')}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -315,7 +320,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                     {movimientos.length === 0 ? (
                                         <div className="text-center py-12 text-gray-500 dark:text-gray-400">
                                             <Clock size={48} className="mx-auto mb-4 opacity-50" />
-                                            <p>No hay movimientos registrados</p>
+                                            <p>{t('no_movements')}</p>
                                         </div>
                                     ) : (
                                         movimientos.map((mov) => (
@@ -341,10 +346,10 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                                         <div className="flex items-start justify-between mb-1">
                                                             <div>
                                 <span className="font-medium text-gray-900 dark:text-gray-100 capitalize">
-                                  {mov.tipo_movimiento}
+                                  {mov.tipo_movimiento === 'entrada' ? t('entry') : t('exit')}
                                 </span>
                                                                 <span className="text-gray-600 dark:text-gray-400 ml-2">
-                                  {mov.cantidad > 0 ? '+' : ''}{mov.cantidad} unidades
+                                  {mov.cantidad > 0 ? '+' : ''}{mov.cantidad} {t('units')}
                                 </span>
                                                             </div>
                                                             <span className="text-xs text-gray-500 dark:text-gray-400">
@@ -353,9 +358,9 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                                                         </div>
                                                         {(mov.ubicacion_origen || mov.ubicacion_destino) && (
                                                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                                {mov.ubicacion_origen && `De: ${mov.ubicacion_origen.nombre}`}
+                                                                {mov.ubicacion_origen && `${t('from')}: ${mov.ubicacion_origen.nombre}`}
                                                                 {mov.ubicacion_origen && mov.ubicacion_destino && ' → '}
-                                                                {mov.ubicacion_destino && `A: ${mov.ubicacion_destino.nombre}`}
+                                                                {mov.ubicacion_destino && `${t('to')}: ${mov.ubicacion_destino.nombre}`}
                                                             </p>
                                                         )}
                                                         {mov.notas && (
@@ -380,7 +385,7 @@ export function ProductDetailsModal({ isOpen, onClose, productoId }: ProductDeta
                         onClick={onClose}
                         className="w-full px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                     >
-                        Cerrar
+                        {tCommon('close')}
                     </button>
                 </div>
             </div>

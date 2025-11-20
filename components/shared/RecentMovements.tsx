@@ -2,11 +2,13 @@
 "use client";
 
 import { useEffect, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 import gsap from 'gsap';
 import { ArrowUpRight, ArrowDownRight, RefreshCw, ArrowRightLeft, Package, User, MapPin } from 'lucide-react';
 import { useRecentMovements } from '@/hooks/useRecentMovements';
 
 export function RecentMovements() {
+    const t = useTranslations('movements');
     const containerRef = useRef<HTMLDivElement>(null);
     const movementsRef = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -42,7 +44,7 @@ export function RecentMovements() {
                     color: 'text-green-600 dark:text-green-400',
                     bg: 'bg-green-50 dark:bg-green-900/20',
                     border: 'border-green-200 dark:border-green-800/50',
-                    label: 'Entrada',
+                    label: t('types.entry'),
                     badgeBg: 'bg-green-500'
                 };
             case 'salida':
@@ -51,7 +53,7 @@ export function RecentMovements() {
                     color: 'text-red-600 dark:text-red-400',
                     bg: 'bg-red-50 dark:bg-red-900/20',
                     border: 'border-red-200 dark:border-red-800/50',
-                    label: 'Salida',
+                    label: t('types.exit'),
                     badgeBg: 'bg-red-500'
                 };
             case 'transferencia':
@@ -60,7 +62,7 @@ export function RecentMovements() {
                     color: 'text-blue-600 dark:text-blue-400',
                     bg: 'bg-blue-50 dark:bg-blue-900/20',
                     border: 'border-blue-200 dark:border-blue-800/50',
-                    label: 'Transferencia',
+                    label: t('types.transfer'),
                     badgeBg: 'bg-blue-500'
                 };
             case 'ajuste':
@@ -69,7 +71,7 @@ export function RecentMovements() {
                     color: 'text-purple-600 dark:text-purple-400',
                     bg: 'bg-purple-50 dark:bg-purple-900/20',
                     border: 'border-purple-200 dark:border-purple-800/50',
-                    label: 'Ajuste',
+                    label: t('types.adjustment'),
                     badgeBg: 'bg-purple-500'
                 };
             default:
@@ -78,7 +80,7 @@ export function RecentMovements() {
                     color: 'text-gray-600 dark:text-gray-400',
                     bg: 'bg-gray-50 dark:bg-gray-900/20',
                     border: 'border-gray-200 dark:border-gray-800/50',
-                    label: 'Movimiento',
+                    label: t('types.movement'),
                     badgeBg: 'bg-gray-500'
                 };
         }
@@ -88,7 +90,7 @@ export function RecentMovements() {
     if (loading) {
         return (
             <div className="bg-gradient-to-br from-theme-primary via-theme-primary to-theme-primary-dark dark:from-theme-primary-dark dark:via-theme-primary-dark dark:to-theme-primary-dark rounded-2xl p-6 text-white shadow-xl shadow-theme-primary/30 dark:shadow-theme-primary/20 relative overflow-hidden">
-                <h3 className="text-white mb-6">Movimientos Recientes</h3>
+                <h3 className="text-white mb-6">{t('recent')}</h3>
                 <div className="flex items-center justify-center h-60">
                     <div className="animate-spin w-12 h-12 border-4 border-white border-t-transparent rounded-full"></div>
                 </div>
@@ -100,7 +102,7 @@ export function RecentMovements() {
     if (error) {
         return (
             <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl p-6 text-white shadow-xl">
-                <h3 className="text-white mb-4">Movimientos Recientes</h3>
+                <h3 className="text-white mb-4">{t('recent')}</h3>
                 <div className="bg-red-900/30 p-4 rounded-xl">
                     <p className="text-red-100 text-sm">{error}</p>
                 </div>
@@ -112,11 +114,11 @@ export function RecentMovements() {
     if (movements.length === 0) {
         return (
             <div ref={containerRef} className="bg-gradient-to-br from-theme-primary via-theme-primary to-theme-primary-dark dark:from-theme-primary-dark dark:via-theme-primary-dark dark:to-theme-primary-dark rounded-2xl p-6 text-white shadow-xl shadow-theme-primary/30 dark:shadow-theme-primary/20 relative overflow-hidden">
-                <h3 className="text-white mb-6">Movimientos Recientes</h3>
+                <h3 className="text-white mb-6">{t('recent')}</h3>
                 <div className="flex items-center justify-center h-60">
                     <div className="text-center">
                         <Package className="w-16 h-16 text-white/50 mx-auto mb-3" />
-                        <p className="text-white/80">No hay movimientos recientes</p>
+                        <p className="text-white/80">{t('no_movements')}</p>
                     </div>
                 </div>
             </div>
@@ -132,8 +134,8 @@ export function RecentMovements() {
             <div className="relative z-10">
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h3 className="text-white text-lg font-semibold mb-1">Movimientos Recientes</h3>
-                        <p className="text-white/70 text-sm">Últimas transacciones registradas</p>
+                        <h3 className="text-white text-lg font-semibold mb-1">{t('recent')}</h3>
+                        <p className="text-white/70 text-sm">{t('recent_subtitle')}</p>
                     </div>
                 </div>
 

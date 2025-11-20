@@ -3,6 +3,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import gsap from 'gsap';
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
@@ -11,6 +12,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 export default function LoginForm({ message }: { message: string | null }) {
+    const t = useTranslations('auth.login');
+    const locale = useLocale();
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -52,10 +55,10 @@ export default function LoginForm({ message }: { message: string | null }) {
             // Redirige al dashboard (o a donde sea)
             // Usamos router.refresh() para asegurar que la sesión del servidor se actualice
             router.refresh();
-            router.push('/dashboard');
+            router.push(`/${locale}/dashboard`);
 
         } catch (err: any) {
-            setError(err.message || 'Email o contraseña incorrectos');
+            setError(err.message || t('error'));
         } finally {
             setLoading(false);
         }
@@ -66,7 +69,7 @@ export default function LoginForm({ message }: { message: string | null }) {
             ref={formRef}
             className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 transition-colors"
         >
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Iniciar Sesión</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">{t('title')}</h2>
 
             {error && (
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg mb-6 text-sm">
@@ -78,7 +81,7 @@ export default function LoginForm({ message }: { message: string | null }) {
                 {/* Email */}
                 <div>
                     <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
-                        Correo Electrónico
+                        {t('email')}
                     </label>
                     <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
@@ -96,7 +99,7 @@ export default function LoginForm({ message }: { message: string | null }) {
                 {/* Password */}
                 <div>
                     <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
-                        Contraseña
+                        {t('password')}
                     </label>
                     <div className="relative">
                         <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
@@ -112,6 +115,7 @@ export default function LoginForm({ message }: { message: string | null }) {
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                            aria-label={showPassword ? useTranslations('auth.signup')('hide_password') : useTranslations('auth.signup')('show_password')}
                         >
                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
@@ -127,12 +131,11 @@ export default function LoginForm({ message }: { message: string | null }) {
                         />
                         <span>Recordarme</span>
                     </label>
-                    {/* Link a la página de forgot-password del template */}
                     <Link
-                        href="/auth/forgot-password"
+                        href={`/${locale}/auth/forgot-password`}
                         className="text-theme-primary dark:text-theme-primary-light hover:text-theme-primary-dark dark:hover:text-theme-primary-light transition-colors"
                     >
-                        ¿Olvidaste tu contraseña?
+                        {t('forgot_password')}
                     </Link>
                 </div>
 
@@ -148,7 +151,7 @@ export default function LoginForm({ message }: { message: string | null }) {
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : (
                         <>
-                            <span>Iniciar Sesión</span>
+                            <span>{t('submit')}</span>
                             <ArrowRight size={18} />
                         </>
                     )}
@@ -162,17 +165,16 @@ export default function LoginForm({ message }: { message: string | null }) {
                 </div>
                 <div className="relative flex justify-center text-sm">
           <span className="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-            ¿No tienes cuenta?
+            {t('no_account')}
           </span>
                 </div>
             </div>
 
-            {/* Link a la página de sign-up del template */}
             <Link
-                href="/auth/sign-up"
+                href={`/${locale}/auth/sign-up`}
                 className="block w-full text-center text-theme-primary dark:text-theme-primary-light hover:text-theme-primary-dark dark:hover:text-theme-primary-light transition-colors"
             >
-                Crear una cuenta nueva →
+                {t('sign_up')} →
             </Link>
         </div>
     );

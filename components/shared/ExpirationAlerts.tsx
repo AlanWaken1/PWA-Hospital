@@ -3,11 +3,14 @@
 
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import gsap from 'gsap';
 import { AlertCircle, Clock, Package, ChevronRight } from 'lucide-react';
 import { useExpirationAlerts } from '@/hooks/useExpirationAlerts';
 
 export function ExpirationAlerts() {
+    const t = useTranslations('dashboard.expiration_alerts');
+    const locale = useLocale();
     const containerRef = useRef<HTMLDivElement>(null);
     const pulseRef = useRef<HTMLDivElement>(null);
     const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -49,19 +52,19 @@ export function ExpirationAlerts() {
 
     // ✨ FUNCIÓN: Ver todas las alertas
     const handleVerTodos = () => {
-        router.push('/alerts');
+        router.push(`/${locale}/alerts`);
     };
 
     // ✨ FUNCIÓN: Click en alerta - va a la página de alertas
     const handleAlertClick = () => {
-        router.push('/alerts');
+        router.push(`/${locale}/alerts`);
     };
 
     // Loading state
     if (loading) {
         return (
             <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg h-[500px] flex flex-col">
-                <h3 className="mb-4 text-gray-900 dark:text-gray-100">Alertas de Vencimiento</h3>
+                <h3 className="mb-4 text-gray-900 dark:text-gray-100">{t('title')}</h3>
                 <div className="flex items-center justify-center flex-1">
                     <div className="animate-spin w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full"></div>
                 </div>
@@ -73,7 +76,7 @@ export function ExpirationAlerts() {
     if (error) {
         return (
             <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-red-200 dark:border-red-700 shadow-lg h-[500px] flex flex-col">
-                <h3 className="mb-4 text-gray-900 dark:text-gray-100">Alertas de Vencimiento</h3>
+                <h3 className="mb-4 text-gray-900 dark:text-gray-100">{t('title')}</h3>
                 <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-xl">
                     <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
                 </div>
@@ -85,14 +88,14 @@ export function ExpirationAlerts() {
     if (alerts.length === 0) {
         return (
             <div ref={containerRef} className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg h-[500px] flex flex-col">
-                <h3 className="mb-4 text-gray-900 dark:text-gray-100">Alertas de Vencimiento</h3>
+                <h3 className="mb-4 text-gray-900 dark:text-gray-100">{t('title')}</h3>
                 <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-6 text-center flex-1 flex items-center justify-center">
                     <div>
                         <div className="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mx-auto mb-3">
                             <Clock className="text-green-600 dark:text-green-400" size={24} />
                         </div>
-                        <p className="text-gray-900 dark:text-gray-100 font-medium mb-1">¡Todo bien!</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">No hay productos próximos a caducar</p>
+                        <p className="text-gray-900 dark:text-gray-100 font-medium mb-1">{t('all_good')}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{t('no_expiring')}</p>
                     </div>
                 </div>
             </div>
@@ -105,12 +108,12 @@ export function ExpirationAlerts() {
     return (
         <div ref={containerRef} className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-red-900/20 shadow-lg dark:shadow-red-500/10 transition-all flex flex-col h-[500px]">
             <div className="flex items-center justify-between mb-4 flex-shrink-0">
-                <h3 className="text-gray-900 dark:text-gray-100">Alertas de Vencimiento</h3>
+                <h3 className="text-gray-900 dark:text-gray-100">{t('title')}</h3>
                 <button
                     onClick={handleVerTodos}
                     className="text-xs text-red-600 dark:text-red-400 font-semibold bg-red-50 dark:bg-red-900/20 px-3 py-1.5 rounded-full hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
                 >
-                    Ver todos ({alerts.length})
+                    {t('view_all')} ({alerts.length})
                 </button>
             </div>
 
@@ -134,7 +137,7 @@ export function ExpirationAlerts() {
                         </h4>
                         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 mb-2">
                             <Package size={14} />
-                            <span>{mostUrgent.unidades} unidades • Lote {mostUrgent.lote}</span>
+                            <span>{mostUrgent.unidades} {t('units')} • {t('lot')} {mostUrgent.lote}</span>
                         </div>
                     </div>
                 </div>
@@ -143,11 +146,11 @@ export function ExpirationAlerts() {
                     <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm">
                         <Clock size={14} />
                         <span className="font-semibold">
-              {mostUrgent.diasRestantes === 0
-                  ? '¡Caduca hoy!'
-                  : `Caduca en ${mostUrgent.diasRestantes} día${mostUrgent.diasRestantes !== 1 ? 's' : ''}`
-              }
-            </span>
+                            {mostUrgent.diasRestantes === 0
+                                ? t('expires_today')
+                                : t('expires_in_days', { days: mostUrgent.diasRestantes })
+                            }
+                        </span>
                     </div>
                     <ChevronRight size={16} className="text-red-600 dark:text-red-400 group-hover:translate-x-1 transition-transform" />
                 </div>
@@ -173,7 +176,7 @@ export function ExpirationAlerts() {
                                             {alert.producto}
                                         </p>
                                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                                            {alert.unidades} uds • {alert.diasRestantes} días
+                                            {alert.unidades} {t('units_short')} • {alert.diasRestantes} {t('days')}
                                         </p>
                                     </div>
                                 </div>

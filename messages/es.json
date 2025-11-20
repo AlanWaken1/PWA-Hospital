@@ -1,0 +1,545 @@
+{
+  "app": {
+    "name": "MediStock",
+    "tagline": "Sistema de Gestión Hospitalaria"
+  },
+  "navigation": {
+    "main_menu": "Menú Principal",
+    "general": "General",
+    "dashboard": "Dashboard",
+    "inventory": "Inventario",
+    "analytics": "Analíticas",
+    "alerts": "Alertas",
+    "reports": "Reportes",
+    "staff": "Personal",
+    "settings": "Configuración",
+    "help": "Ayuda",
+    "logout": "Cerrar Sesión"
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "subtitle": "Ingresa a tu cuenta",
+      "email": "Correo Electrónico",
+      "password": "Contraseña",
+      "forgot_password": "¿Olvidaste tu contraseña?",
+      "submit": "Iniciar Sesión",
+      "no_account": "¿No tienes cuenta?",
+      "sign_up": "Crear cuenta",
+      "error": "Error al iniciar sesión",
+      "loading": "Iniciando sesión..."
+    },
+    "signup": {
+      "title": "Crear Cuenta",
+      "subtitle": "Regístrate en MediStock",
+      "full_name": "Nombre Completo",
+      "full_name_placeholder": "Ej: Farm. María López García",
+      "email": "Correo Electrónico",
+      "email_placeholder": "tu@hospital.com",
+      "password": "Contraseña",
+      "password_placeholder": "Mínimo 6 caracteres",
+      "confirm_password": "Confirmar Contraseña",
+      "confirm_password_placeholder": "Repite tu contraseña",
+      "role": "Rol en el Hospital",
+      "role_placeholder": "Selecciona tu rol",
+      "department": "Departamento",
+      "department_placeholder": "Ej: Farmacia Central",
+      "phone": "Teléfono",
+      "phone_placeholder": "+52 55 1234-5678",
+      "terms": "Acepto los",
+      "terms_link": "términos y condiciones",
+      "and": "y la",
+      "privacy_link": "política de privacidad",
+      "submit": "Crear Cuenta",
+      "has_account": "¿Ya tienes cuenta?",
+      "login_link": "Iniciar sesión",
+      "show_password": "Mostrar contraseña",
+      "hide_password": "Ocultar contraseña",
+      "required": "*",
+      "error": {
+        "password_mismatch": "Las contraseñas no coinciden",
+        "password_length": "La contraseña debe tener al menos 6 caracteres",
+        "select_role": "Por favor selecciona un rol",
+        "generic": "Error al crear la cuenta. Intenta de nuevo."
+      }
+    },
+    "roles": {
+      "admin": "Administrador",
+      "doctor": "Doctor/a",
+      "nurse": "Enfermera/o",
+      "pharmacist": "Farmacéutico/a",
+      "warehouse": "Almacenista",
+      "technician": "Técnico/a"
+    },
+    "forgot_password": {
+      "title": "Recuperar Contraseña",
+      "subtitle": "Te enviaremos un enlace de recuperación",
+      "submit": "Enviar enlace",
+      "back_to_login": "Volver al inicio de sesión"
+    },
+    "update_password": {
+      "title": "Actualizar Contraseña",
+      "new_password": "Nueva Contraseña",
+      "submit": "Actualizar contraseña"
+    }
+  },
+  "settings": {
+    "title": "Configuración",
+    "subtitle": "Personaliza tu experiencia en MediStock",
+    "tabs": {
+      "appearance": "Apariencia",
+      "notifications": "Notificaciones",
+      "account": "Cuenta",
+      "security": "Seguridad",
+      "language": "Idioma"
+    },
+    "appearance": {
+      "color_theme": {
+        "title": "Color del Sistema",
+        "subtitle": "Personaliza el color principal de la interfaz",
+        "blue": "Azul Médico",
+        "green": "Verde Hospital",
+        "purple": "Morado Premium",
+        "preview_title": "Vista previa del tema seleccionado:",
+        "preview_button": "Botón de Ejemplo",
+        "preview_badge": "Estado Activo"
+      },
+      "display_mode": {
+        "title": "Modo de Apariencia",
+        "subtitle": "Selecciona cómo quieres ver MediStock",
+        "light": "Modo Claro",
+        "light_desc": "Interfaz brillante",
+        "dark": "Modo Oscuro",
+        "dark_desc": "Ideal para la noche",
+        "auto": "Automático",
+        "auto_desc": "Según tu sistema",
+        "current_mode": "Modo actual:",
+        "auto_info": "El tema cambiará automáticamente según tu sistema",
+        "mode_info": "Tu interfaz está en modo"
+      }
+    },
+    "language": {
+      "title": "Idioma del Sistema",
+      "subtitle": "Selecciona tu idioma preferido",
+      "spanish": "Español",
+      "spanish_desc": "Interfaz en español",
+      "english": "English",
+      "english_desc": "English interface",
+      "current_language": "Idioma actual:",
+      "restart_info": "Los cambios se aplicarán al navegar"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Bienvenido de nuevo",
+    "loading": "Cargando MediStock...",
+    "stats": {
+      "total_products": "Productos Totales",
+      "low_stock": "Stock Bajo",
+      "expiring_soon": "Por Vencer",
+      "movements_today": "Movimientos Hoy"
+    },
+    "critical_supplies": {
+      "title": "Suministros Críticos",
+      "products_need_attention": "productos requieren atención",
+      "view_all": "Ver todo",
+      "healthy_stock": "Stock saludable",
+      "no_critical": "No hay suministros críticos",
+      "stock": "Stock",
+      "status": {
+        "critico": "Crítico",
+        "bajo": "Bajo",
+        "normal": "Normal",
+        "reorden": "Reorden"
+      }
+    },
+    "expiration_alerts": {
+      "title": "Alertas de Vencimiento",
+      "view_all": "Ver todos",
+      "all_good": "¡Todo bien!",
+      "no_expiring": "No hay productos próximos a caducar",
+      "units": "unidades",
+      "units_short": "uds",
+      "lot": "Lote",
+      "days": "días",
+      "expires_today": "¡Caduca hoy!",
+      "expires_in_days": "Caduca en {days} día(s)"
+    }
+  },
+  "inventory": {
+    "title": "Inventario",
+    "subtitle": "Gestión de productos y stock",
+    "add_product": "Agregar Producto",
+    "search": "Buscar productos...",
+    "filters": "Filtros",
+    "status": {
+      "all": "Todos",
+      "normal": "Normal",
+      "low": "Bajo",
+      "critical": "Crítico",
+      "reorder": "Reorden"
+    },
+    "product": {
+      "name": "Nombre",
+      "category": "Categoría",
+      "quantity": "Cantidad",
+      "unit": "Unidad",
+      "price": "Precio",
+      "expiration": "Vencimiento",
+      "supplier": "Proveedor",
+      "status": "Estado"
+    },
+    "page": {
+      "title": "Gestión de Inventario",
+      "subtitle": "Control completo del inventario médico y farmacéutico",
+      "stats": {
+        "total_products": "Total Productos",
+        "in_catalog": "En catálogo",
+        "critical_stock": "Stock Crítico",
+        "require_urgent_attention": "Requieren atención urgente",
+        "low_stock": "Stock Bajo",
+        "near_minimum": "Cerca del mínimo",
+        "reorder_point": "Punto Reorden",
+        "request_replenishment": "Solicitar reabastecimiento"
+      },
+      "search_placeholder": "Buscar por nombre, código o categoría...",
+      "filters": {
+        "all_categories": "Todas las categorías",
+        "all_statuses": "Todos los estados",
+        "critical": "Crítico",
+        "low": "Bajo",
+        "normal": "Normal"
+      },
+      "new_product": "Nuevo Producto",
+      "no_products_found": "No se encontraron productos",
+      "adjust_filters": "Intenta ajustar los filtros o agregar nuevos productos",
+      "table": {
+        "code": "Código",
+        "product": "Producto",
+        "category": "Categoría",
+        "current_stock": "Stock Actual",
+        "min_stock": "Stock Mín.",
+        "status": "Estado",
+        "actions": "Acciones"
+      },
+      "actions": {
+        "register_entry": "Registrar Entrada",
+        "register_exit": "Registrar Salida",
+        "view_details": "Ver Detalles",
+        "edit": "Editar",
+        "delete": "Eliminar"
+      },
+      "showing_products": "Mostrando {count} de {total} productos",
+      "export_excel": "Exportar a Excel",
+      "delete_dialog": {
+        "title": "¿Eliminar producto?",
+        "description": "¿Estás seguro de que deseas eliminar \"{name}\"? Esta acción no se puede deshacer.",
+        "confirm": "Eliminar",
+        "cancel": "Cancelar"
+      },
+      "status_badges": {
+        "critical": "Crítico",
+        "low": "Bajo",
+        "reorder": "Reorden",
+        "normal": "Normal"
+      }
+    },
+    "modals": {
+      "create_product": {
+        "title": "Nuevo Producto",
+        "basic_info": "Información Básica",
+        "stock_control": "Control de Stock",
+        "special_features": "Características Especiales",
+        "code": "Código",
+        "category": "Categoría",
+        "product_name": "Nombre del Producto",
+        "description": "Descripción",
+        "unit_measure": "Unidad de Medida",
+        "min_stock": "Stock Mínimo",
+        "max_stock": "Stock Máximo",
+        "reorder_point": "Punto de Reorden",
+        "requires_prescription": "Requiere Receta",
+        "controlled_medication": "Medicamento Controlado",
+        "requires_refrigeration": "Requiere Refrigeración",
+        "control_batch": "Controlar Lote",
+        "control_expiration": "Controlar Caducidad",
+        "select": "Seleccionar...",
+        "placeholder_code": "Ej: MED-001",
+        "placeholder_name": "Ej: Paracetamol 500mg",
+        "placeholder_description": "Descripción del producto...",
+        "cancel": "Cancelar",
+        "create": "Crear Producto",
+        "creating": "Guardando...",
+        "units": {
+          "piece": "Pieza",
+          "box": "Caja",
+          "bottle": "Frasco",
+          "ampoule": "Ampolleta",
+          "liter": "Litro",
+          "milliliter": "Mililitro",
+          "gram": "Gramo",
+          "kilogram": "Kilogramo",
+          "package": "Paquete",
+          "roll": "Rollo",
+          "other": "Otro"
+        }
+      },
+      "edit_product": {
+        "title": "Editar Producto",
+        "loading": "Cargando producto...",
+        "save_changes": "Guardar Cambios",
+        "saving": "Guardando..."
+      },
+      "register_exit": {
+        "title": "Registrar Salida",
+        "product": "Producto",
+        "location_batch": "Ubicación / Lote",
+        "select_product": "Seleccionar producto...",
+        "loading_products": "Cargando productos...",
+        "select_location_batch": "Seleccionar ubicación/lote...",
+        "no_stock_available": "No hay stock disponible para este producto",
+        "stock_available": "Stock Disponible",
+        "expires": "Caduca",
+        "quantity_to_withdraw": "Cantidad a Retirar",
+        "reason": "Motivo",
+        "select_reason": "Seleccionar motivo...",
+        "reasons": {
+          "dispensation": "Dispensación a Paciente",
+          "internal_request": "Solicitud Interna",
+          "emergency": "Uso en Urgencias",
+          "surgery": "Uso en Cirugía",
+          "consultation": "Uso en Consulta",
+          "loss": "Merma o Pérdida",
+          "expired": "Producto Caducado",
+          "other": "Otro"
+        },
+        "notes": "Notas",
+        "notes_placeholder": "Observaciones adicionales...",
+        "cancel": "Cancelar",
+        "register": "Registrar Salida",
+        "registering": "Registrando...",
+        "requires_internet": "Requiere Internet",
+        "offline_title": "Conexión Requerida",
+        "offline_message": "Esta función requiere conexión a internet para validar el stock disponible en tiempo real.",
+        "error_select_product": "Debe seleccionar un producto",
+        "error_select_location": "Debe seleccionar una ubicación/lote",
+        "error_insufficient_stock": "Stock insuficiente. Disponible:",
+        "error_quantity_exceeds": "Cantidad excede el stock disponible",
+        "error_requires_internet": "Requiere conexión a internet para registrar salidas"
+      },
+      "product_details": {
+        "tabs": {
+          "info": "Información",
+          "stock": "Stock por Ubicación",
+          "movements": "Movimientos"
+        },
+        "loading": "Cargando información...",
+        "error_loading": "No se pudo cargar la información del producto",
+        "stock_total": "Stock Total",
+        "code": "Código",
+        "category": "Categoría",
+        "unit_measure": "Unidad de Medida",
+        "min_stock": "Stock Mínimo",
+        "max_stock": "Stock Máximo",
+        "reorder_point": "Punto de Reorden",
+        "description": "Descripción",
+        "features": "Características",
+        "requires_prescription": "Requiere Receta",
+        "controlled": "Controlado",
+        "refrigeration": "Refrigeración",
+        "batch_control": "Control de Lote",
+        "expiration_control": "Control de Caducidad",
+        "no_stock": "No hay stock registrado en ninguna ubicación",
+        "lot": "Lote",
+        "expires": "Caduca",
+        "available": "disponible",
+        "no_movements": "No hay movimientos registrados",
+        "entry": "Entrada",
+        "exit": "Salida",
+        "units": "unidades",
+        "from": "De",
+        "to": "A"
+      },
+      "register_entry": {
+        "title": "Registrar Entrada",
+        "product": "Producto",
+        "location": "Ubicación de Destino",
+        "quantity": "Cantidad",
+        "unit_cost": "Costo Unitario",
+        "batch": "Lote",
+        "expiration_date": "Fecha de Caducidad",
+        "reference_doc": "Documento de Referencia",
+        "notes": "Notas",
+        "select_product": "Seleccionar producto...",
+        "loading_products": "Cargando productos...",
+        "select_location": "Seleccionar ubicación...",
+        "placeholder_batch": "Ej: LOT-2024-001",
+        "placeholder_doc": "Ej: Factura, Orden de Compra, etc.",
+        "placeholder_notes": "Observaciones adicionales...",
+        "placeholder_cost": "$0.00",
+        "cancel": "Cancelar",
+        "register": "Registrar Entrada",
+        "registering": "Registrando...",
+        "requires_internet": "Requiere Internet",
+        "offline_title": "Conexión Requerida",
+        "offline_message": "Esta función requiere conexión a internet para validar productos y ubicaciones.",
+        "error_select_product": "Debe seleccionar un producto",
+        "error_select_location": "Debe seleccionar una ubicación",
+        "error_quantity": "La cantidad debe ser mayor a 0",
+        "error_requires_internet": "Requiere conexión a internet para registrar entradas"
+      }
+    }
+  },
+  "alerts": {
+    "title": "Alertas",
+    "subtitle": "Notificaciones y avisos importantes",
+    "types": {
+      "expiration": "Vencimiento",
+      "low_stock": "Stock Bajo",
+      "critical": "Crítico"
+    },
+    "view_all": "Ver todas las alertas",
+    "no_alerts": "No hay alertas en este momento"
+  },
+  "reports": {
+    "title": "Reportes",
+    "subtitle": "Análisis y estadísticas",
+    "generate": "Generar Reporte",
+    "export": "Exportar",
+    "types": {
+      "inventory": "Inventario",
+      "movements": "Movimientos",
+      "expiration": "Vencimientos",
+      "financial": "Financiero"
+    }
+  },
+  "analytics": {
+    "title": "Analíticas",
+    "subtitle": "Métricas y tendencias",
+    "period": {
+      "today": "Hoy",
+      "week": "Esta Semana",
+      "month": "Este Mes",
+      "year": "Este Año"
+    }
+  },
+  "staff": {
+    "title": "Personal",
+    "subtitle": "Gestión de usuarios y equipos",
+    "add_member": "Agregar Personal",
+    "search": "Buscar personal..."
+  },
+  "help": {
+    "title": "Ayuda",
+    "subtitle": "Centro de ayuda y soporte",
+    "search": "¿En qué podemos ayudarte?"
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Agregar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "warning": "Advertencia",
+    "info": "Información",
+    "confirm": "Confirmar",
+    "close": "Cerrar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "actions": "Acciones",
+    "details": "Detalles",
+    "view": "Ver",
+    "download": "Descargar",
+    "upload": "Subir",
+    "refresh": "Actualizar",
+    "select": "Seleccionar",
+    "all": "Todos",
+    "none": "Ninguno",
+    "yes": "Sí",
+    "no": "No",
+    "ok": "OK",
+    "user": "Usuario",
+    "profile": "Mi perfil"
+  },
+  "movements": {
+    "types": {
+      "entry": "Entrada",
+      "exit": "Salida",
+      "transfer": "Transferencia",
+      "adjustment": "Ajuste",
+      "movement": "Movimiento"
+    },
+    "recent": "Movimientos Recientes",
+    "recent_subtitle": "Últimas transacciones registradas",
+    "no_movements": "No hay movimientos recientes"
+  },
+  "offline": {
+    "title": "Modo Sin Conexión",
+    "message": "Estás trabajando sin conexión. Los cambios se sincronizarán cuando vuelvas a estar en línea.",
+    "sync": "Sincronizando..."
+  },
+  "landing": {
+    "hero": {
+      "title": "Gestión Inteligente de Inventario Médico",
+      "subtitle": "La solución completa para hospitales modernos",
+      "cta_primary": "Comenzar Ahora",
+      "cta_secondary": "Ver Demo"
+    },
+    "features": {
+      "title": "Características Principales",
+      "inventory": {
+        "title": "Gestión de Inventario",
+        "description": "Control total de productos médicos"
+      },
+      "analytics": {
+        "title": "Analíticas Avanzadas",
+        "description": "Métricas en tiempo real"
+      },
+      "alerts": {
+        "title": "Alertas Inteligentes",
+        "description": "Notificaciones automáticas"
+      },
+      "security": {
+        "title": "Seguridad Total",
+        "description": "Datos protegidos"
+      },
+      "staff": {
+        "title": "Gestión de Personal",
+        "description": "Organiza tu equipo"
+      },
+      "reports": {
+        "title": "Reportes Detallados",
+        "description": "Información precisa"
+      }
+    },
+    "stats": {
+      "products": "Productos Gestionados",
+      "hospitals": "Hospitales Activos",
+      "uptime": "Uptime Garantizado",
+      "support": "Soporte Técnico"
+    },
+    "steps": {
+      "title": "Cómo Funciona",
+      "register": {
+        "title": "Regístrate",
+        "description": "Crea tu cuenta en minutos"
+      },
+      "configure": {
+        "title": "Configura",
+        "description": "Personaliza tu sistema"
+      },
+      "manage": {
+        "title": "Gestiona",
+        "description": "Administra tu inventario"
+      }
+    }
+  }
+}

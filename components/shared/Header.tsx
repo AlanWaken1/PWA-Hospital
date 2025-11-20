@@ -2,6 +2,7 @@
 "use client";
 
 import { Menu, Sun, Moon, User, Settings, LogOut } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { NotificationBell } from '@/components/notifications/NotificationBell';
@@ -22,6 +23,8 @@ interface HeaderProps {
 }
 
 export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
+    const t = useTranslations();
+    const locale = useLocale();
     // @ts-ignore
     const { isDark, toggleTheme } = useTheme();
     // @ts-ignore
@@ -31,18 +34,18 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
 
     const handleSignOut = async () => {
         await supabase.auth.signOut();
-        router.push('/auth/login');
+        router.push(`/${locale}/auth/login`);
         router.refresh();
     };
 
     // ⭐ NUEVO: Navegación a Mi Perfil
     const handleGoToProfile = () => {
-        router.push('/personal');
+        router.push(`/${locale}/personal`);
     };
 
     // ⭐ NUEVO: Navegación a Configuración
     const handleGoToSettings = () => {
-        router.push('/configuracion');
+        router.push(`/${locale}/settings`);
     };
 
     return (
@@ -72,7 +75,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
                     <button
                         onClick={toggleTheme}
                         className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                        aria-label="Cambiar tema"
+                        aria-label={t('settings.appearance.display_mode.title')}
                     >
                         {isDark ? (
                             <Sun className="w-5 h-5 text-yellow-500" />
@@ -91,7 +94,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
                                 </div>
                                 {/* Nombre (solo en desktop) */}
                                 <span className="hidden md:block text-sm font-medium text-gray-700 dark:text-gray-300 max-w-[100px] truncate">
-                                    {profile?.nombre_completo?.split(' ')[0] || 'Usuario'}
+                                    {profile?.nombre_completo?.split(' ')[0] || t('common.user', 'Usuario')}
                                 </span>
                             </button>
                         </DropdownMenuTrigger>
@@ -99,14 +102,14 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
                             <DropdownMenuLabel>
                                 <div className="flex flex-col space-y-1">
                                     <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                        {profile?.nombre_completo || 'Usuario'}
+                                        {profile?.nombre_completo || t('common.user', 'Usuario')}
                                     </p>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">
                                         {user?.email}
                                     </p>
                                     {profile?.rol && (
                                         <p className="text-xs text-theme-primary font-medium">
-                                            {profile.rol.charAt(0).toUpperCase() + profile.rol.slice(1)}
+                                            {t(`auth.roles.${profile.rol}`, profile.rol.charAt(0).toUpperCase() + profile.rol.slice(1))}
                                         </p>
                                     )}
                                 </div>
@@ -119,7 +122,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
                                 className="cursor-pointer"
                             >
                                 <User className="w-4 h-4 mr-2" />
-                                Mi perfil
+                                {t('common.profile', 'Mi perfil')}
                             </DropdownMenuItem>
 
                             <DropdownMenuItem
@@ -127,7 +130,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
                                 className="cursor-pointer"
                             >
                                 <Settings className="w-4 h-4 mr-2" />
-                                Configuración
+                                {t('navigation.settings')}
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
@@ -137,7 +140,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
                                 className="text-red-600 focus:text-red-600 cursor-pointer"
                             >
                                 <LogOut className="w-4 h-4 mr-2" />
-                                Cerrar sesión
+                                {t('navigation.logout')}
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

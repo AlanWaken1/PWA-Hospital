@@ -1,0 +1,545 @@
+{
+  "app": {
+    "name": "MediStock",
+    "tagline": "Hospital Management System"
+  },
+  "navigation": {
+    "main_menu": "Main Menu",
+    "general": "General",
+    "dashboard": "Dashboard",
+    "inventory": "Inventory",
+    "analytics": "Analytics",
+    "alerts": "Alerts",
+    "reports": "Reports",
+    "staff": "Staff",
+    "settings": "Settings",
+    "help": "Help",
+    "logout": "Sign Out"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Access your account",
+      "email": "Email Address",
+      "password": "Password",
+      "forgot_password": "Forgot your password?",
+      "submit": "Sign In",
+      "no_account": "Don't have an account?",
+      "sign_up": "Sign up",
+      "error": "Error signing in",
+      "loading": "Signing in..."
+    },
+    "signup": {
+      "title": "Create Account",
+      "subtitle": "Sign up for MediStock",
+      "full_name": "Full Name",
+      "full_name_placeholder": "E.g: Pharm. John Smith",
+      "email": "Email Address",
+      "email_placeholder": "you@hospital.com",
+      "password": "Password",
+      "password_placeholder": "Minimum 6 characters",
+      "confirm_password": "Confirm Password",
+      "confirm_password_placeholder": "Repeat your password",
+      "role": "Hospital Role",
+      "role_placeholder": "Select your role",
+      "department": "Department",
+      "department_placeholder": "E.g: Central Pharmacy",
+      "phone": "Phone",
+      "phone_placeholder": "+1 555 1234-5678",
+      "terms": "I accept the",
+      "terms_link": "terms and conditions",
+      "and": "and the",
+      "privacy_link": "privacy policy",
+      "submit": "Create Account",
+      "has_account": "Already have an account?",
+      "login_link": "Sign in",
+      "show_password": "Show password",
+      "hide_password": "Hide password",
+      "required": "*",
+      "error": {
+        "password_mismatch": "Passwords do not match",
+        "password_length": "Password must be at least 6 characters",
+        "select_role": "Please select a role",
+        "generic": "Error creating account. Please try again."
+      }
+    },
+    "roles": {
+      "admin": "Administrator",
+      "doctor": "Doctor",
+      "nurse": "Nurse",
+      "pharmacist": "Pharmacist",
+      "warehouse": "Warehouse Manager",
+      "technician": "Technician"
+    },
+    "forgot_password": {
+      "title": "Recover Password",
+      "subtitle": "We'll send you a recovery link",
+      "submit": "Send link",
+      "back_to_login": "Back to sign in"
+    },
+    "update_password": {
+      "title": "Update Password",
+      "new_password": "New Password",
+      "submit": "Update password"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Customize your MediStock experience",
+    "tabs": {
+      "appearance": "Appearance",
+      "notifications": "Notifications",
+      "account": "Account",
+      "security": "Security",
+      "language": "Language"
+    },
+    "appearance": {
+      "color_theme": {
+        "title": "System Color",
+        "subtitle": "Customize the interface's primary color",
+        "blue": "Medical Blue",
+        "green": "Hospital Green",
+        "purple": "Premium Purple",
+        "preview_title": "Preview of selected theme:",
+        "preview_button": "Sample Button",
+        "preview_badge": "Active Status"
+      },
+      "display_mode": {
+        "title": "Display Mode",
+        "subtitle": "Choose how you want to view MediStock",
+        "light": "Light Mode",
+        "light_desc": "Bright interface",
+        "dark": "Dark Mode",
+        "dark_desc": "Perfect for night",
+        "auto": "Automatic",
+        "auto_desc": "Matches your system",
+        "current_mode": "Current mode:",
+        "auto_info": "Theme will automatically change based on your system",
+        "mode_info": "Your interface is in mode"
+      }
+    },
+    "language": {
+      "title": "System Language",
+      "subtitle": "Select your preferred language",
+      "spanish": "Español",
+      "spanish_desc": "Spanish interface",
+      "english": "English",
+      "english_desc": "English interface",
+      "current_language": "Current language:",
+      "restart_info": "Changes will apply when navigating"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back",
+    "loading": "Loading MediStock...",
+    "stats": {
+      "total_products": "Total Products",
+      "low_stock": "Low Stock",
+      "expiring_soon": "Expiring Soon",
+      "movements_today": "Today's Movements"
+    },
+    "critical_supplies": {
+      "title": "Critical Supplies",
+      "products_need_attention": "products need attention",
+      "view_all": "View all",
+      "healthy_stock": "Healthy stock",
+      "no_critical": "No critical supplies",
+      "stock": "Stock",
+      "status": {
+        "critico": "Critical",
+        "bajo": "Low",
+        "normal": "Normal",
+        "reorden": "Reorder"
+      }
+    },
+    "expiration_alerts": {
+      "title": "Expiration Alerts",
+      "view_all": "View all",
+      "all_good": "All good!",
+      "no_expiring": "No products about to expire",
+      "units": "units",
+      "units_short": "units",
+      "lot": "Lot",
+      "days": "days",
+      "expires_today": "Expires today!",
+      "expires_in_days": "Expires in {days} day(s)"
+    }
+  },
+  "inventory": {
+    "title": "Inventory",
+    "subtitle": "Product and stock management",
+    "add_product": "Add Product",
+    "search": "Search products...",
+    "filters": "Filters",
+    "status": {
+      "all": "All",
+      "normal": "Normal",
+      "low": "Low",
+      "critical": "Critical",
+      "reorder": "Reorder"
+    },
+    "product": {
+      "name": "Name",
+      "category": "Category",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "price": "Price",
+      "expiration": "Expiration",
+      "supplier": "Supplier",
+      "status": "Status"
+    },
+    "page": {
+      "title": "Inventory Management",
+      "subtitle": "Complete control of medical and pharmaceutical inventory",
+      "stats": {
+        "total_products": "Total Products",
+        "in_catalog": "In catalog",
+        "critical_stock": "Critical Stock",
+        "require_urgent_attention": "Require urgent attention",
+        "low_stock": "Low Stock",
+        "near_minimum": "Near minimum",
+        "reorder_point": "Reorder Point",
+        "request_replenishment": "Request replenishment"
+      },
+      "search_placeholder": "Search by name, code or category...",
+      "filters": {
+        "all_categories": "All categories",
+        "all_statuses": "All statuses",
+        "critical": "Critical",
+        "low": "Low",
+        "normal": "Normal"
+      },
+      "new_product": "New Product",
+      "no_products_found": "No products found",
+      "adjust_filters": "Try adjusting the filters or adding new products",
+      "table": {
+        "code": "Code",
+        "product": "Product",
+        "category": "Category",
+        "current_stock": "Current Stock",
+        "min_stock": "Min. Stock",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "register_entry": "Register Entry",
+        "register_exit": "Register Exit",
+        "view_details": "View Details",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "showing_products": "Showing {count} of {total} products",
+      "export_excel": "Export to Excel",
+      "delete_dialog": {
+        "title": "Delete product?",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      },
+      "status_badges": {
+        "critical": "Critical",
+        "low": "Low",
+        "reorder": "Reorder",
+        "normal": "Normal"
+      }
+    },
+    "modals": {
+      "create_product": {
+        "title": "New Product",
+        "basic_info": "Basic Information",
+        "stock_control": "Stock Control",
+        "special_features": "Special Features",
+        "code": "Code",
+        "category": "Category",
+        "product_name": "Product Name",
+        "description": "Description",
+        "unit_measure": "Unit of Measure",
+        "min_stock": "Minimum Stock",
+        "max_stock": "Maximum Stock",
+        "reorder_point": "Reorder Point",
+        "requires_prescription": "Requires Prescription",
+        "controlled_medication": "Controlled Medication",
+        "requires_refrigeration": "Requires Refrigeration",
+        "control_batch": "Control Batch",
+        "control_expiration": "Control Expiration",
+        "select": "Select...",
+        "placeholder_code": "E.g: MED-001",
+        "placeholder_name": "E.g: Paracetamol 500mg",
+        "placeholder_description": "Product description...",
+        "cancel": "Cancel",
+        "create": "Create Product",
+        "creating": "Saving...",
+        "units": {
+          "piece": "Piece",
+          "box": "Box",
+          "bottle": "Bottle",
+          "ampoule": "Ampoule",
+          "liter": "Liter",
+          "milliliter": "Milliliter",
+          "gram": "Gram",
+          "kilogram": "Kilogram",
+          "package": "Package",
+          "roll": "Roll",
+          "other": "Other"
+        }
+      },
+      "edit_product": {
+        "title": "Edit Product",
+        "loading": "Loading product...",
+        "save_changes": "Save Changes",
+        "saving": "Saving..."
+      },
+      "register_exit": {
+        "title": "Register Exit",
+        "product": "Product",
+        "location_batch": "Location / Batch",
+        "select_product": "Select product...",
+        "loading_products": "Loading products...",
+        "select_location_batch": "Select location/batch...",
+        "no_stock_available": "No stock available for this product",
+        "stock_available": "Stock Available",
+        "expires": "Expires",
+        "quantity_to_withdraw": "Quantity to Withdraw",
+        "reason": "Reason",
+        "select_reason": "Select reason...",
+        "reasons": {
+          "dispensation": "Patient Dispensation",
+          "internal_request": "Internal Request",
+          "emergency": "Emergency Use",
+          "surgery": "Surgery Use",
+          "consultation": "Consultation Use",
+          "loss": "Loss or Waste",
+          "expired": "Expired Product",
+          "other": "Other"
+        },
+        "notes": "Notes",
+        "notes_placeholder": "Additional observations...",
+        "cancel": "Cancel",
+        "register": "Register Exit",
+        "registering": "Registering...",
+        "requires_internet": "Requires Internet",
+        "offline_title": "Connection Required",
+        "offline_message": "This feature requires an internet connection to validate available stock in real time.",
+        "error_select_product": "You must select a product",
+        "error_select_location": "You must select a location/batch",
+        "error_insufficient_stock": "Insufficient stock. Available:",
+        "error_quantity_exceeds": "Quantity exceeds available stock",
+        "error_requires_internet": "Requires internet connection to register exits"
+      },
+      "product_details": {
+        "tabs": {
+          "info": "Information",
+          "stock": "Stock by Location",
+          "movements": "Movements"
+        },
+        "loading": "Loading information...",
+        "error_loading": "Could not load product information",
+        "stock_total": "Total Stock",
+        "code": "Code",
+        "category": "Category",
+        "unit_measure": "Unit of Measure",
+        "min_stock": "Minimum Stock",
+        "max_stock": "Maximum Stock",
+        "reorder_point": "Reorder Point",
+        "description": "Description",
+        "features": "Features",
+        "requires_prescription": "Requires Prescription",
+        "controlled": "Controlled",
+        "refrigeration": "Refrigeration",
+        "batch_control": "Batch Control",
+        "expiration_control": "Expiration Control",
+        "no_stock": "No stock registered in any location",
+        "lot": "Lot",
+        "expires": "Expires",
+        "available": "available",
+        "no_movements": "No movements registered",
+        "entry": "Entry",
+        "exit": "Exit",
+        "units": "units",
+        "from": "From",
+        "to": "To"
+      },
+      "register_entry": {
+        "title": "Register Entry",
+        "product": "Product",
+        "location": "Destination Location",
+        "quantity": "Quantity",
+        "unit_cost": "Unit Cost",
+        "batch": "Batch",
+        "expiration_date": "Expiration Date",
+        "reference_doc": "Reference Document",
+        "notes": "Notes",
+        "select_product": "Select product...",
+        "loading_products": "Loading products...",
+        "select_location": "Select location...",
+        "placeholder_batch": "E.g: LOT-2024-001",
+        "placeholder_doc": "E.g: Invoice, Purchase Order, etc.",
+        "placeholder_notes": "Additional notes...",
+        "placeholder_cost": "$0.00",
+        "cancel": "Cancel",
+        "register": "Register Entry",
+        "registering": "Registering...",
+        "requires_internet": "Requires Internet",
+        "offline_title": "Connection Required",
+        "offline_message": "This feature requires an internet connection to validate products and locations.",
+        "error_select_product": "You must select a product",
+        "error_select_location": "You must select a location",
+        "error_quantity": "Quantity must be greater than 0",
+        "error_requires_internet": "Requires internet connection to register entries"
+      }
+    }
+  },
+  "alerts": {
+    "title": "Alerts",
+    "subtitle": "Important notifications and warnings",
+    "types": {
+      "expiration": "Expiration",
+      "low_stock": "Low Stock",
+      "critical": "Critical"
+    },
+    "view_all": "View all alerts",
+    "no_alerts": "No alerts at this time"
+  },
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Analysis and statistics",
+    "generate": "Generate Report",
+    "export": "Export",
+    "types": {
+      "inventory": "Inventory",
+      "movements": "Movements",
+      "expiration": "Expirations",
+      "financial": "Financial"
+    }
+  },
+  "analytics": {
+    "title": "Analytics",
+    "subtitle": "Metrics and trends",
+    "period": {
+      "today": "Today",
+      "week": "This Week",
+      "month": "This Month",
+      "year": "This Year"
+    }
+  },
+  "staff": {
+    "title": "Staff",
+    "subtitle": "User and team management",
+    "add_member": "Add Staff",
+    "search": "Search staff..."
+  },
+  "help": {
+    "title": "Help",
+    "subtitle": "Help and support center",
+    "search": "How can we help you?"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information",
+    "confirm": "Confirm",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "actions": "Actions",
+    "details": "Details",
+    "view": "View",
+    "download": "Download",
+    "upload": "Upload",
+    "refresh": "Refresh",
+    "select": "Select",
+    "all": "All",
+    "none": "None",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "user": "User",
+    "profile": "My profile"
+  },
+  "movements": {
+    "types": {
+      "entry": "Entry",
+      "exit": "Exit",
+      "transfer": "Transfer",
+      "adjustment": "Adjustment",
+      "movement": "Movement"
+    },
+    "recent": "Recent Movements",
+    "recent_subtitle": "Latest recorded transactions",
+    "no_movements": "No recent movements"
+  },
+  "offline": {
+    "title": "Offline Mode",
+    "message": "You're working offline. Changes will sync when you're back online.",
+    "sync": "Syncing..."
+  },
+  "landing": {
+    "hero": {
+      "title": "Smart Medical Inventory Management",
+      "subtitle": "The complete solution for modern hospitals",
+      "cta_primary": "Get Started",
+      "cta_secondary": "View Demo"
+    },
+    "features": {
+      "title": "Key Features",
+      "inventory": {
+        "title": "Inventory Management",
+        "description": "Complete control of medical products"
+      },
+      "analytics": {
+        "title": "Advanced Analytics",
+        "description": "Real-time metrics"
+      },
+      "alerts": {
+        "title": "Smart Alerts",
+        "description": "Automatic notifications"
+      },
+      "security": {
+        "title": "Total Security",
+        "description": "Protected data"
+      },
+      "staff": {
+        "title": "Staff Management",
+        "description": "Organize your team"
+      },
+      "reports": {
+        "title": "Detailed Reports",
+        "description": "Accurate information"
+      }
+    },
+    "stats": {
+      "products": "Managed Products",
+      "hospitals": "Active Hospitals",
+      "uptime": "Guaranteed Uptime",
+      "support": "Technical Support"
+    },
+    "steps": {
+      "title": "How It Works",
+      "register": {
+        "title": "Sign Up",
+        "description": "Create your account in minutes"
+      },
+      "configure": {
+        "title": "Configure",
+        "description": "Customize your system"
+      },
+      "manage": {
+        "title": "Manage",
+        "description": "Administer your inventory"
+      }
+    }
+  }
+}

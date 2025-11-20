@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { X, Save, Loader2 } from 'lucide-react';
 import { useInventory } from '@/hooks/useInventory';
 import { UnidadMedida, Producto } from '@/types/database.types';
+import { useTranslations } from 'next-intl';
 
 interface EditProductModalProps {
     isOpen: boolean;
@@ -14,7 +15,11 @@ interface EditProductModalProps {
 }
 
 export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: EditProductModalProps) {
-    const { categorias, updateProducto, fetchCategorias } = useInventory(); // ← Agregar fetchCategorias
+    const t = useTranslations('inventory.modals.edit_product');
+    const tCreate = useTranslations('inventory.modals.create_product');
+    const tCommon = useTranslations('common');
+
+    const { categorias, updateProducto, fetchCategorias } = useInventory();
     const [loading, setLoading] = useState(false);
     const [loadingProduct, setLoadingProduct] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -105,7 +110,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-700">
                 {/* Header */}
                 <div className="sticky top-0 bg-gradient-to-r from-theme-primary to-theme-primary-dark text-white p-6 rounded-t-2xl flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Editar Producto</h2>
+                    <h2 className="text-xl font-semibold">{t('title')}</h2>
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -118,7 +123,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                 {loadingProduct ? (
                     <div className="p-12 flex flex-col items-center justify-center gap-4">
                         <Loader2 className="w-12 h-12 text-theme-primary animate-spin" />
-                        <p className="text-gray-600 dark:text-gray-400">Cargando producto...</p>
+                        <p className="text-gray-600 dark:text-gray-400">{t('loading')}</p>
                     </div>
                 ) : (
                     /* Form */
@@ -131,12 +136,12 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
 
                         {/* Información Básica */}
                         <div className="space-y-4">
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Información Básica</h3>
+                            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">{tCreate('basic_info')}</h3>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Código *
+                                        {tCreate('code')} *
                                     </label>
                                     <input
                                         type="text"
@@ -149,7 +154,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Categoría *
+                                        {tCreate('category')} *
                                     </label>
                                     <select
                                         required
@@ -157,7 +162,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         onChange={(e) => setFormData({ ...formData, categoria_id: e.target.value })}
                                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary focus:border-transparent"
                                     >
-                                        <option value="">Seleccionar...</option>
+                                        <option value="">{tCreate('select')}</option>
                                         {categorias.map((cat) => (
                                             <option key={cat.id} value={cat.id}>{cat.nombre}</option>
                                         ))}
@@ -167,7 +172,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Nombre del Producto *
+                                    {tCreate('product_name')} *
                                 </label>
                                 <input
                                     type="text"
@@ -180,7 +185,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Descripción
+                                    {tCreate('description')}
                                 </label>
                                 <textarea
                                     value={formData.descripcion}
@@ -193,12 +198,12 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
 
                         {/* Información de Stock */}
                         <div className="space-y-4">
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Control de Stock</h3>
+                            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">{tCreate('stock_control')}</h3>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Unidad de Medida *
+                                        {tCreate('unit_measure')} *
                                     </label>
                                     <select
                                         required
@@ -206,23 +211,23 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         onChange={(e) => setFormData({ ...formData, unidad_medida: e.target.value as UnidadMedida })}
                                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-theme-primary focus:border-transparent"
                                     >
-                                        <option value="pieza">Pieza</option>
-                                        <option value="caja">Caja</option>
-                                        <option value="frasco">Frasco</option>
-                                        <option value="ampolleta">Ampolleta</option>
-                                        <option value="litro">Litro</option>
-                                        <option value="mililitro">Mililitro</option>
-                                        <option value="gramo">Gramo</option>
-                                        <option value="kilogramo">Kilogramo</option>
-                                        <option value="paquete">Paquete</option>
-                                        <option value="rollo">Rollo</option>
-                                        <option value="otro">Otro</option>
+                                        <option value="pieza">{tCreate('units.piece')}</option>
+                                        <option value="caja">{tCreate('units.box')}</option>
+                                        <option value="frasco">{tCreate('units.bottle')}</option>
+                                        <option value="ampolleta">{tCreate('units.ampoule')}</option>
+                                        <option value="litro">{tCreate('units.liter')}</option>
+                                        <option value="mililitro">{tCreate('units.milliliter')}</option>
+                                        <option value="gramo">{tCreate('units.gram')}</option>
+                                        <option value="kilogramo">{tCreate('units.kilogram')}</option>
+                                        <option value="paquete">{tCreate('units.package')}</option>
+                                        <option value="rollo">{tCreate('units.roll')}</option>
+                                        <option value="otro">{tCreate('units.other')}</option>
                                     </select>
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Stock Mínimo *
+                                        {tCreate('min_stock')} *
                                     </label>
                                     <input
                                         type="number"
@@ -236,7 +241,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Stock Máximo *
+                                        {tCreate('max_stock')} *
                                     </label>
                                     <input
                                         type="number"
@@ -250,7 +255,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Punto de Reorden *
+                                        {tCreate('reorder_point')} *
                                     </label>
                                     <input
                                         type="number"
@@ -266,7 +271,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
 
                         {/* Características Especiales */}
                         <div className="space-y-4">
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Características Especiales</h3>
+                            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">{tCreate('special_features')}</h3>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <label className="flex items-center space-x-2 cursor-pointer">
@@ -276,7 +281,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         onChange={(e) => setFormData({ ...formData, requiere_receta: e.target.checked })}
                                         className="w-4 h-4 text-theme-primary border-gray-300 rounded focus:ring-theme-primary"
                                     />
-                                    <span className="text-sm text-gray-700 dark:text-gray-300">Requiere Receta</span>
+                                    <span className="text-sm text-gray-700 dark:text-gray-300">{tCreate('requires_prescription')}</span>
                                 </label>
 
                                 <label className="flex items-center space-x-2 cursor-pointer">
@@ -286,7 +291,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         onChange={(e) => setFormData({ ...formData, es_controlado: e.target.checked })}
                                         className="w-4 h-4 text-theme-primary border-gray-300 rounded focus:ring-theme-primary"
                                     />
-                                    <span className="text-sm text-gray-700 dark:text-gray-300">Medicamento Controlado</span>
+                                    <span className="text-sm text-gray-700 dark:text-gray-300">{tCreate('controlled_medication')}</span>
                                 </label>
 
                                 <label className="flex items-center space-x-2 cursor-pointer">
@@ -296,7 +301,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         onChange={(e) => setFormData({ ...formData, requiere_refrigeracion: e.target.checked })}
                                         className="w-4 h-4 text-theme-primary border-gray-300 rounded focus:ring-theme-primary"
                                     />
-                                    <span className="text-sm text-gray-700 dark:text-gray-300">Requiere Refrigeración</span>
+                                    <span className="text-sm text-gray-700 dark:text-gray-300">{tCreate('requires_refrigeration')}</span>
                                 </label>
 
                                 <label className="flex items-center space-x-2 cursor-pointer">
@@ -306,7 +311,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         onChange={(e) => setFormData({ ...formData, controla_lote: e.target.checked })}
                                         className="w-4 h-4 text-theme-primary border-gray-300 rounded focus:ring-theme-primary"
                                     />
-                                    <span className="text-sm text-gray-700 dark:text-gray-300">Controlar Lote</span>
+                                    <span className="text-sm text-gray-700 dark:text-gray-300">{tCreate('control_batch')}</span>
                                 </label>
 
                                 <label className="flex items-center space-x-2 cursor-pointer">
@@ -316,7 +321,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                         onChange={(e) => setFormData({ ...formData, controla_caducidad: e.target.checked })}
                                         className="w-4 h-4 text-theme-primary border-gray-300 rounded focus:ring-theme-primary"
                                     />
-                                    <span className="text-sm text-gray-700 dark:text-gray-300">Controlar Caducidad</span>
+                                    <span className="text-sm text-gray-700 dark:text-gray-300">{tCreate('control_expiration')}</span>
                                 </label>
                             </div>
                         </div>
@@ -328,7 +333,7 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                 onClick={onClose}
                                 className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                             >
-                                Cancelar
+                                {tCommon('cancel')}
                             </button>
                             <button
                                 type="submit"
@@ -338,12 +343,12 @@ export function EditProductModal({ isOpen, onClose, onSuccess, productoId }: Edi
                                 {loading ? (
                                     <>
                                         <Loader2 size={18} className="animate-spin" />
-                                        Guardando...
+                                        {t('saving')}
                                     </>
                                 ) : (
                                     <>
                                         <Save size={18} />
-                                        Guardar Cambios
+                                        {t('save_changes')}
                                     </>
                                 )}
                             </button>

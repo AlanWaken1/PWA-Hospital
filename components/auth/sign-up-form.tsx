@@ -3,27 +3,32 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import gsap from 'gsap';
 import { Mail, Lock, User, Phone, Building2, Briefcase, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client'; // Cliente Supabase del navegador
+import { createClient } from '@/lib/supabase/client';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'; // Importa Select
-import { Label } from '@/components/ui/label'; // Importa Label
-
-// Definimos los roles según tu schema
-const roles = [
-    { value: 'admin', label: 'Administrador' },
-    { value: 'doctor', label: 'Doctor/a' },
-    { value: 'enfermera', label: 'Enfermera/o' },
-    { value: 'farmaceutico', label: 'Farmacéutico/a' },
-    { value: 'almacenista', label: 'Almacenista' },
-    { value: 'tecnico', label: 'Técnico/a' },
-];
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 
 export function SignUpForm() {
+    const t = useTranslations('auth.signup');
+    const tRoles = useTranslations('auth.roles');
+    const locale = useLocale();
     const router = useRouter();
+
+    // Definimos los roles según tu schema
+    const roles = [
+        { value: 'admin', label: tRoles('admin') },
+        { value: 'doctor', label: tRoles('doctor') },
+        { value: 'enfermera', label: tRoles('nurse') },
+        { value: 'farmaceutico', label: tRoles('pharmacist') },
+        { value: 'almacenista', label: tRoles('warehouse') },
+        { value: 'tecnico', label: tRoles('technician') },
+    ];
+
     // Estado para todos los campos del formulario
     const [formData, setFormData] = useState({
         nombre_completo: '',
@@ -62,17 +67,17 @@ export function SignUpForm() {
         e.preventDefault();
         setError(''); // Limpia errores previos
 
-        // Validaciones (de tu diseño Register.tsx)
+        // Validaciones
         if (formData.password !== formData.confirmPassword) {
-            setError('Las contraseñas no coinciden');
+            setError(t('error.password_mismatch'));
             return;
         }
         if (formData.password.length < 6) {
-            setError('La contraseña debe tener al menos 6 caracteres');
+            setError(t('error.password_length'));
             return;
         }
         if (!formData.rol) {
-            setError('Por favor selecciona un rol');
+            setError(t('error.select_role'));
             return;
         }
 
@@ -106,7 +111,7 @@ export function SignUpForm() {
             // Podrías mostrar un mensaje pidiendo revisar el email
 
         } catch (err: any) {
-            setError(err.message || 'Error al crear la cuenta. Intenta de nuevo.');
+            setError(err.message || t('error.generic'));
         } finally {
             setLoading(false);
         }
@@ -118,7 +123,7 @@ export function SignUpForm() {
             ref={formRef}
             className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-6 sm:p-8 transition-colors"
         >
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Crear Cuenta</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">{t('title')}</h2>
 
             {error && (
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg mb-6 text-sm">
@@ -133,14 +138,14 @@ export function SignUpForm() {
                     {/* Nombre Completo */}
                     <div className="sm:col-span-2">
                         <Label htmlFor="nombre_completo" className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
-                            Nombre Completo *
+                            {t('full_name')} {t('required')}
                         </Label>
                         <div className="relative">
                             <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={18} />
                             <Input
                                 id="nombre_completo"
                                 type="text"
-                                placeholder="Ej: Farm. María López García"
+                                placeholder={t('full_name_placeholder')}
                                 value={formData.nombre_completo}
                                 onChange={(e) => handleChange('nombre_completo', e.target.value)}
                                 className="pl-10 bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700"
@@ -152,14 +157,14 @@ export function SignUpForm() {
                     {/* Email */}
                     <div className="sm:col-span-2">
                         <Label htmlFor="email" className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
-                            Correo Electrónico *
+                            {t('email')} {t('required')}
                         </Label>
                         <div className="relative">
                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={18} />
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="tu@hospital.com"
+                                placeholder={t('email_placeholder')}
                                 value={formData.email}
                                 onChange={(e) => handleChange('email', e.target.value)}
                                 className="pl-10 bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700"
@@ -171,25 +176,25 @@ export function SignUpForm() {
                     {/* Password */}
                     <div>
                         <Label htmlFor="password" className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
-                            Contraseña *
+                            {t('password')} {t('required')}
                         </Label>
                         <div className="relative">
                             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={18} />
                             <Input
                                 id="password"
                                 type={showPassword ? 'text' : 'password'}
-                                placeholder="Mínimo 6 caracteres"
+                                placeholder={t('password_placeholder')}
                                 value={formData.password}
                                 onChange={(e) => handleChange('password', e.target.value)}
                                 className="pl-10 pr-10 bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700"
                                 required
-                                minLength={6} // Añade validación HTML
+                                minLength={6}
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
                                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                                aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                                aria-label={showPassword ? t('hide_password') : t('show_password')}
                             >
                                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
@@ -199,14 +204,14 @@ export function SignUpForm() {
                     {/* Confirm Password */}
                     <div>
                         <Label htmlFor="confirmPassword" className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
-                            Confirmar Contraseña *
+                            {t('confirm_password')} {t('required')}
                         </Label>
                         <div className="relative">
                             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={18} />
                             <Input
                                 id="confirmPassword"
                                 type={showConfirmPassword ? 'text' : 'password'}
-                                placeholder="Repite tu contraseña"
+                                placeholder={t('confirm_password_placeholder')}
                                 value={formData.confirmPassword}
                                 onChange={(e) => handleChange('confirmPassword', e.target.value)}
                                 className="pl-10 pr-10 bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700"
@@ -217,7 +222,7 @@ export function SignUpForm() {
                                 type="button"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                                aria-label={showConfirmPassword ? "Ocultar confirmación" : "Mostrar confirmación"}
+                                aria-label={showConfirmPassword ? t('hide_password') : t('show_password')}
                             >
                                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
@@ -227,14 +232,13 @@ export function SignUpForm() {
                     {/* Rol */}
                     <div>
                         <Label htmlFor="rol" className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
-                            Rol en el Hospital *
+                            {t('role')} {t('required')}
                         </Label>
                         <div className="relative">
                             <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10 pointer-events-none" size={18} />
-                            {/* Usamos el componente Select de shadcn/ui */}
                             <Select value={formData.rol} onValueChange={(value) => handleChange('rol', value)}>
                                 <SelectTrigger id="rol" className="pl-10 bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700">
-                                    <SelectValue placeholder="Selecciona tu rol" />
+                                    <SelectValue placeholder={t('role_placeholder')} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {roles.map((rol) => (
@@ -250,14 +254,14 @@ export function SignUpForm() {
                     {/* Departamento */}
                     <div>
                         <Label htmlFor="departamento" className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
-                            Departamento
+                            {t('department')}
                         </Label>
                         <div className="relative">
                             <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={18} />
                             <Input
                                 id="departamento"
                                 type="text"
-                                placeholder="Ej: Farmacia Central"
+                                placeholder={t('department_placeholder')}
                                 value={formData.departamento}
                                 onChange={(e) => handleChange('departamento', e.target.value)}
                                 className="pl-10 bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700"
@@ -268,14 +272,14 @@ export function SignUpForm() {
                     {/* Teléfono */}
                     <div className="sm:col-span-2">
                         <Label htmlFor="telefono" className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
-                            Teléfono
+                            {t('phone')}
                         </Label>
                         <div className="relative">
                             <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={18} />
                             <Input
                                 id="telefono"
                                 type="tel"
-                                placeholder="+52 55 1234-5678"
+                                placeholder={t('phone_placeholder')}
                                 value={formData.telefono}
                                 onChange={(e) => handleChange('telefono', e.target.value)}
                                 className="pl-10 bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700"
@@ -293,14 +297,13 @@ export function SignUpForm() {
                         className="mt-1 rounded border-gray-300 dark:border-gray-600 text-theme-primary focus:ring-theme-primary shadow-sm"
                     />
                     <Label htmlFor="terms" className="text-gray-600 dark:text-gray-400 font-normal">
-                        Acepto los{' '}
-                        {/* Cambiamos button por Link si tienes páginas para esto */}
-                        <Link href="/terminos" className="text-theme-primary dark:text-theme-primary-light hover:underline">
-                            términos y condiciones
+                        {t('terms')}{' '}
+                        <Link href={`/${locale}/terminos`} className="text-theme-primary dark:text-theme-primary-light hover:underline">
+                            {t('terms_link')}
                         </Link>{' '}
-                        y la{' '}
-                        <Link href="/privacidad" className="text-theme-primary dark:text-theme-primary-light hover:underline">
-                            política de privacidad
+                        {t('and')}{' '}
+                        <Link href={`/${locale}/privacidad`} className="text-theme-primary dark:text-theme-primary-light hover:underline">
+                            {t('privacy_link')}
                         </Link>
                     </Label>
                 </div>
@@ -317,7 +320,7 @@ export function SignUpForm() {
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : (
                         <>
-                            <span>Crear Cuenta</span>
+                            <span>{t('submit')}</span>
                             <ArrowRight size={18} />
                         </>
                     )}
@@ -331,17 +334,17 @@ export function SignUpForm() {
                 </div>
                 <div className="relative flex justify-center text-sm">
           <span className="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-            ¿Ya tienes cuenta?
+            {t('has_account')}
           </span>
                 </div>
             </div>
 
             {/* Login Link */}
             <Link
-                href="/auth/login" // Ruta del template
+                href={`/${locale}/auth/login`}
                 className="block w-full text-center text-theme-primary dark:text-theme-primary-light hover:text-theme-primary-dark dark:hover:text-theme-primary-light transition-colors hover:underline"
             >
-                Iniciar sesión →
+                {t('login_link')} →
             </Link>
         </div>
     );

@@ -5,7 +5,8 @@ import { useState, useEffect } from 'react';
 import { X, PackageMinus, Loader2, AlertCircle } from 'lucide-react';
 import { useInventory } from '@/hooks/useInventory';
 import { Inventario } from '@/types/database.types';
-import { isOnline } from '@/lib/offline/sync'; // ← AGREGAR ESTO
+import { isOnline } from '@/lib/offline/sync';
+import { useTranslations } from 'next-intl';
 
 interface RegisterExitModalProps {
     isOpen: boolean;
@@ -15,13 +16,15 @@ interface RegisterExitModalProps {
 }
 
 export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: RegisterExitModalProps) {
+    const t = useTranslations('inventory.modals.register_exit');
+
     const [loading, setLoading] = useState(false);
     const [loadingInventario, setLoadingInventario] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [inventarios, setInventarios] = useState<Inventario[]>([]);
 
     const { productos, registrarSalida, fetchProductos } = useInventory();
-    const offline = !isOnline(); // ← AGREGAR ESTO
+    const offline = !isOnline();
 
     useEffect(() => {
         if (isOpen) {
@@ -51,7 +54,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
         // ✅ VALIDACIÓN OFFLINE - Bloquear si no hay internet
         if (offline) {
             console.log('📴 Offline: No se pueden cargar inventarios');
-            setError('Esta función requiere conexión a internet para validar el stock disponible');
+            setError(t('offline_message'));
             setLoadingInventario(false);
             return;
         }
@@ -89,26 +92,26 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
 
         // ✅ VALIDACIÓN OFFLINE - Bloquear submit si no hay internet
         if (offline) {
-            setError('Requiere conexión a internet para registrar salidas');
+            setError(t('error_requires_internet'));
             return;
         }
 
         if (!formData.producto_id) {
-            setError('Debe seleccionar un producto');
+            setError(t('error_select_product'));
             return;
         }
         if (!formData.inventario_id) {
-            setError('Debe seleccionar una ubicación/lote');
+            setError(t('error_select_location'));
             return;
         }
         // Validación
         if (!selectedInventario) {
-            setError('Debe seleccionar una ubicación/lote');
+            setError(t('error_select_location'));
             return;
         }
 
         if (formData.cantidad > selectedInventario.cantidad_disponible) {
-            setError(`Stock insuficiente. Disponible: ${selectedInventario.cantidad_disponible}`);
+            setError(`${t('error_insufficient_stock')} ${selectedInventario.cantidad_disponible}`);
             return;
         }
 
@@ -147,7 +150,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                 <div className="sticky top-0 bg-gradient-to-r from-red-600 to-red-700 text-white p-6 rounded-t-2xl flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <PackageMinus size={24} />
-                        <h2 className="text-xl font-semibold">Registrar Salida</h2>
+                        <h2 className="text-xl font-semibold">{t('title')}</h2>
                     </div>
                     <button
                         onClick={onClose}
@@ -166,10 +169,10 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                                 <AlertCircle className="text-orange-600 dark:text-orange-400 flex-shrink-0" size={20} />
                                 <div className="flex-1">
                                     <p className="text-sm font-medium text-orange-900 dark:text-orange-100 mb-1">
-                                        Conexión Requerida
+                                        {t('offline_title')}
                                     </p>
                                     <p className="text-sm text-orange-800 dark:text-orange-200">
-                                        Esta función requiere conexión a internet para validar el stock disponible en tiempo real.
+                                        {t('offline_message')}
                                     </p>
                                 </div>
                             </div>
@@ -187,7 +190,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                     <div className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Producto *
+                                {t('product')} *
                             </label>
                             <select
                                 required
@@ -197,7 +200,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent disabled:opacity-50"
                             >
                                 <option value="">
-                                    {productos.length === 0 ? 'Cargando productos...' : 'Seleccionar producto...'}
+                                    {productos.length === 0 ? t('loading_products') : t('select_product')}
                                 </option>
                                 {productos.map((prod) => (
                                     <option key={prod.id} value={prod.id}>
@@ -211,7 +214,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                         {formData.producto_id && !offline && (
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Ubicación / Lote *
+                                    {t('location_batch')} *
                                 </label>
                                 {loadingInventario ? (
                                     <div className="flex items-center justify-center py-4">
@@ -219,7 +222,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                                     </div>
                                 ) : inventarios.length === 0 ? (
                                     <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 text-yellow-700 dark:text-yellow-400 px-4 py-3 rounded-lg text-sm">
-                                        No hay stock disponible para este producto
+                                        {t('no_stock_available')}
                                     </div>
                                 ) : (
                                     <select
@@ -228,7 +231,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                                         onChange={(e) => setFormData({ ...formData, inventario_id: e.target.value })}
                                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent"
                                     >
-                                        <option value="">Seleccionar ubicación/lote...</option>
+                                        <option value="">{t('select_location_batch')}</option>
                                         {inventarios.map((inv) => (
                                             <option key={inv.id} value={inv.id}>
                                                 {inv.ubicacion?.nombre}
@@ -247,7 +250,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                         <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-blue-700 dark:text-blue-300 mb-1">Stock Disponible</p>
+                                    <p className="text-sm text-blue-700 dark:text-blue-300 mb-1">{t('stock_available')}</p>
                                     <p className="text-3xl font-bold text-blue-900 dark:text-blue-100">
                                         {selectedInventario.cantidad_disponible}
                                     </p>
@@ -256,7 +259,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                             </div>
                             {selectedInventario.fecha_caducidad && (
                                 <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
-                                    Caduca: {new Date(selectedInventario.fecha_caducidad).toLocaleDateString()}
+                                    {t('expires')}: {new Date(selectedInventario.fecha_caducidad).toLocaleDateString()}
                                 </p>
                             )}
                         </div>
@@ -267,7 +270,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Cantidad a Retirar *
+                                    {t('quantity_to_withdraw')} *
                                 </label>
                                 <input
                                     type="number"
@@ -282,14 +285,14 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                                 />
                                 {selectedInventario && formData.cantidad > selectedInventario.cantidad_disponible && (
                                     <p className="text-red-600 dark:text-red-400 text-sm mt-1">
-                                        Cantidad excede el stock disponible
+                                        {t('error_quantity_exceeds')}
                                     </p>
                                 )}
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Motivo *
+                                    {t('reason')} *
                                 </label>
                                 <select
                                     required
@@ -297,28 +300,28 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                                     onChange={(e) => setFormData({ ...formData, motivo: e.target.value })}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent"
                                 >
-                                    <option value="">Seleccionar motivo...</option>
-                                    <option value="Dispensación">Dispensación a Paciente</option>
-                                    <option value="Solicitud Interna">Solicitud Interna</option>
-                                    <option value="Urgencias">Uso en Urgencias</option>
-                                    <option value="Cirugía">Uso en Cirugía</option>
-                                    <option value="Consulta">Uso en Consulta</option>
-                                    <option value="Merma">Merma o Pérdida</option>
-                                    <option value="Caducidad">Producto Caducado</option>
-                                    <option value="Otro">Otro</option>
+                                    <option value="">{t('select_reason')}</option>
+                                    <option value="Dispensación">{t('reasons.dispensation')}</option>
+                                    <option value="Solicitud Interna">{t('reasons.internal_request')}</option>
+                                    <option value="Urgencias">{t('reasons.emergency')}</option>
+                                    <option value="Cirugía">{t('reasons.surgery')}</option>
+                                    <option value="Consulta">{t('reasons.consultation')}</option>
+                                    <option value="Merma">{t('reasons.loss')}</option>
+                                    <option value="Caducidad">{t('reasons.expired')}</option>
+                                    <option value="Otro">{t('reasons.other')}</option>
                                 </select>
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Notas
+                                    {t('notes')}
                                 </label>
                                 <textarea
                                     value={formData.notas}
                                     onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
                                     rows={3}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                    placeholder="Observaciones adicionales..."
+                                    placeholder={t('notes_placeholder')}
                                 />
                             </div>
                         </div>
@@ -331,7 +334,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                             onClick={onClose}
                             className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                         >
-                            Cancelar
+                            {t('cancel')}
                         </button>
                         <button
                             type="submit"
@@ -341,12 +344,12 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                             {loading ? (
                                 <>
                                     <Loader2 size={18} className="animate-spin" />
-                                    Registrando...
+                                    {t('registering')}
                                 </>
                             ) : (
                                 <>
                                     <PackageMinus size={18} />
-                                    {offline ? 'Requiere Internet' : 'Registrar Salida'}
+                                    {offline ? t('requires_internet') : t('register')}
                                 </>
                             )}
                         </button>

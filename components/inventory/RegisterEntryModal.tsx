@@ -2,10 +2,11 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { X, PackagePlus } from 'lucide-react';
 import { useInventory } from '@/hooks/useInventory';
-import { isOnline } from '@/lib/offline/sync'; // ← AGREGAR ESTO
-import { AlertCircle } from 'lucide-react'; // ← AGREGAR ESTO
+import { isOnline } from '@/lib/offline/sync';
+import { AlertCircle } from 'lucide-react';
 
 interface RegisterEntryModalProps {
     isOpen: boolean;
@@ -15,6 +16,7 @@ interface RegisterEntryModalProps {
 }
 
 export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: RegisterEntryModalProps) {
+    const t = useTranslations('inventory.modals.register_entry');
     const { productos, ubicaciones, registrarEntrada, fetchProductos, fetchUbicaciones } = useInventory();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -29,11 +31,11 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
             fetchUbicaciones();
         }
 
-        // ← AGREGAR: Si está offline, mostrar error
+        // Si está offline, mostrar error
         if (isOpen && offline) {
-            setError('Esta función requiere conexión a internet');
+            setError(t('error_requires_internet'));
         }
-    }, [isOpen, offline]); // ← AGREGAR offline como dependencia
+    }, [isOpen, offline, t]);
 
     const [formData, setFormData] = useState({
         producto_id: productoId || '',
@@ -50,26 +52,26 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
         e.preventDefault();
         setError(null);
 
-        // ✅ VALIDACIÓN OFFLINE - Bloquear submit si no hay internet
+        // VALIDACIÓN OFFLINE - Bloquear submit si no hay internet
         if (offline) {
-            setError('Requiere conexión a internet para registrar entradas');
+            setError(t('error_requires_internet'));
             return;
         }
 
         setLoading(true);
 
         if (!formData.producto_id) {
-            setError('Debe seleccionar un producto');
+            setError(t('error_select_product'));
             setLoading(false);
             return;
         }
         if (!formData.ubicacion_id) {
-            setError('Debe seleccionar una ubicación');
+            setError(t('error_select_location'));
             setLoading(false);
             return;
         }
         if (!formData.cantidad || formData.cantidad <= 0) {
-            setError('La cantidad debe ser mayor a 0');
+            setError(t('error_quantity'));
             setLoading(false);
             return;
         }
@@ -114,7 +116,7 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
                 <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 rounded-t-2xl flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <PackagePlus size={24} />
-                        <h2 className="text-xl font-semibold">Registrar Entrada</h2>
+                        <h2 className="text-xl font-semibold">{t('title')}</h2>
                     </div>
                     <button
                         onClick={onClose}
@@ -126,17 +128,17 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                    {/* ⚠️ MENSAJE OFFLINE */}
+                    {/* MENSAJE OFFLINE */}
                     {offline && (
                         <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
                             <div className="flex gap-3">
                                 <AlertCircle className="text-orange-600 dark:text-orange-400 flex-shrink-0" size={20} />
                                 <div className="flex-1">
                                     <p className="text-sm font-medium text-orange-900 dark:text-orange-100 mb-1">
-                                        Conexión Requerida
+                                        {t('offline_title')}
                                     </p>
                                     <p className="text-sm text-orange-800 dark:text-orange-200">
-                                        Esta función requiere conexión a internet para validar productos y ubicaciones.
+                                        {t('offline_message')}
                                     </p>
                                 </div>
                             </div>
@@ -154,7 +156,7 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Producto *
+                                    {t('product')} *
                                 </label>
                                 <select
                                     required
@@ -164,7 +166,7 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
                                 >
                                     <option value="">
-                                        {productos.length === 0 ? 'Cargando productos...' : 'Seleccionar producto...'}
+                                        {productos.length === 0 ? t('loading_products') : t('select_product')}
                                     </option>
                                     {productos.map((prod) => (
                                         <option key={prod.id} value={prod.id}>
@@ -176,7 +178,7 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Ubicación de Destino *
+                                    {t('location')} *
                                 </label>
                                 <select
                                     required
@@ -184,7 +186,7 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
                                     onChange={(e) => setFormData({ ...formData, ubicacion_id: e.target.value })}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 >
-                                    <option value="">Seleccionar ubicación...</option>
+                                    <option value="">{t('select_location')}</option>
                                     {ubicaciones.map((ub) => (
                                         <option key={ub.id} value={ub.id}>
                                             {ub.nombre} ({ub.tipo})
@@ -201,7 +203,7 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Cantidad *
+                                        {t('quantity')} *
                                     </label>
                                     <input
                                         type="number"
@@ -215,7 +217,7 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Costo Unitario
+                                        {t('unit_cost')}
                                     </label>
                                     <input
                                         type="number"
@@ -224,7 +226,7 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
                                         value={formData.costo_unitario}
                                         onChange={(e) => setFormData({ ...formData, costo_unitario: e.target.value })}
                                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="$0.00"
+                                        placeholder={t('placeholder_cost')}
                                     />
                                 </div>
                             </div>
@@ -232,20 +234,20 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Lote
+                                        {t('batch')}
                                     </label>
                                     <input
                                         type="text"
                                         value={formData.lote}
                                         onChange={(e) => setFormData({ ...formData, lote: e.target.value })}
                                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="Ej: LOT-2024-001"
+                                        placeholder={t('placeholder_batch')}
                                     />
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Fecha de Caducidad
+                                        {t('expiration_date')}
                                     </label>
                                     <input
                                         type="date"
@@ -258,27 +260,27 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Documento de Referencia
+                                    {t('reference_doc')}
                                 </label>
                                 <input
                                     type="text"
                                     value={formData.documento_referencia}
                                     onChange={(e) => setFormData({ ...formData, documento_referencia: e.target.value })}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="Ej: Factura, Orden de Compra, etc."
+                                    placeholder={t('placeholder_doc')}
                                 />
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Notas
+                                    {t('notes')}
                                 </label>
                                 <textarea
                                     value={formData.notas}
                                     onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
                                     rows={3}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="Observaciones adicionales..."
+                                    placeholder={t('placeholder_notes')}
                                 />
                             </div>
                         </div>
@@ -291,7 +293,7 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
                             onClick={onClose}
                             className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                         >
-                            Cancelar
+                            {t('cancel')}
                         </button>
                         <button
                             type="submit"
@@ -299,7 +301,7 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
                             className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <PackagePlus size={18} />
-                            {loading ? 'Registrando...' : offline ? 'Requiere Internet' : 'Registrar Entrada'}
+                            {loading ? t('registering') : offline ? t('requires_internet') : t('register')}
                         </button>
                     </div>
                 </form>

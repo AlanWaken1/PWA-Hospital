@@ -18,7 +18,7 @@ export function CreateProductModal({ isOpen, onClose, onSuccess }: CreateProduct
     const [error, setError] = useState<string | null>(null);
 
     const [formData, setFormData] = useState({
-        codigo: '',
+        codigo: `PROD-${Date.now()}`,
         nombre: '',
         descripcion: '',
         categoria_id: '',

@@ -32,7 +32,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
     const [formData, setFormData] = useState({
         producto_id: productoId || '',
         inventario_id: '',
-        cantidad: 1,
+        cantidad: 0,
         motivo: '',
         notas: '',
     });
@@ -276,6 +276,7 @@ export function RegisterExitModal({ isOpen, onClose, onSuccess, productoId }: Re
                                     max={selectedInventario?.cantidad_disponible || 999999}
                                     value={formData.cantidad}
                                     onChange={(e) => setFormData({ ...formData, cantidad: parseInt(e.target.value) || 1 })}
+                                    onFocus={(e) => e.target.select()}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent"
                                     disabled={!selectedInventario}
                                 />

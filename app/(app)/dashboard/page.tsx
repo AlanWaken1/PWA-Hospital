@@ -127,7 +127,7 @@ export default function Dashboard() {
             {/* Dashboard Title */}
             <motion.div variants={itemVariants} className="mb-6">
                 <h1 className="text-gray-900 dark:text-gray-100 mb-2">
-                    Panel de Control - Inventario Hospitalario
+                    Panel de Control - Inventario de clínica
                 </h1>
                 <p className="text-gray-500 dark:text-gray-400">
                     Gestiona y monitorea el inventario médico de forma eficiente y segura.

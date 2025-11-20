@@ -78,7 +78,7 @@ export function RegisterEntryModal({ isOpen, onClose, onSuccess, productoId }: R
             producto_id: formData.producto_id,
             ubicacion_id: formData.ubicacion_id,
             cantidad: formData.cantidad,
-            lote: formData.lote || undefined,
+            lote: formData.lote || `SL-${Date.now()}`,
             fecha_caducidad: formData.fecha_caducidad || undefined,
             costo_unitario: formData.costo_unitario ? parseFloat(formData.costo_unitario) : undefined,
             documento_referencia: formData.documento_referencia || undefined,

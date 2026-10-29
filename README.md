@@ -1,109 +1,122 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# MediStock
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+**Offline-first medical inventory management PWA for small clinics with unreliable internet.**
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+MediStock was built as a university project (UTL Acámbaro) around the real needs of a small clinic in Guanajuato, Mexico: 1–2 users, constant stock movement, and an internet connection that drops regularly. The core requirement was simple: *the clinic can't stop working when the Wi-Fi does.*
+
+> **Status:** functional prototype, not deployed in production. See [Known limitations](#known-limitations) and [Roadmap](#roadmap).
 
 ## Features
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+**Inventory**
+- Product catalog with categories, units of measure, min/max stock and reorder points
+- Batch and expiration tracking, multiple storage locations
+- Stock entries and exits with a full movement history (entry, exit, adjustment, waste, expired, return)
+- Special product flags: controlled substances, prescription required, refrigeration, fragile
 
-## Demo
+**Alerts & monitoring**
+- Real-time alerts via Supabase Realtime (low stock, critical stock, upcoming expirations)
+- In-app notification center with sound
+- Dashboard with live stats, critical supplies, recent movements and staff activity
+- Analytics charts (Recharts)
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+**Reports**
+- Configurable reports with preview
+- Export to **PDF** (jsPDF) and **Excel** (SheetJS)
 
-## Deploy to Vercel
+**Offline & PWA**
+- Installable PWA (manifest, icons, install prompt)
+- Custom service worker: cache-first for static assets, network-first with fallback for navigation, network-only for API calls
+- IndexedDB cache (Dexie) for products, inventory and alerts
+- Pending-actions queue that syncs automatically when the connection returns
+- Offline-aware auth: the session persists locally so the app opens without internet
+- Online/offline indicator and sync status banner
 
-Vercel deployment will guide you through creating a Supabase account and project.
+**UX**
+- Full i18n: Spanish and English (`next-intl`, 400+ keys per language)
+- Light/dark mode and selectable accent color themes
+- Mobile-first, responsive layout with modal-based workflows
+- User manuals in Spanish and English (`/public/manuales`)
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+## Tech stack
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+| Area | Technology |
+|---|---|
+| Framework | Next.js 15 (App Router), React 19, TypeScript |
+| Backend / DB | Supabase (Postgres, Auth, Realtime, Row Level Security) |
+| Offline | Dexie (IndexedDB), custom service worker |
+| UI | Tailwind CSS, shadcn/ui (Radix), Framer Motion, GSAP |
+| Charts & export | Recharts, jsPDF + autotable, SheetJS |
+| i18n | next-intl |
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+## Architecture
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+```
+app/[locale]/        Localized routes (dashboard, inventory, alerts, reports, analytics, staff, settings)
+components/          UI: inventory modals, notifications, reports, shared widgets
+hooks/               Data hooks (useInventory, useAlerts, useNotifications, useOfflineSync, ...)
+contexts/            Auth (offline-aware), theme and accent-color providers
+lib/supabase/        Browser / server / middleware Supabase clients
+lib/offline/         Dexie schema (db.ts) and sync engine (sync.ts)
+public/sw.js         Service worker
+messages/            es.json / en.json translations
+types/               Database types
+```
 
-## Clone and run locally
+**Offline flow:** reads go to Supabase when online and refresh the local IndexedDB cache; when offline they are served from the cache. Writes made offline are stored in a `pendingActions` queue and replayed in order when the `online` event fires.
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+**Main Supabase tables:** `productos`, `categorias`, `inventario`, `ubicaciones`, `movimientos`, `alertas`, `profiles`, `user_preferences`, plus views `vista_stock_total` and `vista_productos_por_caducar`.
 
-2. Create a Next.js app using the Supabase Starter template npx command
+## Getting started
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+**Requirements:** Node.js 18+ and a Supabase project.
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+```bash
+git clone https://github.com/AlanWaken1/PWA-Hospital.git
+cd PWA-Hospital
+npm install
+```
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+Create a `.env.local` file:
 
-3. Use `cd` to change into the app's directory
+```env
+NEXT_PUBLIC_SUPABASE_URL=your-project-url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-or-anon-key
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-publishable-or-anon-key
+```
 
-   ```bash
-   cd with-supabase-app
-   ```
+Then run:
 
-4. Rename `.env.example` to `.env.local` and update the following:
+```bash
+npm run dev
+```
 
-  ```env
-  NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=[INSERT SUPABASE PROJECT API PUBLISHABLE OR ANON KEY]
-  ```
-  > [!NOTE]
-  > This example uses `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, which refers to Supabase's new **publishable** key format.
-  > Both legacy **anon** keys and new **publishable** keys can be used with this variable name during the transition period. Supabase's dashboard may show `NEXT_PUBLIC_SUPABASE_ANON_KEY`; its value can be used in this example.
-  > See the [full announcement](https://github.com/orgs/supabase/discussions/29260) for more information.
+Open [http://localhost:3000](http://localhost:3000). The app redirects to the default locale (`/es`).
 
-  Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
+> Note: the service worker only registers in production builds. To test offline mode, run `npm run build && npm start`, open DevTools → Application → Service Workers, and toggle *Offline*.
 
-5. You can now run the Next.js local development server:
+## Known limitations
 
-   ```bash
-   npm run dev
-   ```
+I'm documenting these deliberately; they are the next things to fix:
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+- The offline sync queue does not yet check the error returned by Supabase before marking an action as synced.
+- Offline stock movements are queued in a raw shape and are not yet applied transactionally; stock updates should move into a Postgres function (RPC).
+- Stock entry/exit currently does read–modify–write from the client (no transaction).
+- Conflict resolution is last-write-wins.
+- No automated tests yet.
+- The database schema and RLS policies are not yet versioned in this repo.
+- TypeScript build errors are currently ignored in `next.config.ts`, and there are leftover template components and a duplicated route tree to clean up.
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+## Roadmap
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+- [ ] Transactional stock movements via Postgres RPC
+- [ ] Reliable sync queue with error handling, retries and conflict strategy
+- [ ] Unit and integration tests for sync and stock logic
+- [ ] Versioned SQL migrations and RLS policies
+- [ ] Patient records module (offline-capable) with role-based access and audit logging
+- [ ] Remove dead code and enable strict type checking in the build
 
-## Feedback and issues
+## License
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
-
-## More Supabase examples
-
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+Copyright © 2025 Alan Ambriz. All rights reserved.
+The source is publicly viewable for evaluation purposes only; it may not be copied, modified or redistributed without permission.

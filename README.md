@@ -2,7 +2,7 @@
 
 **Offline-first medical inventory management PWA for small clinics with unreliable internet.**
 
-MediStock was built as a university project (UTL Acámbaro) around the real needs of a small clinic in Guanajuato, Mexico: 1–2 users, constant stock movement, and an internet connection that drops regularly. The core requirement was simple: *the clinic can't stop working when the Wi-Fi does.*
+MediStock was built as a project around the real needs of a small clinic in Guanajuato, Mexico: 1–2 users, constant stock movement, and an internet connection that drops regularly. The core requirement was simple: *the clinic can't stop working when the Wi-Fi does.*
 
 > **Status:** functional prototype, not deployed in production. See [Known limitations](#known-limitations) and [Roadmap](#roadmap).
 
